@@ -32,17 +32,18 @@ class RemoteFitnessDataStorage : FitnessDataStorage {
         OpenDataApi::class.java
     )
 
-    override fun getFitnessData(): MutableLiveData<FitnessCentersResponse> {
-        val newsData = MutableLiveData<FitnessCentersResponse>()
+    override fun getFitnessData(): MutableLiveData<List<FitnessCentersRecord>> {
+        val newsData = MutableLiveData<List<FitnessCentersRecord>>()
         openDataApi.getFitnessCenters().enqueue(object : Callback<FitnessCentersResponse> {
             override fun onResponse(
                 call: Call<FitnessCentersResponse>,
                 response: Response<FitnessCentersResponse>
             ) {
                 if (response.isSuccessful) {
-                    newsData.value = response.body()
+                    newsData.value = response.body().result.records
                     Log.i(RemoteMarketDataStorage.TAG, newsData.value.toString())
                 }
+                return
             }
 
             override fun onFailure(call: Call<FitnessCentersResponse>, t: Throwable) {

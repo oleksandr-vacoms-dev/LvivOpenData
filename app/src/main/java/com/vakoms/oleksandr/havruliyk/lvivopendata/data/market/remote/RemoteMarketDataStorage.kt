@@ -32,15 +32,15 @@ class RemoteMarketDataStorage : MarketDataStorage {
         OpenDataApi::class.java
     )
 
-    override fun getMarketData(): MutableLiveData<MarketsResponse> {
-        val newsData = MutableLiveData<MarketsResponse>()
+    override fun getMarketData(): MutableLiveData<List<MarketsRecord>> {
+        val newsData = MutableLiveData<List<MarketsRecord>>()
         openDataApi.getMarkets().enqueue(object : Callback<MarketsResponse> {
             override fun onResponse(
                 call: Call<MarketsResponse>,
                 response: Response<MarketsResponse>
             ) {
                 if (response.isSuccessful) {
-                    newsData.value = response.body()
+                    newsData.value = response.body().result.records
                     Log.i(TAG, newsData.value.toString())
                 }
             }

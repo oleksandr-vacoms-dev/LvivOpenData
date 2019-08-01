@@ -14,11 +14,10 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.MarketAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.MarketViewModel
-import java.util.*
 
 class MarketsFragment : Fragment() {
 
-    private val recordsArrayList = ArrayList<MarketsRecord>()
+    private val recordsMutableList = mutableListOf<MarketsRecord>()
     private var adapter: MarketAdapter? = null
     private lateinit var rvHeadline: RecyclerView
     private lateinit var marketViewModel: MarketViewModel
@@ -38,8 +37,8 @@ class MarketsFragment : Fragment() {
 
         marketViewModel = ViewModelProviders.of(this)[MarketViewModel::class.java]
         marketViewModel.getMarketsData()?.observe(this, androidx.lifecycle.Observer {
-            recordsArrayList.addAll(it.result.records as ArrayList<MarketsRecord>)
-            Log.i(TAG, recordsArrayList.toString())
+            recordsMutableList.addAll(it)
+            Log.i(TAG, recordsMutableList.toString())
             adapter?.notifyDataSetChanged()
         })
 
@@ -50,7 +49,7 @@ class MarketsFragment : Fragment() {
 
     private fun setupRecyclerView() {
         if (adapter == null) {
-            adapter = context?.applicationContext?.let { MarketAdapter(it, recordsArrayList) }
+            adapter = context?.applicationContext?.let { MarketAdapter(it, recordsMutableList) }
             rvHeadline.layoutManager = LinearLayoutManager(context?.applicationContext)
             rvHeadline.adapter = adapter
             rvHeadline.itemAnimator = DefaultItemAnimator()

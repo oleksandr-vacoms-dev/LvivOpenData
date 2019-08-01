@@ -10,7 +10,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
 
 
-class FitnessAdapter(private var context: Context, private var fitness: ArrayList<FitnessCentersRecord>) :
+class FitnessAdapter(private var context: Context, private var fitness: List<FitnessCentersRecord>) :
     RecyclerView.Adapter<FitnessAdapter.FitnessViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FitnessViewHolder {

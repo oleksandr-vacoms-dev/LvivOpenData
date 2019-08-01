@@ -1,25 +1,24 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.remote.RemoteFitnessDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.remote.RemoteMarketDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersResponse
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.FitnessRepository
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
 
-class FitnessViewModel : ViewModel() {
-
-    private var mutableLiveDataFitness: MutableLiveData<FitnessCentersResponse>? = null
-    private var remoteFitnessDataStorage: RemoteFitnessDataStorage? = null
+class FitnessViewModel(application: Application) : AndroidViewModel(application) {
+    private var mutableLiveDataFitness: MutableLiveData<List<FitnessCentersRecord>>? = null
+    private var fitnessRepository: FitnessRepository? = null
 
     init {
         if (mutableLiveDataFitness == null) {
-            remoteFitnessDataStorage = RemoteFitnessDataStorage.getInstance()
-            mutableLiveDataFitness = remoteFitnessDataStorage!!.getFitnessData()
+            fitnessRepository = FitnessRepository.getInstance(application)
+            mutableLiveDataFitness = fitnessRepository?.getFitnessData()
         }
     }
 
-    fun getFitnessData(): LiveData<FitnessCentersResponse>? {
+    fun getFitnessData(): LiveData<List<FitnessCentersRecord>>? {
         return mutableLiveDataFitness
     }
 }

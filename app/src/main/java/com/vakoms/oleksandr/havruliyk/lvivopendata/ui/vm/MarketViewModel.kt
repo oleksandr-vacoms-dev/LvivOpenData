@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.remote.RemoteMarketDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResponse
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsRecord
 
 class MarketViewModel : ViewModel() {
 
-    private var mutableLiveData: MutableLiveData<MarketsResponse>? = null
+    private var mutableLiveData: MutableLiveData<List<MarketsRecord>>? = null
     private var remoteMarketDataStorage: RemoteMarketDataStorage? = null
 
     init {
@@ -18,7 +18,7 @@ class MarketViewModel : ViewModel() {
         }
     }
 
-    fun getMarketsData(): LiveData<MarketsResponse>? {
+    fun getMarketsData(): LiveData<List<MarketsRecord>>? {
         return mutableLiveData
     }
 

@@ -6,7 +6,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.Fit
 
 interface FitnessDataStorage {
 
-    fun getFitnessData(): MutableLiveData<FitnessCentersResponse>
+    fun getFitnessData(): MutableLiveData<List<FitnessCentersRecord>>
 
     fun saveFitnessData(data: List<FitnessCentersRecord>)
 
