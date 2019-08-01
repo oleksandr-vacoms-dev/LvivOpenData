@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.remote
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.api
 
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResponse

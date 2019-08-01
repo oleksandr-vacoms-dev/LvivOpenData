@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.remote
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.api
 
 
 import retrofit2.Retrofit
