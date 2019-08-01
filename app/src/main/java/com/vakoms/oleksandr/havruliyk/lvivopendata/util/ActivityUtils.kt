@@ -9,7 +9,7 @@ fun addFragmentToActivity(
     fragment: Fragment, frameId: Int
 ) {
     val transaction = fragmentManager.beginTransaction()
-    transaction.add(frameId, fragment)
+    transaction.replace(frameId, fragment)
     transaction.commit()
 }
 

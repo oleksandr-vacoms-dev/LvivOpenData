@@ -16,7 +16,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.FitnessAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.FitnessViewModel
 
 
-class FitnessCentersFragment : Fragment() {
+class FitnessFragment : Fragment() {
 
     private val recordsMutableList = mutableListOf<FitnessCentersRecord>()
     private var adapter: FitnessAdapter? = null

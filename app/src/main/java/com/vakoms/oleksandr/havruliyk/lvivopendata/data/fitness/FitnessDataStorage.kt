@@ -1,12 +1,11 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness
 
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersResponse
 
 interface FitnessDataStorage {
 
-    fun getFitnessData(): MutableLiveData<List<FitnessCentersRecord>>
+    fun getFitnessData(): LiveData<List<FitnessCentersRecord>>?
 
     fun saveFitnessData(data: List<FitnessCentersRecord>)
 

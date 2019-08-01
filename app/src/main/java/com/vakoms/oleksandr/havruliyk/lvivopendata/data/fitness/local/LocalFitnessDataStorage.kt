@@ -2,7 +2,6 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.local
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.FitnessDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
@@ -11,7 +10,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.Fit
 class LocalFitnessDataStorage(context: Context) : FitnessDataStorage {
 
     companion object {
-        const val TAG = "RemoteMarketDataStorage"
+        const val TAG = "LocalFitnessDataStorage"
 
         private var INSTANCE: LocalFitnessDataStorage? = null
 
@@ -24,8 +23,6 @@ class LocalFitnessDataStorage(context: Context) : FitnessDataStorage {
     }
 
     private var fitnessDao: FitnessDao
-    private var fitnessData: LiveData<List<FitnessCentersRecord>>
-
     init {
         val roomDB: FitnessRoomDatabase = Room.databaseBuilder(
             context,
@@ -35,11 +32,10 @@ class LocalFitnessDataStorage(context: Context) : FitnessDataStorage {
             .build()
 
         fitnessDao = roomDB.fitnessDao()
-        fitnessData = fitnessDao.getAll()
     }
 
-    override fun getFitnessData(): MutableLiveData<List<FitnessCentersRecord>> {
-        return fitnessData as MutableLiveData<List<FitnessCentersRecord>>
+    override fun getFitnessData(): LiveData<List<FitnessCentersRecord>> {
+        return fitnessDao.getAll()
     }
 
     override fun saveFitnessData(data: List<FitnessCentersRecord>) {
