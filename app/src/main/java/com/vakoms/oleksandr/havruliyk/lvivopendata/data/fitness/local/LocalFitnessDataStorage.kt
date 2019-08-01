@@ -42,6 +42,10 @@ class LocalFitnessDataStorage(context: Context) : FitnessDataStorage {
         fitnessDao.insert(data)
     }
 
+    override fun deleteAllData() {
+        fitnessDao.deleteAll()
+    }
+
     override fun destroyInstance() {
         INSTANCE = null
     }

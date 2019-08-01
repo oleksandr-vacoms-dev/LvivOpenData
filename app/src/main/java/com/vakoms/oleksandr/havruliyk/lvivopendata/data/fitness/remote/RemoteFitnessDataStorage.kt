@@ -57,6 +57,10 @@ class RemoteFitnessDataStorage : FitnessDataStorage {
 
     }
 
+    override fun deleteAllData() {
+
+    }
+
     override fun destroyInstance() {
         remoteFitnessDataStorage = null
     }

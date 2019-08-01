@@ -33,22 +33,32 @@ class FitnessRepository(context: Context) : FitnessDataStorage {
             return if (it) {
                 val data = remoteDataStorage?.getFitnessData()
                 Log.i(TAG, "load fitness data from RemoteDataStorage")
-                data?.observeForever {
-                    saveFitnessData(data.value!!)
-                }
+
+                data?.observeForever { upDataSavedData(data.value)}
+
                 return data
             } else {
                 Log.i(TAG, "load fitness data from LocalDataStorage")
-                localDataStorage?.getFitnessData()!!
+                localDataStorage?.getFitnessData()
             }
         }
 
         return null
     }
 
+    private fun upDataSavedData(data: List<FitnessCentersRecord>?) {
+        deleteAllData()
+        data?.let { saveFitnessData(it) }
+    }
+
     override fun saveFitnessData(data: List<FitnessCentersRecord>) {
         localDataStorage?.saveFitnessData(data)
     }
+
+    override fun deleteAllData() {
+        localDataStorage?.deleteAllData()
+    }
+
 
     override fun destroyInstance() {
         INSTANCE = null
