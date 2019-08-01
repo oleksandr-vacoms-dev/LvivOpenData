@@ -37,9 +37,14 @@ class MarketsFragment : Fragment() {
 
         marketViewModel = ViewModelProviders.of(this)[MarketViewModel::class.java]
         marketViewModel.getMarketsData()?.observe(this, androidx.lifecycle.Observer {
-            recordsMutableList.addAll(it)
-            Log.i(TAG, recordsMutableList.toString())
-            adapter?.notifyDataSetChanged()
+
+            if (it != null) {
+                recordsMutableList.addAll(it)
+                Log.i(TAG, recordsMutableList.toString())
+                adapter?.notifyDataSetChanged()
+            } else {
+                Log.i(TAG, "market data updated by null")
+            }
         })
 
         setupRecyclerView()

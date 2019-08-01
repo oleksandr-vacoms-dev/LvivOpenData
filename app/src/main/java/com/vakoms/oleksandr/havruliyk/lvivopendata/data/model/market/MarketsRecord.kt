@@ -1,8 +1,12 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "market")
 data class MarketsRecord(
+    @PrimaryKey
     @SerializedName("_id") var id: Int,
     @SerializedName("district") var district: String,
     @SerializedName("street") var street: String,

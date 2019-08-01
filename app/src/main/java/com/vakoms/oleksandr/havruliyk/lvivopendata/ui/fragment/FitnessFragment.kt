@@ -44,7 +44,7 @@ class FitnessFragment : Fragment() {
                 Log.i(TAG, recordsMutableList.toString())
                 adapter?.notifyDataSetChanged()
             } else {
-                Log.i(TAG, "null")
+                Log.i(TAG, "fitness data updated by null")
             }
         })
 

@@ -17,14 +17,14 @@ class RemoteMarketDataStorage : MarketDataStorage {
     companion object {
         const val TAG = "RemoteMarketDataStorage"
 
-        private var remoteMarketDataStorage: RemoteMarketDataStorage? = null
+        private var INSTANCE: RemoteMarketDataStorage? = null
 
         fun getInstance(): RemoteMarketDataStorage? {
-            if (remoteMarketDataStorage == null) {
-                remoteMarketDataStorage =
+            if (INSTANCE == null) {
+                INSTANCE =
                     RemoteMarketDataStorage()
             }
-            return remoteMarketDataStorage
+            return INSTANCE
         }
     }
 
@@ -56,7 +56,12 @@ class RemoteMarketDataStorage : MarketDataStorage {
 
     }
 
+    override fun deleteAllData() {
+
+    }
+
+
     override fun destroyInstance() {
-        remoteMarketDataStorage = null
+        INSTANCE = null
     }
 }

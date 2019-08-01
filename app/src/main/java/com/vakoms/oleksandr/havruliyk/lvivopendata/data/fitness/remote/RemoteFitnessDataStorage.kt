@@ -15,16 +15,16 @@ import retrofit2.Response
 class RemoteFitnessDataStorage : FitnessDataStorage {
 
     companion object {
-        const val TAG = "RemoteMarketDataStorage"
+        const val TAG = "RemoteFitnessDataStorage"
 
-        private var remoteFitnessDataStorage: RemoteFitnessDataStorage? = null
+        private var INSTANCE: RemoteFitnessDataStorage? = null
 
         fun getInstance(): RemoteFitnessDataStorage? {
-            if (remoteFitnessDataStorage == null) {
-                remoteFitnessDataStorage =
+            if (INSTANCE == null) {
+                INSTANCE =
                     RemoteFitnessDataStorage()
             }
-            return remoteFitnessDataStorage
+            return INSTANCE
         }
     }
 
@@ -62,6 +62,6 @@ class RemoteFitnessDataStorage : FitnessDataStorage {
     }
 
     override fun destroyInstance() {
-        remoteFitnessDataStorage = null
+        INSTANCE = null
     }
 }
