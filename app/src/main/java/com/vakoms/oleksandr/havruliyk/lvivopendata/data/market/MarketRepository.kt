@@ -6,15 +6,12 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.local.LocalMarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.remote.RemoteMarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class MarketRepository
-@Inject constructor(
-    var netManager: NetManager,
-    var localDataStorage: LocalMarketDataStorage,
-    var remoteDataStorage: RemoteMarketDataStorage
+
+class MarketRepository(
+    private val localDataStorage: LocalMarketDataStorage,
+    private val remoteDataStorage: RemoteMarketDataStorage,
+    private val netManager: NetManager
 ) : MarketDataStorage {
 
     companion object {

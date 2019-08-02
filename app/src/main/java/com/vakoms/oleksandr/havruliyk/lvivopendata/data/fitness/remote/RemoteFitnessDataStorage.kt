@@ -11,11 +11,8 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.Fit
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class RemoteFitnessDataStorage @Inject constructor() : FitnessDataStorage {
+class RemoteFitnessDataStorage : FitnessDataStorage {
 
     companion object {
         const val TAG = "RemoteFitnessDataStorage"

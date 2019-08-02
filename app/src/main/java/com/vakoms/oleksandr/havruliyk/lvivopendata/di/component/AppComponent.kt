@@ -1,5 +1,9 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata
+package com.vakoms.oleksandr.havruliyk.lvivopendata.di.component
 
+import com.vakoms.oleksandr.havruliyk.lvivopendata.OpenDataApplication
+import com.vakoms.oleksandr.havruliyk.lvivopendata.di.module.AppModule
+import com.vakoms.oleksandr.havruliyk.lvivopendata.di.module.FitnessModule
+import com.vakoms.oleksandr.havruliyk.lvivopendata.di.module.MarketModule
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule

@@ -6,14 +6,11 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.local.LocalFitnessDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.remote.RemoteFitnessDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class FitnessRepository @Inject constructor(
-    var localDataStorage: LocalFitnessDataStorage,
-    var remoteDataStorage: RemoteFitnessDataStorage,
-    var netManager: NetManager
+class FitnessRepository(
+    private val localDataStorage: LocalFitnessDataStorage,
+    private val remoteDataStorage: RemoteFitnessDataStorage,
+    private val netManager: NetManager
 ) : FitnessDataStorage {
 
     companion object {

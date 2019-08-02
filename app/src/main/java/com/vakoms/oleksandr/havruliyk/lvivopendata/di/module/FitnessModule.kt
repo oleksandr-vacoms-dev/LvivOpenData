@@ -1,6 +1,7 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata
+package com.vakoms.oleksandr.havruliyk.lvivopendata.di.module
 
 import android.content.Context
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.FitnessRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.local.LocalFitnessDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.remote.RemoteFitnessDataStorage
@@ -9,6 +10,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.FitnessViewMode
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
+import javax.inject.Singleton
 
 @Module
 internal abstract class FitnessModule {
@@ -25,6 +27,18 @@ internal abstract class FitnessModule {
 
         @JvmStatic
         @Provides
+        @Singleton
+        internal fun providesFitnessRepository(
+            local: LocalFitnessDataStorage,
+            remote: RemoteFitnessDataStorage,
+            netManager: NetManager
+        ): FitnessRepository {
+            return FitnessRepository(local, remote, netManager)
+        }
+
+        @JvmStatic
+        @Provides
+        @Singleton
         internal fun providesLocalFitnessDataStorage(context: Context)
                 : LocalFitnessDataStorage {
             return LocalFitnessDataStorage(context)
@@ -32,6 +46,7 @@ internal abstract class FitnessModule {
 
         @JvmStatic
         @Provides
+        @Singleton
         internal fun providesRemoteFitnessDataStorage()
                 : RemoteFitnessDataStorage {
             return RemoteFitnessDataStorage()

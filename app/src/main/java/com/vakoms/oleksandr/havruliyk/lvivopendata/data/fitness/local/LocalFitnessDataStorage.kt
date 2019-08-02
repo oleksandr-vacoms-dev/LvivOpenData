@@ -5,11 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.FitnessDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class LocalFitnessDataStorage @Inject constructor(context: Context) : FitnessDataStorage {
+class LocalFitnessDataStorage(context: Context) : FitnessDataStorage {
 
     companion object {
         const val TAG = "LocalFitnessDataStorage"

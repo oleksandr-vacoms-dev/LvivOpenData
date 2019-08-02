@@ -1,6 +1,7 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata
+package com.vakoms.oleksandr.havruliyk.lvivopendata.di.module
 
 import android.content.Context
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.MarketRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.local.LocalMarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.remote.RemoteMarketDataStorage
@@ -9,6 +10,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.MarketViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector
+import javax.inject.Singleton
 
 @Module
 internal abstract class MarketModule {
@@ -19,6 +21,7 @@ internal abstract class MarketModule {
 
         @JvmStatic
         @Provides
+        @Singleton
         internal fun providesMarketViewModelFactory(repository: MarketRepository)
                 : MarketViewModelFactory {
             return MarketViewModelFactory(repository)
@@ -26,6 +29,18 @@ internal abstract class MarketModule {
 
         @JvmStatic
         @Provides
+        @Singleton
+        internal fun providesMarketRepository(
+            local: LocalMarketDataStorage,
+            remote: RemoteMarketDataStorage,
+            netManager: NetManager
+        ): MarketRepository {
+            return MarketRepository(local, remote, netManager)
+        }
+
+        @JvmStatic
+        @Provides
+        @Singleton
         internal fun providesLocalMarketDataStorage(context: Context)
                 : LocalMarketDataStorage {
             return LocalMarketDataStorage(context)
@@ -33,6 +48,7 @@ internal abstract class MarketModule {
 
         @JvmStatic
         @Provides
+        @Singleton
         internal fun providesRemoteMarketDataStorage()
                 : RemoteMarketDataStorage {
             return RemoteMarketDataStorage()

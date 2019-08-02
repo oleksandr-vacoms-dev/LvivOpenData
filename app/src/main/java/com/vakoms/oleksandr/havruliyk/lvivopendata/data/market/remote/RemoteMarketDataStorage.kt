@@ -11,11 +11,8 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResp
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class RemoteMarketDataStorage @Inject constructor() : MarketDataStorage {
+class RemoteMarketDataStorage : MarketDataStorage {
 
     companion object {
         const val TAG = "RemoteMarketDataStorage"

@@ -5,11 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.MarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class LocalMarketDataStorage @Inject constructor(context: Context) : MarketDataStorage {
+class LocalMarketDataStorage(context: Context) : MarketDataStorage {
 
     private var marketDao: MarketDao
 
