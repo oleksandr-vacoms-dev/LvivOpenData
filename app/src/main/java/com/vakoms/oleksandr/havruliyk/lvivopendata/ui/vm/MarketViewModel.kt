@@ -6,9 +6,9 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.MarketRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 
 class MarketViewModel(marketRepository: MarketRepository) : ViewModel() {
-    private var liveData = marketRepository.getMarketData()!!
+    private var marketLiveData = marketRepository.getMarketData()!!
 
     fun getMarketsData(): LiveData<List<MarketRecord>>? {
-        return liveData
+        return marketLiveData
     }
 }

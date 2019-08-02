@@ -10,6 +10,4 @@ interface FitnessDataStorage {
     fun saveFitnessData(data: List<FitnessCentersRecord>)
 
     fun deleteAllData()
-
-    fun destroyInstance()
 }

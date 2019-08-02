@@ -5,7 +5,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.MarketRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.local.LocalMarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.remote.RemoteMarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment.MarketFragment
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.MarketViewModelFactory
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.MarketViewModelFactory
 import dagger.Module
 import dagger.Provides
 import dagger.android.ContributesAndroidInjector

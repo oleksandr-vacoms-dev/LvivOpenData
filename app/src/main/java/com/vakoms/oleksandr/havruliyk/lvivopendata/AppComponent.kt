@@ -10,7 +10,8 @@ import javax.inject.Singleton
     modules = [
         AndroidSupportInjectionModule::class,
         AppModule::class,
-        MarketModule::class
+        MarketModule::class,
+        FitnessModule::class
     ]
 )
 

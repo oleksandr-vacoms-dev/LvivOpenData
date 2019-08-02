@@ -12,15 +12,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        showMarkets()
-        //showFitnessCenters()
+        //showMarkets()
+        showFitness()
     }
 
     private fun showMarkets() {
         addFragmentToActivity(supportFragmentManager, MarketFragment(), R.id.content_frame)
     }
 
-    private fun showFitnessCenters() {
+    private fun showFitness() {
         addFragmentToActivity(supportFragmentManager, FitnessFragment(), R.id.content_frame)
     }
 }

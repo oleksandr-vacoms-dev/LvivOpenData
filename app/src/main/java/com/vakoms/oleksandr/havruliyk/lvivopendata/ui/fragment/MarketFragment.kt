@@ -14,7 +14,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.MarketAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.MarketViewModel
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.MarketViewModelFactory
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.MarketViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -48,7 +48,7 @@ class MarketFragment : Fragment(){
     }
 
     private fun initView(view: View): View {
-        recyclerView = view.findViewById(R.id.market_recycler_view)
+        recyclerView = view.findViewById(R.id.recycler_view)
 
         return view
     }

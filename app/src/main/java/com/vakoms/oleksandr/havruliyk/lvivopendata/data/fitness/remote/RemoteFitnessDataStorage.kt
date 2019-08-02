@@ -11,21 +11,14 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.Fit
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RemoteFitnessDataStorage : FitnessDataStorage {
+@Singleton
+class RemoteFitnessDataStorage @Inject constructor() : FitnessDataStorage {
 
     companion object {
         const val TAG = "RemoteFitnessDataStorage"
-
-        private var INSTANCE: RemoteFitnessDataStorage? = null
-
-        fun getInstance(): RemoteFitnessDataStorage? {
-            if (INSTANCE == null) {
-                INSTANCE =
-                    RemoteFitnessDataStorage()
-            }
-            return INSTANCE
-        }
     }
 
     private val openDataApi: OpenDataApi = RetrofitService.createService(
@@ -59,9 +52,5 @@ class RemoteFitnessDataStorage : FitnessDataStorage {
 
     override fun deleteAllData() {
 
-    }
-
-    override fun destroyInstance() {
-        INSTANCE = null
     }
 }
