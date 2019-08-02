@@ -13,7 +13,7 @@ class LocalMarketDataStorage(context: Context) : DataStorage<MarketRecord> {
     init {
         val roomDB: MarketRoomDatabase = Room.databaseBuilder(
             context,
-            MarketRoomDatabase::class.java, "database"
+            MarketRoomDatabase::class.java, "market_db"
         )
             .allowMainThreadQueries()
             .build()

@@ -13,7 +13,7 @@ class LocalCateringDataStorage(context: Context) : DataStorage<CateringRecord> {
     init {
         val roomDB: CateringRoomDatabase = Room.databaseBuilder(
             context,
-            CateringRoomDatabase::class.java, "database"
+            CateringRoomDatabase::class.java, "catering_db"
         )
             .allowMainThreadQueries()
             .build()

@@ -13,7 +13,7 @@ class LocalPharmacyDataStorage(context: Context) : DataStorage<PharmacyRecord> {
     init {
         val roomDB: PharmacyRoomDatabase = Room.databaseBuilder(
             context,
-            PharmacyRoomDatabase::class.java, "database"
+            PharmacyRoomDatabase::class.java, "pharmacy_db"
         )
             .allowMainThreadQueries()
             .build()

@@ -13,7 +13,7 @@ class LocalBarberDataStorage(context: Context) : DataStorage<BarberRecord> {
     init {
         val roomDB: BarberRoomDatabase = Room.databaseBuilder(
             context,
-            BarberRoomDatabase::class.java, "database"
+            BarberRoomDatabase::class.java, "barber_db"
         )
             .allowMainThreadQueries()
             .build()

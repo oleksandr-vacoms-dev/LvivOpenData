@@ -1,7 +1,6 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,10 +25,6 @@ class MarketFragment : Fragment() {
 
     private val recordsMutableList = mutableListOf<MarketRecord>()
     private lateinit var recyclerView: RecyclerView
-
-    companion object {
-        const val TAG = "MarketActivity"
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,12 +65,11 @@ class MarketFragment : Fragment() {
 
         viewModel.getMarketsData()?.observe(this,
             androidx.lifecycle.Observer
-            { upDataMarketsView(it) })
+            { if(it != null) { upDataView(it)} })
     }
 
-    private fun upDataMarketsView(markets: List<MarketRecord>) {
+    private fun upDataView(markets: List<MarketRecord>) {
         recordsMutableList.addAll(markets)
-        Log.i(TAG, recordsMutableList.toString())
         adapter.notifyDataSetChanged()
     }
 }

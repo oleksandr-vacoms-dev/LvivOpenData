@@ -1,7 +1,6 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,10 +26,6 @@ class FitnessFragment : Fragment() {
 
     private val recordsMutableList = mutableListOf<FitnessRecord>()
     private lateinit var recyclerView: RecyclerView
-
-    companion object {
-        const val TAG = "MarketActivity"
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -71,12 +66,11 @@ class FitnessFragment : Fragment() {
 
         viewModel.getFitnessData()?.observe(this,
             androidx.lifecycle.Observer
-            { upDataFitnessView(it) })
+            { if(it != null) { upDataView(it)} })
     }
 
-    private fun upDataFitnessView(fitnessDataList: List<FitnessRecord>) {
+    private fun upDataView(fitnessDataList: List<FitnessRecord>) {
         recordsMutableList.addAll(fitnessDataList)
-        Log.i(TAG, recordsMutableList.toString())
         adapter.notifyDataSetChanged()
     }
 }

@@ -13,7 +13,7 @@ class LocalFitnessDataStorage(context: Context) : DataStorage<FitnessRecord> {
     init {
         val roomDB: FitnessRoomDatabase = Room.databaseBuilder(
             context,
-            FitnessRoomDatabase::class.java, "database"
+            FitnessRoomDatabase::class.java, "fitness_db"
         )
             .allowMainThreadQueries()
             .build()
