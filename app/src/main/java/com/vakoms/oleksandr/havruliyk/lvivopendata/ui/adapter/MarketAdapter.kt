@@ -10,7 +10,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 
 
-class MarketAdapter(private var context: Context, private var markets: List<MarketRecord>) :
+class MarketAdapter(private var context: Context, private var dataList: List<MarketRecord>) :
     RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MarketViewHolder {
@@ -19,11 +19,11 @@ class MarketAdapter(private var context: Context, private var markets: List<Mark
     }
 
     override fun onBindViewHolder(holder: MarketViewHolder, position: Int) {
-        holder.name.text = markets[position].name
+        holder.name.text = dataList[position].name
     }
 
     override fun getItemCount(): Int {
-        return markets.size
+        return dataList.size
     }
 
     inner class MarketViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

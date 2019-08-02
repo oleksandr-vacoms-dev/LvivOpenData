@@ -10,7 +10,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 
 
-class FitnessAdapter(private var context: Context, private var fitnesses: List<FitnessRecord>) :
+class FitnessAdapter(private var context: Context, private var dataList: List<FitnessRecord>) :
     RecyclerView.Adapter<FitnessAdapter.FitnessViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FitnessViewHolder {
@@ -19,11 +19,11 @@ class FitnessAdapter(private var context: Context, private var fitnesses: List<F
     }
 
     override fun onBindViewHolder(holder: FitnessViewHolder, position: Int) {
-        holder.name.text = fitnesses[position].name
+        holder.name.text = dataList[position].name
     }
 
     override fun getItemCount(): Int {
-        return fitnesses.size
+        return dataList.size
     }
 
     inner class FitnessViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
