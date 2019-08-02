@@ -12,8 +12,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //showMarkets()
-        showFitness()
+        showMarkets()
+        //showFitness()
     }
 
     private fun showMarkets() {

@@ -4,6 +4,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.OpenDataApplication
 import com.vakoms.oleksandr.havruliyk.lvivopendata.di.module.AppModule
 import com.vakoms.oleksandr.havruliyk.lvivopendata.di.module.FitnessModule
 import com.vakoms.oleksandr.havruliyk.lvivopendata.di.module.MarketModule
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.ViewModelBuilder
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
@@ -14,6 +15,7 @@ import javax.inject.Singleton
     modules = [
         AndroidSupportInjectionModule::class,
         AppModule::class,
+        ViewModelBuilder::class,
         MarketModule::class,
         FitnessModule::class
     ]

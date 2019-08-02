@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +15,6 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.FitnessAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.FitnessViewModel
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.FitnessViewModelFactory
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class FitnessFragment : Fragment() {
 
     @Inject
-    lateinit var fitnessViewModelFactory: FitnessViewModelFactory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var adapter: FitnessAdapter
 
     private val recordsMutableList = mutableListOf<FitnessCentersRecord>()
@@ -66,7 +66,7 @@ class FitnessFragment : Fragment() {
     }
 
     private fun connectViewModel() {
-        val viewModel = ViewModelProviders.of(this, fitnessViewModelFactory)
+        val viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FitnessViewModel::class.java)
 
         viewModel.getFitnessData()?.observe(this,
