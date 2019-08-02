@@ -7,7 +7,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.MarketRepo
 import javax.inject.Inject
 
 class MarketViewModel @Inject constructor(marketRepository: MarketRepository) : ViewModel() {
-    private var marketLiveData = marketRepository.getMarketData()!!
+    private var marketLiveData = marketRepository.getAllData()!!
 
     fun getMarketsData(): LiveData<List<MarketRecord>>? {
         return marketLiveData

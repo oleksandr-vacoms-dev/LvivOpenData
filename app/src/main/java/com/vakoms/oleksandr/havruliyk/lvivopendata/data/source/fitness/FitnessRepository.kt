@@ -3,25 +3,26 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local.LocalFitnessDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.remote.RemoteFitnessDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
 
 class FitnessRepository(
     private val localDataStorage: LocalFitnessDataStorage,
     private val remoteDataStorage: RemoteFitnessDataStorage,
     private val netManager: NetManager
-) : FitnessDataStorage {
+) : DataStorage<FitnessCentersRecord> {
 
     companion object {
         const val TAG = "FitnessRepository"
     }
 
-    override fun getFitnessData(): LiveData<List<FitnessCentersRecord>>? {
+    override fun getAllData(): LiveData<List<FitnessCentersRecord>>? {
 
         netManager.isConnectedToInternet?.let {
             return if (it) {
-                val data = remoteDataStorage.getFitnessData()
+                val data = remoteDataStorage.getAllData()
                 Log.i(TAG, "load fitness data from RemoteDataStorage")
 
                 data.observeForever { upDataSavedData(data.value) }
@@ -38,10 +39,10 @@ class FitnessRepository(
 
     private fun upDataSavedData(data: List<FitnessCentersRecord>?) {
         deleteAllData()
-        data?.let { saveFitnessData(it) }
+        data?.let { saveData(it) }
     }
 
-    override fun saveFitnessData(data: List<FitnessCentersRecord>) {
+    override fun saveData(data: List<FitnessCentersRecord>) {
         localDataStorage.saveFitnessData(data)
     }
 

@@ -6,23 +6,24 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local.LocalMarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote.RemoteMarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 
 
 class MarketRepository(
     private val localDataStorage: LocalMarketDataStorage,
     private val remoteDataStorage: RemoteMarketDataStorage,
     private val netManager: NetManager
-) : MarketDataStorage {
+) : DataStorage<MarketRecord> {
 
     companion object {
         const val TAG = "MarketRepository"
     }
 
-    override fun getMarketData(): LiveData<List<MarketRecord>>? {
+    override fun getAllData(): LiveData<List<MarketRecord>>? {
 
         netManager.isConnectedToInternet?.let {
             return if (it) {
-                val data = remoteDataStorage.getMarketData()
+                val data = remoteDataStorage.getAllData()
                 Log.i(TAG, "load market data from RemoteDataStorage")
 
                 data.observeForever { upDataSavedData(data.value) }
@@ -30,7 +31,7 @@ class MarketRepository(
                 return data
             } else {
                 Log.i(TAG, "load market data from LocalDataStorage")
-                localDataStorage.getMarketData()
+                localDataStorage.getAllData()
             }
         }
 
@@ -39,11 +40,11 @@ class MarketRepository(
 
     private fun upDataSavedData(data: List<MarketRecord>?) {
         deleteAllData()
-        data?.let { saveMarketData(it) }
+        data?.let { saveData(it) }
     }
 
-    override fun saveMarketData(data: List<MarketRecord>) {
-        localDataStorage.saveMarketData(data)
+    override fun saveData(data: List<MarketRecord>) {
+        localDataStorage.saveData(data)
     }
 
     override fun deleteAllData() {

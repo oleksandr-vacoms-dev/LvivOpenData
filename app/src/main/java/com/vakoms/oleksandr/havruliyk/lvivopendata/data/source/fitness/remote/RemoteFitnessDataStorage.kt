@@ -4,15 +4,15 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.RetrofitService
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.FitnessDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote.RemoteMarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersResponse
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote.RemoteMarketDataStorage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RemoteFitnessDataStorage : FitnessDataStorage {
+class RemoteFitnessDataStorage : DataStorage<FitnessCentersRecord> {
 
     companion object {
         const val TAG = "RemoteFitnessDataStorage"
@@ -22,7 +22,7 @@ class RemoteFitnessDataStorage : FitnessDataStorage {
         OpenDataApi::class.java
     )
 
-    override fun getFitnessData(): MutableLiveData<List<FitnessCentersRecord>> {
+    override fun getAllData(): MutableLiveData<List<FitnessCentersRecord>> {
         val newsData = MutableLiveData<List<FitnessCentersRecord>>()
         openDataApi.getFitnessCenters().enqueue(object : Callback<FitnessCentersResponse> {
             override fun onResponse(
@@ -43,7 +43,7 @@ class RemoteFitnessDataStorage : FitnessDataStorage {
         return newsData
     }
 
-    override fun saveFitnessData(data: List<FitnessCentersRecord>) {
+    override fun saveData(data: List<FitnessCentersRecord>) {
 
     }
 

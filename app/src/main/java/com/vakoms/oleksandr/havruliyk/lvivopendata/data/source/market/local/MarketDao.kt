@@ -16,5 +16,5 @@ interface MarketDao {
     fun deleteAll()
 
     @Insert
-    fun insert(weathers: List<MarketRecord>)
+    fun insert(marketDataList: List<MarketRecord>)
 }
