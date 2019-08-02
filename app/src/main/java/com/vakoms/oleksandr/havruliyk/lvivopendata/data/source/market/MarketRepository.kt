@@ -3,15 +3,13 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market
 import android.util.Log
 import androidx.lifecycle.LiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local.LocalMarketDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote.RemoteMarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 
 
 class MarketRepository(
-    private val localDataStorage: LocalMarketDataStorage,
-    private val remoteDataStorage: RemoteMarketDataStorage,
+    private val localDataStorage: DataStorage<MarketRecord>,
+    private val remoteDataStorage: DataStorage<MarketRecord>,
     private val netManager: NetManager
 ) : DataStorage<MarketRecord> {
 
@@ -26,7 +24,7 @@ class MarketRepository(
                 val data = remoteDataStorage.getAllData()
                 Log.i(TAG, "load market data from RemoteDataStorage")
 
-                data.observeForever { upDataSavedData(data.value) }
+                data?.observeForever { upDataSavedData(data.value) }
 
                 return data
             } else {

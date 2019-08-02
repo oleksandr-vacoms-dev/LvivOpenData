@@ -1,7 +1,6 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote
 
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.RetrofitService
@@ -13,10 +12,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RemoteMarketDataStorage : DataStorage<MarketRecord> {
-
-    companion object {
-        const val TAG = "RemoteMarketDataStorage"
-    }
 
     private val openDataApi: OpenDataApi = RetrofitService.createService(
         OpenDataApi::class.java
@@ -31,7 +26,6 @@ class RemoteMarketDataStorage : DataStorage<MarketRecord> {
             ) {
                 if (response.isSuccessful) {
                     newsData.value = response.body().result.records
-                    Log.i(TAG, newsData.value.toString())
                 }
             }
 

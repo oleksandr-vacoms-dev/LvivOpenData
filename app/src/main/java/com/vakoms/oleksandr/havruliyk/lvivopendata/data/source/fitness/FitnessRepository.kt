@@ -5,12 +5,10 @@ import androidx.lifecycle.LiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local.LocalFitnessDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.remote.RemoteFitnessDataStorage
 
 class FitnessRepository(
-    private val localDataStorage: LocalFitnessDataStorage,
-    private val remoteDataStorage: RemoteFitnessDataStorage,
+    private val localDataStorage: DataStorage<FitnessCentersRecord>,
+    private val remoteDataStorage: DataStorage<FitnessCentersRecord>,
     private val netManager: NetManager
 ) : DataStorage<FitnessCentersRecord> {
 
@@ -25,12 +23,12 @@ class FitnessRepository(
                 val data = remoteDataStorage.getAllData()
                 Log.i(TAG, "load fitness data from RemoteDataStorage")
 
-                data.observeForever { upDataSavedData(data.value) }
+                data?.observeForever { upDataSavedData(data.value) }
 
                 return data
             } else {
                 Log.i(TAG, "load fitness data from LocalDataStorage")
-                localDataStorage.getFitnessData()
+                localDataStorage.getAllData()
             }
         }
 
@@ -43,7 +41,7 @@ class FitnessRepository(
     }
 
     override fun saveData(data: List<FitnessCentersRecord>) {
-        localDataStorage.saveFitnessData(data)
+        localDataStorage.saveData(data)
     }
 
     override fun deleteAllData() {
