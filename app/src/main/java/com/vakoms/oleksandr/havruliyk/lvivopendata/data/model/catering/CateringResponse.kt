@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 
 data class CateringResponse (
-    @SerializedName("help") val help : String,
-    @SerializedName("success") val success : Boolean,
-    @SerializedName("result") val result : CateringResult
+    @SerializedName("help") var help : String,
+    @SerializedName("success") var success : Boolean,
+    @SerializedName("result") var result : CateringResult
 )
