@@ -1,11 +1,11 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.remote
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.remote
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.RetrofitService
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.FitnessDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.remote.RemoteMarketDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.FitnessDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote.RemoteMarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersResponse
 import retrofit2.Call

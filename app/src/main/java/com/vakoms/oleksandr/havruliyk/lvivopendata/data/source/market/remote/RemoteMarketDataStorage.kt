@@ -1,11 +1,11 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.remote
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote
 
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.RetrofitService
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.MarketDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.MarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResponse
 import retrofit2.Call

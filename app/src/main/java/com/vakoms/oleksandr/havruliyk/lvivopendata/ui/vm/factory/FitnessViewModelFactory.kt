@@ -2,7 +2,7 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.FitnessRepository
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.FitnessRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.FitnessViewModel
 
 class FitnessViewModelFactory (private val repository: FitnessRepository) : ViewModelProvider.Factory {

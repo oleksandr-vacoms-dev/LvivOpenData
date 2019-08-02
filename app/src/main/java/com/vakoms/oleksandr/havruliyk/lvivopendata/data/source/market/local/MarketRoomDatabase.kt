@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.local
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

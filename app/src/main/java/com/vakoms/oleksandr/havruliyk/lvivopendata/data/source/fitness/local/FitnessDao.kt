@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.local
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

@@ -1,9 +1,9 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.local
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.FitnessDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.FitnessDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
 
 class LocalFitnessDataStorage(context: Context) : FitnessDataStorage {

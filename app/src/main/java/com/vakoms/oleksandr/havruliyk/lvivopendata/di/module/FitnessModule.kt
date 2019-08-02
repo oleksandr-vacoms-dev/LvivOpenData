@@ -2,9 +2,9 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.di.module
 
 import android.content.Context
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.FitnessRepository
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.local.LocalFitnessDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.fitness.remote.RemoteFitnessDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.FitnessRepository
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local.LocalFitnessDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.remote.RemoteFitnessDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment.FitnessFragment
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.FitnessViewModelFactory
 import dagger.Module

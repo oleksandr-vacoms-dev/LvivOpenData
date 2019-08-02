@@ -1,9 +1,9 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.local
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.MarketDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.MarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 
 class LocalMarketDataStorage(context: Context) : MarketDataStorage {

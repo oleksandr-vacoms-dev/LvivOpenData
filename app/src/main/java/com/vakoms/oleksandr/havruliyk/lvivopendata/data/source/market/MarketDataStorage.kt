@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.market
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market
 
 import androidx.lifecycle.LiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
