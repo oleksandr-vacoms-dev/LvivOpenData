@@ -6,34 +6,27 @@ import androidx.lifecycle.MutableLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.RetrofitService
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.MarketDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RemoteMarketDataStorage : MarketDataStorage {
+@Singleton
+class RemoteMarketDataStorage @Inject constructor() : MarketDataStorage {
 
     companion object {
         const val TAG = "RemoteMarketDataStorage"
-
-        private var INSTANCE: RemoteMarketDataStorage? = null
-
-        fun getInstance(): RemoteMarketDataStorage? {
-            if (INSTANCE == null) {
-                INSTANCE =
-                    RemoteMarketDataStorage()
-            }
-            return INSTANCE
-        }
     }
 
     private val openDataApi: OpenDataApi = RetrofitService.createService(
         OpenDataApi::class.java
     )
 
-    override fun getMarketData(): MutableLiveData<List<MarketsRecord>> {
-        val newsData = MutableLiveData<List<MarketsRecord>>()
+    override fun getMarketData(): MutableLiveData<List<MarketRecord>> {
+        val newsData = MutableLiveData<List<MarketRecord>>()
         openDataApi.getMarkets().enqueue(object : Callback<MarketsResponse> {
             override fun onResponse(
                 call: Call<MarketsResponse>,
@@ -52,16 +45,11 @@ class RemoteMarketDataStorage : MarketDataStorage {
         return newsData
     }
 
-    override fun saveMarketData(data: List<MarketsRecord>) {
+    override fun saveMarketData(data: List<MarketRecord>) {
 
     }
 
     override fun deleteAllData() {
 
-    }
-
-
-    override fun destroyInstance() {
-        INSTANCE = null
     }
 }

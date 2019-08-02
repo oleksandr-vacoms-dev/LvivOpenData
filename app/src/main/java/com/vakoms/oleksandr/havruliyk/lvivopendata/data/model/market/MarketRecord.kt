@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "market")
-data class MarketsRecord(
+data class MarketRecord(
     @PrimaryKey
     @SerializedName("_id") var id: Int,
     @SerializedName("district") var district: String,

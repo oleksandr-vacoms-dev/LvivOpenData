@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 
 
-class MarketAdapter(private var context: Context, private var markets: List<MarketsRecord>) :
+class MarketAdapter(private var context: Context, private var markets: List<MarketRecord>) :
     RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MarketViewHolder {

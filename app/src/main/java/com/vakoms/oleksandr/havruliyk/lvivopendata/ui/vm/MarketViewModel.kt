@@ -1,24 +1,14 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.MarketRepository
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 
-class MarketViewModel(application: Application) : AndroidViewModel(application) {
-    private var liveData: LiveData<List<MarketsRecord>>? = null
-    private lateinit var marketRepository: MarketRepository
+class MarketViewModel(marketRepository: MarketRepository) : ViewModel() {
+    private var liveData = marketRepository.getMarketData()!!
 
-    init {
-        if (liveData == null) {
-            marketRepository = MarketRepository.getInstance(application)!!
-            liveData = marketRepository.getMarketData()
-        }
-    }
-
-    fun getMarketsData(): LiveData<List<MarketsRecord>>? {
+    fun getMarketsData(): LiveData<List<MarketRecord>>? {
         return liveData
     }
-
 }

@@ -2,10 +2,11 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.data
 
 import android.content.Context
 import android.net.ConnectivityManager
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class NetManager(private var applicationContext: Context) {
-    private var status: Boolean? = false
-
+@Singleton
+class NetManager @Inject constructor(var applicationContext: Context) {
     val isConnectedToInternet: Boolean?
         get() {
             val conManager = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

@@ -3,7 +3,7 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment.FitnessFragment
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment.MarketsFragment
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment.MarketFragment
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.addFragmentToActivity
 
 class MainActivity : AppCompatActivity() {
@@ -12,12 +12,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        //showMarkets()
-        showFitnessCenters()
+        showMarkets()
+        //showFitnessCenters()
     }
 
     private fun showMarkets() {
-        addFragmentToActivity(supportFragmentManager, MarketsFragment(), R.id.content_frame)
+        addFragmentToActivity(supportFragmentManager, MarketFragment(), R.id.content_frame)
     }
 
     private fun showFitnessCenters() {

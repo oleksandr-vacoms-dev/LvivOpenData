@@ -10,7 +10,7 @@ data class MarketsResult (
     @SerializedName("resource_id") var resourceId: String,
     @SerializedName("fields") var fields: List<Field>,
     @SerializedName("records_format") var recordsFormat: String?,
-    @SerializedName("records") var records: List<MarketsRecord>,
+    @SerializedName("records") var records: List<MarketRecord>,
     @SerializedName("limit") var limit: Int,
     @SerializedName("_links") var links: Links,
     @SerializedName("total") var total: Int

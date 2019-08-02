@@ -1,16 +1,14 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.market
 
 import androidx.lifecycle.LiveData
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 
 
 interface MarketDataStorage {
 
-    fun getMarketData(): LiveData<List<MarketsRecord>>?
+    fun getMarketData(): LiveData<List<MarketRecord>>?
 
-    fun saveMarketData(data: List<MarketsRecord>)
+    fun saveMarketData(data: List<MarketRecord>)
 
     fun deleteAllData()
-
-    fun destroyInstance()
 }

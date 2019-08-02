@@ -4,23 +4,12 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.market.MarketDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class LocalMarketDataStorage(context: Context) : MarketDataStorage {
-
-    companion object {
-        const val TAG = "LocalMarketDataStorage"
-
-        private var INSTANCE: LocalMarketDataStorage? = null
-
-        fun getInstance(context: Context): LocalMarketDataStorage? {
-            if (INSTANCE == null) {
-                INSTANCE =
-                    LocalMarketDataStorage(context)
-            }
-            return INSTANCE
-        }
-    }
+@Singleton
+class LocalMarketDataStorage @Inject constructor(context: Context) : MarketDataStorage {
 
     private var marketDao: MarketDao
 
@@ -35,20 +24,15 @@ class LocalMarketDataStorage(context: Context) : MarketDataStorage {
         marketDao = roomDB.marketDao()
     }
 
-    override fun getMarketData(): LiveData<List<MarketsRecord>>? {
+    override fun getMarketData(): LiveData<List<MarketRecord>>? {
         return marketDao.getAll()
     }
 
-    override fun saveMarketData(data: List<MarketsRecord>) {
+    override fun saveMarketData(data: List<MarketRecord>) {
         marketDao.insert(data)
     }
 
     override fun deleteAllData() {
         marketDao.deleteAll()
     }
-
-    override fun destroyInstance() {
-        INSTANCE = null
-    }
-
 }
