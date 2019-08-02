@@ -1,11 +1,11 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "fitness")
-data class FitnessCentersRecord(
+data class FitnessRecord(
     @PrimaryKey
     @SerializedName("_id") var id: Int,
     @SerializedName("district") var district: String,

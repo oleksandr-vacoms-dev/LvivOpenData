@@ -3,10 +3,10 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 
-class LocalFitnessDataStorage(context: Context) : DataStorage<FitnessCentersRecord> {
+class LocalFitnessDataStorage(context: Context) : DataStorage<FitnessRecord> {
 
     private var fitnessDao: FitnessDao
 
@@ -21,11 +21,11 @@ class LocalFitnessDataStorage(context: Context) : DataStorage<FitnessCentersReco
         fitnessDao = roomDB.fitnessDao()
     }
 
-    override fun getAllData(): LiveData<List<FitnessCentersRecord>> {
+    override fun getAllData(): LiveData<List<FitnessRecord>> {
         return fitnessDao.getAll()
     }
 
-    override fun saveData(data: List<FitnessCentersRecord>) {
+    override fun saveData(data: List<FitnessRecord>) {
         fitnessDao.insert(data)
     }
 

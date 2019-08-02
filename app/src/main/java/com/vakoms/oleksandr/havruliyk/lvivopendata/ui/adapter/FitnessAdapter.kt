@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 
 
-class FitnessAdapter(private var context: Context, private var fitness: List<FitnessCentersRecord>) :
+class FitnessAdapter(private var context: Context, private var fitnesses: List<FitnessRecord>) :
     RecyclerView.Adapter<FitnessAdapter.FitnessViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FitnessViewHolder {
@@ -19,11 +19,11 @@ class FitnessAdapter(private var context: Context, private var fitness: List<Fit
     }
 
     override fun onBindViewHolder(holder: FitnessViewHolder, position: Int) {
-        holder.name.text = fitness[position].name
+        holder.name.text = fitnesses[position].name
     }
 
     override fun getItemCount(): Int {
-        return fitness.size
+        return fitnesses.size
     }
 
     inner class FitnessViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

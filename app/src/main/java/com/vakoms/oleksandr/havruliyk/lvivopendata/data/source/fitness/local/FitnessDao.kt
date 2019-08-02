@@ -4,16 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 
 @Dao
 interface FitnessDao {
     @Query("SELECT * FROM fitness")
-    fun getAll(): LiveData<List<FitnessCentersRecord>>
+    fun getAll(): LiveData<List<FitnessRecord>>
 
     @Query("DELETE FROM fitness")
     fun deleteAll()
 
     @Insert
-    fun insert(fitnessDataList: List<FitnessCentersRecord>)
+    fun insert(fitnessDataList: List<FitnessRecord>)
 }

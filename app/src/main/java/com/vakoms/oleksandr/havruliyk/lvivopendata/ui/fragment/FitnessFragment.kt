@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitnesscenters.FitnessCentersRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.FitnessAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.FitnessViewModel
 import dagger.android.support.AndroidSupportInjection
@@ -25,7 +25,7 @@ class FitnessFragment : Fragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var adapter: FitnessAdapter
 
-    private val recordsMutableList = mutableListOf<FitnessCentersRecord>()
+    private val recordsMutableList = mutableListOf<FitnessRecord>()
     private lateinit var recyclerView: RecyclerView
 
     companion object {
@@ -74,7 +74,7 @@ class FitnessFragment : Fragment() {
             { upDataFitnessView(it) })
     }
 
-    private fun upDataFitnessView(fitnessDataList: List<FitnessCentersRecord>) {
+    private fun upDataFitnessView(fitnessDataList: List<FitnessRecord>) {
         recordsMutableList.addAll(fitnessDataList)
         Log.i(TAG, recordsMutableList.toString())
         adapter.notifyDataSetChanged()
