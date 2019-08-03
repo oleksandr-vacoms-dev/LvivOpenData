@@ -16,31 +16,31 @@ class RemoteCateringDataStorage : DataStorage<CateringRecord> {
         OpenDataApi::class.java
     )
 
-    override fun getAllData(): MutableLiveData<List<CateringRecord>> {
-        val newsData = MutableLiveData<List<CateringRecord>>()
+    override fun getAll(): MutableLiveData<List<CateringRecord>> {
+        val data = MutableLiveData<List<CateringRecord>>()
         openDataApi.getCatering().enqueue(object : Callback<CateringResponse> {
             override fun onResponse(
                 call: Call<CateringResponse>,
                 response: Response<CateringResponse>
             ) {
                 if (response.isSuccessful) {
-                    newsData.value = response.body().result.records
+                    data.value = response.body().result.records
                 }
                 return
             }
 
             override fun onFailure(call: Call<CateringResponse>, t: Throwable) {
-                newsData.value = null
+                data.value = null
             }
         })
-        return newsData
+        return data
     }
 
-    override fun saveData(data: List<CateringRecord>) {
+    override fun saveAll(data: List<CateringRecord>) {
 
     }
 
-    override fun deleteAllData() {
+    override fun deleteAll() {
 
     }
 }

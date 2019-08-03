@@ -7,7 +7,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.BarberRepo
 import javax.inject.Inject
 
 class BarberViewModel @Inject constructor(barberRepository: BarberRepository) : ViewModel() {
-    private var barberData = barberRepository.getAllData()
+    private var barberData = barberRepository.getAll()
 
     fun getBarberData(): LiveData<List<BarberRecord>>? {
         return barberData

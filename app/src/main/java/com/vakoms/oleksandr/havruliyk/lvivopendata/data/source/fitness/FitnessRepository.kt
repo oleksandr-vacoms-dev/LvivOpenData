@@ -1,6 +1,5 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
@@ -12,39 +11,33 @@ class FitnessRepository(
     private val netManager: NetManager
 ) : DataStorage<FitnessRecord> {
 
-    companion object {
-        const val TAG = "FitnessRepository"
-    }
-
-    override fun getAllData(): LiveData<List<FitnessRecord>>? {
-
+    override fun getAll(): LiveData<List<FitnessRecord>>? {
         netManager.isConnectedToInternet?.let {
             return if (it) {
-                val data = remoteDataStorage.getAllData()
-                Log.i(TAG, "load fitness data from RemoteDataStorage")
-
-                data?.observeForever { upDataSavedData(data.value) }
-
-                return data
+                getDataFromRemoteAndRefreshLocal()
             } else {
-                Log.i(TAG, "load fitness data from LocalDataStorage")
-                localDataStorage.getAllData()
+                localDataStorage.getAll()
             }
         }
-
         return null
     }
 
-    private fun upDataSavedData(data: List<FitnessRecord>?) {
-        deleteAllData()
-        data?.let { saveData(it) }
+    override fun saveAll(data: List<FitnessRecord>) {
+        localDataStorage.saveAll(data)
     }
 
-    override fun saveData(data: List<FitnessRecord>) {
-        localDataStorage.saveData(data)
+    override fun deleteAll() {
+        localDataStorage.deleteAll()
     }
 
-    override fun deleteAllData() {
-        localDataStorage.deleteAllData()
+    private fun getDataFromRemoteAndRefreshLocal(): LiveData<List<FitnessRecord>>? {
+        val data = remoteDataStorage.getAll()
+        data?.observeForever { refreshSavedData(it) }
+        return data
+    }
+
+    private fun refreshSavedData(data: List<FitnessRecord>?) {
+        deleteAll()
+        data?.let { saveAll(it) }
     }
 }

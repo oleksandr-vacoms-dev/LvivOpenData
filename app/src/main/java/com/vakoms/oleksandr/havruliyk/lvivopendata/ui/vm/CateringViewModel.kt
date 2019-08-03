@@ -7,7 +7,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.Catering
 import javax.inject.Inject
 
 class CateringViewModel @Inject constructor(cateringRepository: CateringRepository) : ViewModel() {
-    private var cateringData = cateringRepository.getAllData()
+    private var cateringData = cateringRepository.getAll()
 
     fun getCateringData(): LiveData<List<CateringRecord>>? {
         return cateringData

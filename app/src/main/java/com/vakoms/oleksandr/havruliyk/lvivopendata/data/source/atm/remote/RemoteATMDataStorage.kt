@@ -16,7 +16,7 @@ class RemoteATMDataStorage : DataStorage<ATMRecord> {
         OpenDataApi::class.java
     )
 
-    override fun getAllData(): MutableLiveData<List<ATMRecord>> {
+    override fun getAll(): MutableLiveData<List<ATMRecord>> {
         val data = MutableLiveData<List<ATMRecord>>()
         openDataApi.getATM().enqueue(object : Callback<ATMResponse> {
             override fun onResponse(
@@ -35,11 +35,11 @@ class RemoteATMDataStorage : DataStorage<ATMRecord> {
         return data
     }
 
-    override fun saveData(data: List<ATMRecord>) {
+    override fun saveAll(data: List<ATMRecord>) {
 
     }
 
-    override fun deleteAllData() {
+    override fun deleteAll() {
 
     }
 }

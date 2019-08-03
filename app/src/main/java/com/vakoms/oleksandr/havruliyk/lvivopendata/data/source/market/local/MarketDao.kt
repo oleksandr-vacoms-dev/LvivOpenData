@@ -8,7 +8,6 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecor
 
 @Dao
 interface MarketDao {
-
     @Query("SELECT * FROM market")
     fun getAll(): LiveData<List<MarketRecord>>
 
@@ -16,5 +15,5 @@ interface MarketDao {
     fun deleteAll()
 
     @Insert
-    fun insert(marketDataList: List<MarketRecord>)
+    fun insert(data: List<MarketRecord>)
 }

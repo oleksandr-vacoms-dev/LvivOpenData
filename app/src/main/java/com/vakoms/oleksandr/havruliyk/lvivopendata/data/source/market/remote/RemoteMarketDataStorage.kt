@@ -17,30 +17,30 @@ class RemoteMarketDataStorage : DataStorage<MarketRecord> {
         OpenDataApi::class.java
     )
 
-    override fun getAllData(): MutableLiveData<List<MarketRecord>> {
-        val newsData = MutableLiveData<List<MarketRecord>>()
+    override fun getAll(): MutableLiveData<List<MarketRecord>> {
+        val data = MutableLiveData<List<MarketRecord>>()
         openDataApi.getMarkets().enqueue(object : Callback<MarketsResponse> {
             override fun onResponse(
                 call: Call<MarketsResponse>,
                 response: Response<MarketsResponse>
             ) {
                 if (response.isSuccessful) {
-                    newsData.value = response.body().result.records
+                    data.value = response.body().result.records
                 }
             }
 
             override fun onFailure(call: Call<MarketsResponse>, t: Throwable) {
-                newsData.value = null
+                data.value = null
             }
         })
-        return newsData
+        return data
     }
 
-    override fun saveData(data: List<MarketRecord>) {
+    override fun saveAll(data: List<MarketRecord>) {
 
     }
 
-    override fun deleteAllData() {
+    override fun deleteAll() {
 
     }
 }

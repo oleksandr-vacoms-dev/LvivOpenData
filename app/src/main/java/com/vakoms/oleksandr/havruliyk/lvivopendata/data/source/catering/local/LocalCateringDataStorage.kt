@@ -21,15 +21,15 @@ class LocalCateringDataStorage(context: Context) : DataStorage<CateringRecord> {
         cateringDao = roomDB.cateringDao()
     }
 
-    override fun getAllData(): LiveData<List<CateringRecord>> {
+    override fun getAll(): LiveData<List<CateringRecord>> {
         return cateringDao.getAll()
     }
 
-    override fun saveData(data: List<CateringRecord>) {
+    override fun saveAll(data: List<CateringRecord>) {
         cateringDao.insert(data)
     }
 
-    override fun deleteAllData() {
+    override fun deleteAll() {
         cateringDao.deleteAll()
     }
 }

@@ -21,15 +21,15 @@ class LocalFitnessDataStorage(context: Context) : DataStorage<FitnessRecord> {
         fitnessDao = roomDB.fitnessDao()
     }
 
-    override fun getAllData(): LiveData<List<FitnessRecord>> {
+    override fun getAll(): LiveData<List<FitnessRecord>> {
         return fitnessDao.getAll()
     }
 
-    override fun saveData(data: List<FitnessRecord>) {
+    override fun saveAll(data: List<FitnessRecord>) {
         fitnessDao.insert(data)
     }
 
-    override fun deleteAllData() {
+    override fun deleteAll() {
         fitnessDao.deleteAll()
     }
 }

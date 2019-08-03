@@ -16,31 +16,31 @@ class RemoteBarberDataStorage : DataStorage<BarberRecord> {
         OpenDataApi::class.java
     )
 
-    override fun getAllData(): MutableLiveData<List<BarberRecord>> {
-        val newsData = MutableLiveData<List<BarberRecord>>()
+    override fun getAll(): MutableLiveData<List<BarberRecord>> {
+        val data = MutableLiveData<List<BarberRecord>>()
         openDataApi.getBarber().enqueue(object : Callback<BarberResponse> {
             override fun onResponse(
                 call: Call<BarberResponse>,
                 response: Response<BarberResponse>
             ) {
                 if (response.isSuccessful) {
-                    newsData.value = response.body().result.records
+                    data.value = response.body().result.records
                 }
                 return
             }
 
             override fun onFailure(call: Call<BarberResponse>, t: Throwable) {
-                newsData.value = null
+                data.value = null
             }
         })
-        return newsData
+        return data
     }
 
-    override fun saveData(data: List<BarberRecord>) {
+    override fun saveAll(data: List<BarberRecord>) {
 
     }
 
-    override fun deleteAllData() {
+    override fun deleteAll() {
 
     }
 }

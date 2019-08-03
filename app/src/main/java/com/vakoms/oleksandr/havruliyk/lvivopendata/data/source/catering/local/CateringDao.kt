@@ -15,5 +15,5 @@ interface CateringDao {
     fun deleteAll()
 
     @Insert
-    fun insert(cateringDataList: List<CateringRecord>)
+    fun insert(data: List<CateringRecord>)
 }

@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
 
-
 @Dao
 interface ATMDao {
     @Query("SELECT * FROM atm")

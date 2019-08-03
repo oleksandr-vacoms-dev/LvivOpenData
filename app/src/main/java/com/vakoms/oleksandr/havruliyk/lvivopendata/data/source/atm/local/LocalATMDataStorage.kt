@@ -21,15 +21,15 @@ class LocalATMDataStorage(context: Context) : DataStorage<ATMRecord> {
         atmDao = roomDB.atmDao()
     }
 
-    override fun getAllData(): LiveData<List<ATMRecord>> {
+    override fun getAll(): LiveData<List<ATMRecord>> {
         return atmDao.getAll()
     }
 
-    override fun saveData(data: List<ATMRecord>) {
+    override fun saveAll(data: List<ATMRecord>) {
         atmDao.insert(data)
     }
 
-    override fun deleteAllData() {
+    override fun deleteAll() {
         atmDao.deleteAll()
     }
 }

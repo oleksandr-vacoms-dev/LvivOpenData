@@ -15,5 +15,5 @@ interface FitnessDao {
     fun deleteAll()
 
     @Insert
-    fun insert(fitnessDataList: List<FitnessRecord>)
+    fun insert(data: List<FitnessRecord>)
 }

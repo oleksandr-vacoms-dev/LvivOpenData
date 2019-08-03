@@ -27,7 +27,6 @@ class FitnessFragment : Fragment() {
     private lateinit var viewModel: FitnessViewModel
     private lateinit var recyclerView: RecyclerView
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

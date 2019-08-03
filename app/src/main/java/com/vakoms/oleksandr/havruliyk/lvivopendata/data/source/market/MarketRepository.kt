@@ -1,11 +1,9 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
-
 
 class MarketRepository(
     private val localDataStorage: DataStorage<MarketRecord>,
@@ -13,39 +11,33 @@ class MarketRepository(
     private val netManager: NetManager
 ) : DataStorage<MarketRecord> {
 
-    companion object {
-        const val TAG = "MarketRepository"
-    }
-
-    override fun getAllData(): LiveData<List<MarketRecord>>? {
-
+    override fun getAll(): LiveData<List<MarketRecord>>? {
         netManager.isConnectedToInternet?.let {
             return if (it) {
-                val data = remoteDataStorage.getAllData()
-                Log.i(TAG, "load market data from RemoteDataStorage")
-
-                data?.observeForever { upDataSavedData(data.value) }
-
-                return data
+                getDataFromRemoteAndRefreshLocal()
             } else {
-                Log.i(TAG, "load market data from LocalDataStorage")
-                localDataStorage.getAllData()
+                localDataStorage.getAll()
             }
         }
-
         return null
     }
 
-    private fun upDataSavedData(data: List<MarketRecord>?) {
-        deleteAllData()
-        data?.let { saveData(it) }
+    override fun saveAll(data: List<MarketRecord>) {
+        localDataStorage.saveAll(data)
     }
 
-    override fun saveData(data: List<MarketRecord>) {
-        localDataStorage.saveData(data)
+    override fun deleteAll() {
+        localDataStorage.deleteAll()
     }
 
-    override fun deleteAllData() {
-        localDataStorage.deleteAllData()
+    private fun getDataFromRemoteAndRefreshLocal(): LiveData<List<MarketRecord>>? {
+        val data = remoteDataStorage.getAll()
+        data?.observeForever { refreshSavedData(it) }
+        return data
+    }
+
+    private fun refreshSavedData(data: List<MarketRecord>?) {
+        deleteAll()
+        data?.let { saveAll(it) }
     }
 }

@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 
 interface DataStorage<T> {
 
-    fun getAllData(): LiveData<List<T>>?
+    fun getAll(): LiveData<List<T>>?
 
-    fun saveData(data: List<T>)
+    fun saveAll(data: List<T>)
 
-    fun deleteAllData()
+    fun deleteAll()
 }

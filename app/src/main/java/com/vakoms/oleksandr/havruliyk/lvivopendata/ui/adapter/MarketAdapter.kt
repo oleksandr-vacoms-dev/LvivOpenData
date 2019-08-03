@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 
-
 class MarketAdapter(private var context: Context, private var dataList: List<MarketRecord>) :
     RecyclerView.Adapter<MarketAdapter.MarketViewHolder>() {
 
@@ -27,7 +26,6 @@ class MarketAdapter(private var context: Context, private var dataList: List<Mar
     }
 
     inner class MarketViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         internal var name: TextView = itemView.findViewById(R.id.name_text_view)
     }
 }

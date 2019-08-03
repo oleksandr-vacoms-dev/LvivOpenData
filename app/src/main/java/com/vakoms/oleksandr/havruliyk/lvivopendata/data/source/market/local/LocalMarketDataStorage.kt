@@ -21,15 +21,15 @@ class LocalMarketDataStorage(context: Context) : DataStorage<MarketRecord> {
         marketDao = roomDB.marketDao()
     }
 
-    override fun getAllData(): LiveData<List<MarketRecord>>? {
+    override fun getAll(): LiveData<List<MarketRecord>>? {
         return marketDao.getAll()
     }
 
-    override fun saveData(data: List<MarketRecord>) {
+    override fun saveAll(data: List<MarketRecord>) {
         marketDao.insert(data)
     }
 
-    override fun deleteAllData() {
+    override fun deleteAll() {
         marketDao.deleteAll()
     }
 }

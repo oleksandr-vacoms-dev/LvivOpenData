@@ -7,7 +7,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.ATMRepository
 import javax.inject.Inject
 
 class ATMViewModel @Inject constructor(ATMRepository: ATMRepository) : ViewModel() {
-    private var atmData = ATMRepository.getAllData()!!
+    private var atmData = ATMRepository.getAll()!!
 
     fun getPharmacyData(): LiveData<List<ATMRecord>>? {
         return atmData

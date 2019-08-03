@@ -1,11 +1,9 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
-
 
 class ATMRepository(
     private val localDataStorage: DataStorage<ATMRecord>,
@@ -13,39 +11,33 @@ class ATMRepository(
     private val netManager: NetManager
 ) : DataStorage<ATMRecord> {
 
-    companion object {
-        const val TAG = "ATMRepository"
-    }
-
-    override fun getAllData(): LiveData<List<ATMRecord>>? {
-
+    override fun getAll(): LiveData<List<ATMRecord>>? {
         netManager.isConnectedToInternet?.let {
             return if (it) {
-                val data = remoteDataStorage.getAllData()
-                Log.i(TAG, "load atm data from RemoteDataStorage")
-
-                data?.observeForever { upDataSavedData(data.value) }
-
-                return data
+                getDataFromRemoteAndRefreshLocal()
             } else {
-                Log.i(TAG, "load atm data from LocalDataStorage")
-                localDataStorage.getAllData()
+                localDataStorage.getAll()
             }
         }
-
         return null
     }
 
-    override fun saveData(data: List<ATMRecord>) {
-        localDataStorage.saveData(data)
+    override fun saveAll(data: List<ATMRecord>) {
+        localDataStorage.saveAll(data)
     }
 
-    override fun deleteAllData() {
-        localDataStorage.deleteAllData()
+    override fun deleteAll() {
+        localDataStorage.deleteAll()
     }
 
-    private fun upDataSavedData(data: List<ATMRecord>?) {
-        deleteAllData()
-        data?.let { saveData(it) }
+    private fun getDataFromRemoteAndRefreshLocal(): LiveData<List<ATMRecord>>? {
+        val data = remoteDataStorage.getAll()
+        data?.observeForever { refreshSavedData(it) }
+        return data
+    }
+
+    private fun refreshSavedData(data: List<ATMRecord>?) {
+        deleteAll()
+        data?.let { saveAll(it) }
     }
 }

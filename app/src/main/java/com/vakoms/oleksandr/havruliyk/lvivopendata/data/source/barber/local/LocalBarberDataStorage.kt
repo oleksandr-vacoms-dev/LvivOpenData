@@ -21,15 +21,15 @@ class LocalBarberDataStorage(context: Context) : DataStorage<BarberRecord> {
         barberDao = roomDB.barberDao()
     }
 
-    override fun getAllData(): LiveData<List<BarberRecord>> {
+    override fun getAll(): LiveData<List<BarberRecord>> {
         return barberDao.getAll()
     }
 
-    override fun saveData(data: List<BarberRecord>) {
+    override fun saveAll(data: List<BarberRecord>) {
         barberDao.insert(data)
     }
 
-    override fun deleteAllData() {
+    override fun deleteAll() {
         barberDao.deleteAll()
     }
 }

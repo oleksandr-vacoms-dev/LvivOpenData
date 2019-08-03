@@ -27,7 +27,6 @@ class CateringFragment : Fragment() {
     private lateinit var viewModel: CateringViewModel
     private lateinit var recyclerView: RecyclerView
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

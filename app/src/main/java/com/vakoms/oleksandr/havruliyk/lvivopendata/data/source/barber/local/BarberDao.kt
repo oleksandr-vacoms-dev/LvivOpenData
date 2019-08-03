@@ -15,5 +15,5 @@ interface BarberDao {
     fun deleteAll()
 
     @Insert
-    fun insert(barberDataList: List<BarberRecord>)
+    fun insert(data: List<BarberRecord>)
 }

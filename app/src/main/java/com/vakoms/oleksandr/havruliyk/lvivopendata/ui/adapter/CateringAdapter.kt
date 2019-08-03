@@ -26,7 +26,6 @@ class CateringAdapter(private var context: Context, private var dataList: List<C
     }
 
     inner class CateringViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
         internal var name: TextView = itemView.findViewById(R.id.name_text_view)
     }
 }
