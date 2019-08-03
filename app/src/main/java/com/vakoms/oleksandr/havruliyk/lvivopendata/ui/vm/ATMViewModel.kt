@@ -9,7 +9,7 @@ import javax.inject.Inject
 class ATMViewModel @Inject constructor(ATMRepository: ATMRepository) : ViewModel() {
     private var atmData = ATMRepository.getAll()!!
 
-    fun getPharmacyData(): LiveData<List<ATMRecord>>? {
+    fun getATMData(): LiveData<List<ATMRecord>>? {
         return atmData
     }
 }

@@ -65,7 +65,7 @@ class ATMFragment : Fragment() {
     }
 
     private fun initObserver() {
-        viewModel.getPharmacyData()?.observe(
+        viewModel.getATMData()?.observe(
             this,
             androidx.lifecycle.Observer
             {
