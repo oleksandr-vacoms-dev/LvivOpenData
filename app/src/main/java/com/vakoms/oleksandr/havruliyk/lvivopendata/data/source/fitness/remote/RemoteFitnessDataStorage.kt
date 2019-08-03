@@ -26,7 +26,6 @@ class RemoteFitnessDataStorage : DataStorage<FitnessRecord> {
                 if (response.isSuccessful) {
                     data.value = response.body().result.records
                 }
-                return
             }
 
             override fun onFailure(call: Call<FitnessResponse>, t: Throwable) {

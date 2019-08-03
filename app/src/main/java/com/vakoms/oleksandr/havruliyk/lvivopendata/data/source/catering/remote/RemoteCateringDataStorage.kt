@@ -26,7 +26,6 @@ class RemoteCateringDataStorage : DataStorage<CateringRecord> {
                 if (response.isSuccessful) {
                     data.value = response.body().result.records
                 }
-                return
             }
 
             override fun onFailure(call: Call<CateringResponse>, t: Throwable) {

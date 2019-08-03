@@ -26,7 +26,6 @@ class RemoteBarberDataStorage : DataStorage<BarberRecord> {
                 if (response.isSuccessful) {
                     data.value = response.body().result.records
                 }
-                return
             }
 
             override fun onFailure(call: Call<BarberResponse>, t: Throwable) {
