@@ -17,7 +17,8 @@ import javax.inject.Singleton
         MarketModule::class,
         FitnessModule::class,
         CateringModule::class,
-        BarberModule::class
+        BarberModule::class,
+        ATMModule::class
     ]
 )
 
