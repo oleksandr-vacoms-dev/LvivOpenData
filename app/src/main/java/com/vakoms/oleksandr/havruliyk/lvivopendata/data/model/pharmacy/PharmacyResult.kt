@@ -5,11 +5,11 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Field
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Links
 
 data class PharmacyResult(
-    @SerializedName("include_total") val include_total: Boolean,
-    @SerializedName("resource_id") val resource_id: String,
-    @SerializedName("fields") val fields: List<Field>,
-    @SerializedName("records_format") val records_format: String,
-    @SerializedName("records") val records: List<PharmacyRecord>,
-    @SerializedName("_links") val _links: Links,
-    @SerializedName("total") val total: Int
+    @SerializedName("include_total") var include_total: Boolean,
+    @SerializedName("resource_id") var resource_id: String,
+    @SerializedName("fields") var fields: List<Field>,
+    @SerializedName("records_format") var records_format: String,
+    @SerializedName("records") var records: List<PharmacyRecord>,
+    @SerializedName("_links") var _links: Links,
+    @SerializedName("total") var total: Int
 )
