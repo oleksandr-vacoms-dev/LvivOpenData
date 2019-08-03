@@ -1,10 +1,7 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.di.component
 
 import com.vakoms.oleksandr.havruliyk.lvivopendata.OpenDataApplication
-import com.vakoms.oleksandr.havruliyk.lvivopendata.di.module.AppModule
-import com.vakoms.oleksandr.havruliyk.lvivopendata.di.module.CateringModule
-import com.vakoms.oleksandr.havruliyk.lvivopendata.di.module.FitnessModule
-import com.vakoms.oleksandr.havruliyk.lvivopendata.di.module.MarketModule
+import com.vakoms.oleksandr.havruliyk.lvivopendata.di.module.*
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.ViewModelBuilder
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -19,7 +16,8 @@ import javax.inject.Singleton
         ViewModelBuilder::class,
         MarketModule::class,
         FitnessModule::class,
-        CateringModule::class
+        CateringModule::class,
+        BarberModule::class
     ]
 )
 
