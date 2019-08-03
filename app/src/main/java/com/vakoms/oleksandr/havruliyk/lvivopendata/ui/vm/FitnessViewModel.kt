@@ -7,9 +7,9 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.FitnessRe
 import javax.inject.Inject
 
 class FitnessViewModel @Inject constructor(fitnessRepository: FitnessRepository) : ViewModel() {
-    private var fitnessLiveData = fitnessRepository.getAllData()
+    private var fitnessData = fitnessRepository.getAllData()
 
     fun getFitnessData(): LiveData<List<FitnessRecord>>? {
-        return fitnessLiveData
+        return fitnessData
     }
 }

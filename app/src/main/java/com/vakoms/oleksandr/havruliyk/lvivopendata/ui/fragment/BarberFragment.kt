@@ -78,8 +78,8 @@ class BarberFragment : Fragment() {
             })
     }
 
-    private fun refreshView(barberDataList: List<BarberRecord>) {
-        records.addAll(barberDataList)
+    private fun refreshView(newRecords: List<BarberRecord>) {
+        records.addAll(newRecords)
         adapter.notifyDataSetChanged()
     }
 

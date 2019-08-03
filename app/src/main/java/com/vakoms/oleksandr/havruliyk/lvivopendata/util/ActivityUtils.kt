@@ -8,9 +8,9 @@ fun addFragmentToActivity(
     fragmentManager: FragmentManager,
     fragment: Fragment, frameId: Int
 ) {
-    val transaction = fragmentManager.beginTransaction()
-    transaction.replace(frameId, fragment)
-    transaction.commit()
+    fragmentManager.beginTransaction()
+        .replace(frameId, fragment)
+        .commit()
 }
 
 fun isFragmentInBackstack(

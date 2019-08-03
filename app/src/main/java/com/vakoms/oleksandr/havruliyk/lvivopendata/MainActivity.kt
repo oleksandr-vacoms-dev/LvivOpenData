@@ -2,9 +2,8 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment.CateringFragment
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment.FitnessFragment
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment.MarketFragment
+import androidx.fragment.app.Fragment
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment.BarberFragment
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.addFragmentToActivity
 
 class MainActivity : AppCompatActivity() {
@@ -13,20 +12,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        showCatering()
-        //showMarkets()
-        //showFitness()
+        showFragment(BarberFragment())
     }
 
-    private fun showMarkets() {
-        addFragmentToActivity(supportFragmentManager, MarketFragment(), R.id.content_frame)
-    }
-
-    private fun showFitness() {
-        addFragmentToActivity(supportFragmentManager, FitnessFragment(), R.id.content_frame)
-    }
-
-    private fun showCatering() {
-        addFragmentToActivity(supportFragmentManager, CateringFragment(), R.id.content_frame)
+    private fun showFragment(fragment: Fragment) {
+        addFragmentToActivity(supportFragmentManager, fragment, R.id.content_frame)
     }
 }

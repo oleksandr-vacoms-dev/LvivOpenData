@@ -21,9 +21,10 @@ class CateringFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var adapter: CateringAdapter
 
-    private val recordsMutableList = mutableListOf<CateringRecord>()
+    private val records = mutableListOf<CateringRecord>()
+    private lateinit var adapter: CateringAdapter
+    private lateinit var viewModel: CateringViewModel
     private lateinit var recyclerView: RecyclerView
 
 
@@ -32,25 +33,24 @@ class CateringFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        AndroidSupportInjection.inject(this)
         val view = initView(inflater.inflate(R.layout.fragment_list, container, false))
 
+        AndroidSupportInjection.inject(this)
         initAdapter()
         initRecyclerView()
-
-        connectViewModel()
+        initViewModel()
+        initObserver()
 
         return view
     }
 
     private fun initView(view: View): View {
         recyclerView = view.findViewById(R.id.recycler_view)
-
         return view
     }
 
     private fun initAdapter() {
-        adapter = this.context?.let { CateringAdapter(it, recordsMutableList) }!!
+        adapter = this.context?.let { CateringAdapter(it, records) }!!
     }
 
     private fun initRecyclerView() {
@@ -60,17 +60,30 @@ class CateringFragment : Fragment() {
         recyclerView.isNestedScrollingEnabled = true
     }
 
-    private fun connectViewModel() {
-        val viewModel = ViewModelProviders.of(this, viewModelFactory)
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(CateringViewModel::class.java)
-
-        viewModel.getCateringData()?.observe(this,
-            androidx.lifecycle.Observer
-            { if(it != null) { upDataView(it)} })
     }
 
-    private fun upDataView(cateringDataList: List<CateringRecord>) {
-        recordsMutableList.addAll(cateringDataList)
+    private fun initObserver() {
+        viewModel.getCateringData()?.observe(
+            this,
+            androidx.lifecycle.Observer
+            {
+                if (it != null) {
+                    refreshView(it)
+                } else {
+                    setViewToEmpty()
+                }
+            })
+    }
+
+    private fun refreshView(newRecords: List<CateringRecord>) {
+        records.addAll(newRecords)
         adapter.notifyDataSetChanged()
+    }
+
+    private fun setViewToEmpty() {
+        //TODO : show reference image or text(don't have data)
     }
 }

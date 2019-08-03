@@ -17,40 +17,40 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.FitnessViewModel
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 
-
 class FitnessFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var adapter: FitnessAdapter
 
-    private val recordsMutableList = mutableListOf<FitnessRecord>()
+    private val records = mutableListOf<FitnessRecord>()
+    private lateinit var adapter: FitnessAdapter
+    private lateinit var viewModel: FitnessViewModel
     private lateinit var recyclerView: RecyclerView
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        AndroidSupportInjection.inject(this)
         val view = initView(inflater.inflate(R.layout.fragment_list, container, false))
 
+        AndroidSupportInjection.inject(this)
         initAdapter()
         initRecyclerView()
-
-        connectViewModel()
+        initViewModel()
+        initObserver()
 
         return view
     }
 
     private fun initView(view: View): View {
         recyclerView = view.findViewById(R.id.recycler_view)
-
         return view
     }
 
     private fun initAdapter() {
-        adapter = this.context?.let { FitnessAdapter(it, recordsMutableList) }!!
+        adapter = this.context?.let { FitnessAdapter(it, records) }!!
     }
 
     private fun initRecyclerView() {
@@ -60,17 +60,30 @@ class FitnessFragment : Fragment() {
         recyclerView.isNestedScrollingEnabled = true
     }
 
-    private fun connectViewModel() {
-        val viewModel = ViewModelProviders.of(this, viewModelFactory)
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FitnessViewModel::class.java)
-
-        viewModel.getFitnessData()?.observe(this,
-            androidx.lifecycle.Observer
-            { if(it != null) { upDataView(it)} })
     }
 
-    private fun upDataView(fitnessDataList: List<FitnessRecord>) {
-        recordsMutableList.addAll(fitnessDataList)
+    private fun initObserver() {
+        viewModel.getFitnessData()?.observe(
+            this,
+            androidx.lifecycle.Observer
+            {
+                if (it != null) {
+                    refreshView(it)
+                } else {
+                    setViewToEmpty()
+                }
+            })
+    }
+
+    private fun refreshView(newRecords: List<FitnessRecord>) {
+        records.addAll(newRecords)
         adapter.notifyDataSetChanged()
+    }
+
+    private fun setViewToEmpty() {
+        //TODO : show reference image or text(don't have data)
     }
 }

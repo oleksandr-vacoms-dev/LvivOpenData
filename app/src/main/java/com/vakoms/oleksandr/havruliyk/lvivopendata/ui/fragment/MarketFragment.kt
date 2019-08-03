@@ -21,35 +21,36 @@ class MarketFragment : Fragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var adapter: MarketAdapter
 
-    private val recordsMutableList = mutableListOf<MarketRecord>()
+    private val records = mutableListOf<MarketRecord>()
+    private lateinit var adapter: MarketAdapter
+    private lateinit var viewModel: MarketViewModel
     private lateinit var recyclerView: RecyclerView
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        AndroidSupportInjection.inject(this)
         val view = initView(inflater.inflate(R.layout.fragment_list, container, false))
 
+        AndroidSupportInjection.inject(this)
         initAdapter()
         initRecyclerView()
-
-        connectViewModel()
+        initViewModel()
+        initObserver()
 
         return view
     }
 
     private fun initView(view: View): View {
         recyclerView = view.findViewById(R.id.recycler_view)
-
         return view
     }
 
     private fun initAdapter() {
-        adapter = this.context?.let { MarketAdapter(it, recordsMutableList) }!!
+        adapter = this.context?.let { MarketAdapter(it, records) }!!
     }
 
     private fun initRecyclerView() {
@@ -59,17 +60,30 @@ class MarketFragment : Fragment() {
         recyclerView.isNestedScrollingEnabled = true
     }
 
-    private fun connectViewModel() {
-        val viewModel = ViewModelProviders.of(this, viewModelFactory)
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(MarketViewModel::class.java)
-
-        viewModel.getMarketsData()?.observe(this,
-            androidx.lifecycle.Observer
-            { if(it != null) { upDataView(it)} })
     }
 
-    private fun upDataView(markets: List<MarketRecord>) {
-        recordsMutableList.addAll(markets)
+    private fun initObserver() {
+        viewModel.getMarketData()?.observe(
+            this,
+            androidx.lifecycle.Observer
+            {
+                if (it != null) {
+                    refreshView(it)
+                } else {
+                    setViewToEmpty()
+                }
+            })
+    }
+
+    private fun refreshView(newRecords: List<MarketRecord>) {
+        records.addAll(newRecords)
         adapter.notifyDataSetChanged()
+    }
+
+    private fun setViewToEmpty() {
+        //TODO : show reference image or text(don't have data)
     }
 }
