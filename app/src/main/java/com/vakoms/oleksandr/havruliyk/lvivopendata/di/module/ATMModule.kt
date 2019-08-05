@@ -6,7 +6,9 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.ATMRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.local.LocalATMDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.remote.RemoteATMDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment.ATMFragment
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.ATMActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.ATMDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.ATMDataViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.ATMViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.ViewModelKey
 import dagger.Binds
@@ -25,7 +27,7 @@ internal abstract class ATMModule {
         @JvmStatic
         @Provides
         @Singleton
-        internal fun providesPharmacyRepository(
+        internal fun providesATMRepository(
             local: LocalATMDataStorage,
             remote: RemoteATMDataStorage,
             netManager: NetManager
@@ -36,7 +38,7 @@ internal abstract class ATMModule {
         @JvmStatic
         @Provides
         @Singleton
-        internal fun providesLocalPharmacyDataStorage(context: Context)
+        internal fun providesLocalATMDataStorage(context: Context)
                 : LocalATMDataStorage {
             return LocalATMDataStorage(context)
         }
@@ -44,17 +46,26 @@ internal abstract class ATMModule {
         @JvmStatic
         @Provides
         @Singleton
-        internal fun providesRemotePharmacyDataStorage()
+        internal fun providesRemoteATMDataStorage()
                 : RemoteATMDataStorage {
             return RemoteATMDataStorage()
         }
     }
 
     @ContributesAndroidInjector()
-    internal abstract fun atmFragment(): ATMFragment
+    internal abstract fun atmActivity(): ATMActivity
 
     @Binds
     @IntoMap
     @ViewModelKey(ATMViewModel::class)
     abstract fun bindATMViewModel(viewModel: ATMViewModel): ViewModel
+
+    @ContributesAndroidInjector()
+    internal abstract fun atmDataActivity(): ATMDataActivity
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ATMDataViewModel::class)
+    abstract fun bindATMDataViewModel(viewModel: ATMDataViewModel): ViewModel
+
 }
