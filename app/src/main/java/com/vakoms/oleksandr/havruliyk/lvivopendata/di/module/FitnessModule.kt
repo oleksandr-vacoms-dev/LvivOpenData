@@ -6,7 +6,9 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.FitnessRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local.LocalFitnessDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.remote.RemoteFitnessDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment.FitnessFragment
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.FitnessActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.FitnessDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.FitnessDataViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.FitnessViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.ViewModelKey
 import dagger.Binds
@@ -51,10 +53,18 @@ internal abstract class FitnessModule {
     }
 
     @ContributesAndroidInjector()
-    internal abstract fun fitnessFragment(): FitnessFragment
+    internal abstract fun fitnessActivity(): FitnessActivity
 
     @Binds
     @IntoMap
     @ViewModelKey(FitnessViewModel::class)
     abstract fun bindFitnessViewModel(viewModel: FitnessViewModel): ViewModel
+
+    @ContributesAndroidInjector()
+    internal abstract fun fitnessDataActivity(): FitnessDataActivity
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FitnessDataViewModel::class)
+    abstract fun bindFitnessDataViewModel(viewModel: FitnessDataViewModel): ViewModel
 }
