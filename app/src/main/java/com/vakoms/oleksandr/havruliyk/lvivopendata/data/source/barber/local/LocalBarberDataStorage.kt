@@ -32,4 +32,6 @@ class LocalBarberDataStorage(context: Context) : DataStorage<BarberRecord> {
     override fun deleteAll() {
         barberDao.deleteAll()
     }
+
+    override fun getById(id: Int): LiveData<BarberRecord> = barberDao.getById(id)
 }

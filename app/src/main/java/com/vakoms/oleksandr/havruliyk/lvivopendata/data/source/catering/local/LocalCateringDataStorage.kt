@@ -32,4 +32,6 @@ class LocalCateringDataStorage(context: Context) : DataStorage<CateringRecord> {
     override fun deleteAll() {
         cateringDao.deleteAll()
     }
+
+    override fun getById(id: Int): LiveData<CateringRecord> = cateringDao.getById(id)
 }

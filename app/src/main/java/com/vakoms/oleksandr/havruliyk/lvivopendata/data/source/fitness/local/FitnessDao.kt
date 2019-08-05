@@ -16,4 +16,7 @@ interface FitnessDao {
 
     @Insert
     fun insert(data: List<FitnessRecord>)
+
+    @Query("SELECT * FROM fitness WHERE id=:id")
+    fun getById(id: Int): LiveData<FitnessRecord>
 }

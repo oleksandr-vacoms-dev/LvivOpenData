@@ -32,4 +32,6 @@ class LocalMarketDataStorage(context: Context) : DataStorage<MarketRecord> {
     override fun deleteAll() {
         marketDao.deleteAll()
     }
+
+    override fun getById(id: Int): LiveData<MarketRecord> = marketDao.getById(id)
 }

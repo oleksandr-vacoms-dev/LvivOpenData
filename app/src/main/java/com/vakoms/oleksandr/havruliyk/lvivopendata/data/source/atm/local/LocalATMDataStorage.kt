@@ -32,4 +32,6 @@ class LocalATMDataStorage(context: Context) : DataStorage<ATMRecord> {
     override fun deleteAll() {
         atmDao.deleteAll()
     }
+
+    override fun getById(id: Int): LiveData<ATMRecord> = atmDao.getById(id)
 }

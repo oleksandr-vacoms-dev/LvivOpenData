@@ -28,6 +28,9 @@ abstract class Repository<T>(
         localDataStorage.deleteAll()
     }
 
+    override fun getById(id: Int): LiveData<T>? = localDataStorage.getById(id)
+
+
     private fun getDataFromRemoteAndRefreshLocal(): LiveData<List<T>>? {
         val data = remoteDataStorage.getAll()
         data?.observeForever { refreshSavedData(it) }

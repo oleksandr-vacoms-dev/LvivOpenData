@@ -16,4 +16,7 @@ interface BarberDao {
 
     @Insert
     fun insert(data: List<BarberRecord>)
+
+    @Query("SELECT * FROM barber WHERE _id=:id")
+    fun getById(id: Int): LiveData<BarberRecord>
 }

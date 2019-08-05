@@ -1,5 +1,6 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.remote
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.RetrofitService
@@ -41,5 +42,9 @@ class RemoteCateringDataStorage : DataStorage<CateringRecord> {
 
     override fun deleteAll() {
 
+    }
+
+    override fun getById(id: Int): LiveData<CateringRecord>? {
+        return null
     }
 }

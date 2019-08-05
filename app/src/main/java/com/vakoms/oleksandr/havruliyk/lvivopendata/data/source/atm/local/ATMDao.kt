@@ -11,6 +11,9 @@ interface ATMDao {
     @Query("SELECT * FROM atm")
     fun getAll(): LiveData<List<ATMRecord>>
 
+    @Query("SELECT * FROM atm WHERE _id=:id")
+    fun getById(id: Int): LiveData<ATMRecord>
+
     @Query("DELETE FROM atm")
     fun deleteAll()
 

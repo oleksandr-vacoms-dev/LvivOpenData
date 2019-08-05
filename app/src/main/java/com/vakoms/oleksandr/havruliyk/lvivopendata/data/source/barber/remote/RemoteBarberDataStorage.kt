@@ -1,5 +1,6 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.remote
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.RetrofitService
@@ -41,5 +42,9 @@ class RemoteBarberDataStorage : DataStorage<BarberRecord> {
 
     override fun deleteAll() {
 
+    }
+
+    override fun getById(id: Int): LiveData<BarberRecord>? {
+        return null
     }
 }

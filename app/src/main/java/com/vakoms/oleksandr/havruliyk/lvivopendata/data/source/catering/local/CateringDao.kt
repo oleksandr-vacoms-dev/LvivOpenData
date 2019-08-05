@@ -16,4 +16,7 @@ interface CateringDao {
 
     @Insert
     fun insert(data: List<CateringRecord>)
+
+    @Query("SELECT * FROM catering WHERE _id=:id")
+    fun getById(id: Int): LiveData<CateringRecord>
 }

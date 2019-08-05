@@ -32,4 +32,6 @@ class LocalFitnessDataStorage(context: Context) : DataStorage<FitnessRecord> {
     override fun deleteAll() {
         fitnessDao.deleteAll()
     }
+
+    override fun getById(id: Int): LiveData<FitnessRecord> = fitnessDao.getById(id)
 }

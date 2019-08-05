@@ -9,4 +9,6 @@ interface DataStorage<T> {
     fun saveAll(data: List<T>)
 
     fun deleteAll()
+
+    fun getById(id: Int): LiveData<T>?
 }

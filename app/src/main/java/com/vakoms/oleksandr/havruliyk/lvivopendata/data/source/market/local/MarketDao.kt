@@ -16,4 +16,7 @@ interface MarketDao {
 
     @Insert
     fun insert(data: List<MarketRecord>)
+
+    @Query("SELECT * FROM market WHERE id=:id")
+    fun getById(id: Int): LiveData<MarketRecord>
 }
