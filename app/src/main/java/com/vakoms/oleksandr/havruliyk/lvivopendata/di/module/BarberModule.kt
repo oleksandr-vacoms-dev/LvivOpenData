@@ -6,7 +6,9 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.BarberRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.local.LocalBarberDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.remote.RemoteBarberDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment.BarberFragment
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.BarberActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.BarberDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.BarberDataViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.BarberViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.ViewModelKey
 import dagger.Binds
@@ -51,10 +53,18 @@ internal abstract class BarberModule {
     }
 
     @ContributesAndroidInjector()
-    internal abstract fun barberFragment(): BarberFragment
+    internal abstract fun barberActivity(): BarberActivity
 
     @Binds
     @IntoMap
     @ViewModelKey(BarberViewModel::class)
     abstract fun bindBarberViewModel(viewModel: BarberViewModel): ViewModel
+
+    @ContributesAndroidInjector()
+    internal abstract fun barberDataActivity(): BarberDataActivity
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(BarberDataViewModel::class)
+    abstract fun bindBarberDataViewModel(viewModel: BarberDataViewModel): ViewModel
 }
