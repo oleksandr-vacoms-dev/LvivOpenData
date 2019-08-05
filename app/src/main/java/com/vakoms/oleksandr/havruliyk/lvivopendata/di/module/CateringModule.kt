@@ -6,7 +6,9 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.CateringRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.local.LocalCateringDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.remote.RemoteCateringDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment.CateringFragment
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.CateringActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.CateringDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.CateringDataViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.CateringViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.ViewModelKey
 import dagger.Binds
@@ -51,10 +53,18 @@ internal abstract class CateringModule {
     }
 
     @ContributesAndroidInjector()
-    internal abstract fun cateringFragment(): CateringFragment
+    internal abstract fun cateringActivity(): CateringActivity
 
     @Binds
     @IntoMap
     @ViewModelKey(CateringViewModel::class)
     abstract fun bindCateringViewModel(viewModel: CateringViewModel): ViewModel
+
+    @ContributesAndroidInjector()
+    internal abstract fun cateringDataActivity(): CateringDataActivity
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CateringDataViewModel::class)
+    abstract fun bindCateringDataViewModel(viewModel: CateringDataViewModel): ViewModel
 }
