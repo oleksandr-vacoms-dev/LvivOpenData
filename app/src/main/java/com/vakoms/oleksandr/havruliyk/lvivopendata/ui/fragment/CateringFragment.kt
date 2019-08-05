@@ -49,7 +49,7 @@ class CateringFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = this.context?.let { CateringAdapter(it, records) }!!
+        adapter = this.context?.let { CateringAdapter() }!!
     }
 
     private fun initRecyclerView() {
@@ -79,7 +79,7 @@ class CateringFragment : Fragment() {
 
     private fun refreshView(newRecords: List<CateringRecord>) {
         records.addAll(newRecords)
-        adapter.notifyDataSetChanged()
+        adapter.data = records
     }
 
     private fun setViewToEmpty() {

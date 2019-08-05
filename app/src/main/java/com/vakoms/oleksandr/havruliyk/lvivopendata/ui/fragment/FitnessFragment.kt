@@ -49,7 +49,7 @@ class FitnessFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = this.context?.let { FitnessAdapter(it, records) }!!
+        adapter = this.context?.let { FitnessAdapter() }!!
     }
 
     private fun initRecyclerView() {
@@ -79,7 +79,7 @@ class FitnessFragment : Fragment() {
 
     private fun refreshView(newRecords: List<FitnessRecord>) {
         records.addAll(newRecords)
-        adapter.notifyDataSetChanged()
+        adapter.data = records
     }
 
     private fun setViewToEmpty() {

@@ -49,7 +49,7 @@ class MarketFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = this.context?.let { MarketAdapter(it, records) }!!
+        adapter = this.context?.let { MarketAdapter() }!!
     }
 
     private fun initRecyclerView() {
@@ -79,7 +79,7 @@ class MarketFragment : Fragment() {
 
     private fun refreshView(newRecords: List<MarketRecord>) {
         records.addAll(newRecords)
-        adapter.notifyDataSetChanged()
+        adapter.data = records
     }
 
     private fun setViewToEmpty() {

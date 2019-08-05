@@ -49,7 +49,7 @@ class ATMFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = this.context?.let { ATMAdapter(it, records) }!!
+        adapter = this.context?.let { ATMAdapter() }!!
     }
 
     private fun initRecyclerView() {
@@ -79,7 +79,7 @@ class ATMFragment : Fragment() {
 
     private fun refreshView(newRecords: List<ATMRecord>) {
         records.addAll(newRecords)
-        adapter.notifyDataSetChanged()
+        adapter.data = records
     }
 
     private fun setViewToEmpty() {

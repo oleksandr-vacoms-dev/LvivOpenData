@@ -49,7 +49,7 @@ class BarberFragment : Fragment() {
     }
 
     private fun initAdapter() {
-        adapter = this.context?.let { BarberAdapter(it, records) }!!
+        adapter = this.context?.let { BarberAdapter() }!!
     }
 
     private fun initRecyclerView() {
@@ -79,10 +79,10 @@ class BarberFragment : Fragment() {
 
     private fun refreshView(newRecords: List<BarberRecord>) {
         records.addAll(newRecords)
-        adapter.notifyDataSetChanged()
+        adapter.data = records
     }
 
-    private fun setViewToEmpty(){
+    private fun setViewToEmpty() {
         //TODO : show reference image or text(don't have data)
     }
 }
