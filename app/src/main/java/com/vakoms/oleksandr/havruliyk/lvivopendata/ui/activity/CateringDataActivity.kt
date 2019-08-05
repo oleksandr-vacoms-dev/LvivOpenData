@@ -5,11 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.ATMDataViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.CateringDataViewModel
 import dagger.android.AndroidInjection
+import kotlinx.android.synthetic.main.activity_catering_data.*
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.*
 import javax.inject.Inject
@@ -25,7 +24,7 @@ class CateringDataActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_list)
+        setContentView(R.layout.activity_catering_data)
 
         AndroidInjection.inject(this)
         recordId = intent.extras?.get(CateringActivity.DATA_ID) as Int
@@ -63,7 +62,22 @@ class CateringDataActivity : AppCompatActivity() {
     }
 
     private fun refreshView() {
-        label.text = record!!.name
+        with(record!!) {
+            label.text = name
+            district_view.text = district
+            address_view.text = "$street  $building"
+            enterpreneur_name_view.text = enterpreneur_name
+            seats_view.text = seats
+            cellphone_view.text = cellphone_number_1
+            square_view.text = area
+            monday_view.text = "${resources.getString(R.string.monday)}  $hours_of_work_monday"
+            tuesday_view.text = "${resources.getString(R.string.tuesday)}  $hours_of_work_tuesday"
+            wednesday_view.text = "${resources.getString(R.string.wednesday)} $hours_of_work_wednesday"
+            thursday_view.text = "${resources.getString(R.string.thursday)} $hours_of_work_thursday"
+            friday_view.text = "${resources.getString(R.string.friday)} $hours_of_work_friday"
+            saturday_view.text = "${resources.getString(R.string.saturday)} $hours_of_work_saturday"
+            sunday_view.text = "${resources.getString(R.string.sunday)} $hours_of_work_sunday"
+        }
     }
 
     private fun setViewToEmpty() {

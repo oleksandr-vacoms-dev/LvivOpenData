@@ -9,6 +9,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.ATMActivity.Companion.DATA_ID
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.ATMDataViewModel
 import dagger.android.AndroidInjection
+import kotlinx.android.synthetic.main.activity_atm_data.*
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.*
 import javax.inject.Inject
@@ -24,7 +25,7 @@ class ATMDataActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_list)
+        setContentView(R.layout.activity_atm_data)
 
         AndroidInjection.inject(this)
         recordId = intent.extras?.get(DATA_ID) as Int
@@ -63,6 +64,8 @@ class ATMDataActivity : AppCompatActivity() {
 
     private fun refreshView() {
         label.text = record!!.bankLabel
+        address.text = record!!.address
+        work_time.text = record!!.workTime
     }
 
     private fun setViewToEmpty() {

@@ -8,6 +8,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.FitnessDataViewModel
 import dagger.android.AndroidInjection
+import kotlinx.android.synthetic.main.activity_fitness_data.*
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.*
 import javax.inject.Inject
@@ -23,7 +24,7 @@ class FitnessDataActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_list)
+        setContentView(R.layout.activity_fitness_data)
 
         AndroidInjection.inject(this)
         recordId = intent.extras?.get(FitnessActivity.DATA_ID) as Int
@@ -61,7 +62,17 @@ class FitnessDataActivity : AppCompatActivity() {
     }
 
     private fun refreshView() {
-        label.text = record!!.name
+        with(record!!) {
+            label.text = name
+            district_view.text = district
+            address_view.text = "$street  $building"
+            enterpreneur_name_view.text = enterpreneurName
+            cellphone_view.text = cellphoneNumber1
+            square_view.text = square
+            weekday_view.text = "${resources.getString(R.string.friday)} $hoursOfWorkWeekdays"
+            saturday_view.text = "${resources.getString(R.string.saturday)} $hoursOfWorkSaturday"
+            sunday_view.text = "${resources.getString(R.string.sunday)} $hoursOfWorkSunday"
+        }
     }
 
     private fun setViewToEmpty() {

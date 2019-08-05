@@ -26,7 +26,7 @@ data class BarberRecord(
     @SerializedName("cellphone_number_4") var cellphone_number_4: String,
     @SerializedName("hours_of_work_monday") var hours_of_work_monday: String,
     @SerializedName("hours_of_work_tuesday") var hours_of_work_tuesday: String,
-    @SerializedName("hours_of_work_Wednesday") var hours_of_work_Wednesday: String,
+    @SerializedName("hours_of_work_Wednesday") var hours_of_work_wednesday: String,
     @SerializedName("hours_of_work_thursday") var hours_of_work_thursday: String,
     @SerializedName("hours_of_work_friday") var hours_of_work_friday: String,
     @SerializedName("hours_of_work_(saturday)") var hours_of_work_saturday: String,

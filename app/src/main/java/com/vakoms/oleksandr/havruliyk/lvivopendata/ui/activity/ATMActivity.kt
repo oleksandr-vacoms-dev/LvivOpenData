@@ -15,7 +15,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.OnItemClickListene
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.ATMViewModel
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.back_button.*
-import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.android.synthetic.main.label_layout.*
 import javax.inject.Inject
 
@@ -34,7 +34,7 @@ class ATMActivity : AppCompatActivity(), OnItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_list)
+        setContentView(R.layout.activity_list)
 
         AndroidInjection.inject(this)
 

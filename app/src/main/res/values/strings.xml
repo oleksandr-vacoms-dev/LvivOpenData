@@ -6,4 +6,21 @@
     <string name="atm_label">ATMs</string>
     <string name="barber_label">Barbers</string>
     <string name="catering_label">Catering</string>
+    <string name="address">Адреса</string>
+    <string name="work_time">Час роботи</string>
+    <string name="district">Район</string>
+    <string name="specialization">Тип</string>
+    <string name="enterpreneur_name">Власник</string>
+    <string name="cellphone">Телефон</string>
+    <string name="monday">Понеділок</string>
+    <string name="tuesday">Вівторок</string>
+    <string name="wednesday">Середа</string>
+    <string name="thursday">Четвер</string>
+    <string name="friday">П\'ятниця</string>
+    <string name="saturday">Субота</string>
+    <string name="sunday">Неділя</string>
+    <string name="square">Площа</string>
+    <string name="weekday">Пн-Пт</string>
+    <string name="seats">Місць</string>
+
 </resources>
