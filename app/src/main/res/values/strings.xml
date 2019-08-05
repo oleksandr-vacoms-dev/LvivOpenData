@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">LvivOpenData</string>
+
+    <string name="market_label">Markets</string>
+    <string name="fitness_label">Fitness Centers</string>
+    <string name="atm_label">ATMs</string>
+    <string name="barber_label">Barbers</string>
+    <string name="catering_label">Catering</string>
 </resources>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="large_dimen">20dp</dimen>
+    <dimen name="default_dimen">12dp</dimen>
+</resources>

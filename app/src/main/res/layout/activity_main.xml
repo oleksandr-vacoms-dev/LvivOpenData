@@ -2,12 +2,53 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <FrameLayout
             android:id="@+id/content_frame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
     </FrameLayout>
+
+    <TextView
+            android:id="@+id/market"
+            android:text="@string/market_label"
+            android:padding="@dimen/large_dimen"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/fitness"
+            android:text="@string/fitness_label"
+            android:padding="@dimen/large_dimen"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/atm"
+            android:text="@string/atm_label"
+            android:padding="@dimen/large_dimen"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/catering"
+            android:text="@string/catering_label"
+            android:padding="@dimen/large_dimen"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    <TextView
+            android:id="@+id/barber"
+            android:text="@string/barber_label"
+            android:padding="@dimen/large_dimen"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
 </LinearLayout>
