@@ -32,7 +32,8 @@ class CateringAdapter(var onClickListener: OnItemClickListener) : RecyclerView.A
         fun bind(item: CateringRecord, onClickListener: OnItemClickListener) {
             itemView.setOnClickListener { onClickListener.onItemClick(itemView, position) }
 
-            name_text_view.text = with(item) { "$name $street" }
+            label.text = with(item) { "$name $street" }
+            address.text = with(item) { "$street $building" }
         }
     }
 }

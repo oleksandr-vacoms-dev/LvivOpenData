@@ -32,7 +32,8 @@ class BarberAdapter(var onClickListener: OnItemClickListener) : RecyclerView.Ada
         fun bind(item: BarberRecord, onClickListener: OnItemClickListener) {
             itemView.setOnClickListener { onClickListener.onItemClick(itemView, position) }
 
-            name_text_view.text = item.name
+            label.text = item.name
+            address.text = with(item) { "$street $building" }
         }
     }
 }
