@@ -1,54 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/light"
         android:orientation="vertical">
 
-    <FrameLayout
-            android:id="@+id/content_frame"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-    </FrameLayout>
-
-    <TextView
-            android:id="@+id/market"
-            android:text="@string/market_label"
-            android:padding="@dimen/large_dimen"
-            android:gravity="center"
+    <androidx.cardview.widget.CardView
+            android:id="@+id/card_view"
+            android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="@dimen/default_height_label"
+            app:cardBackgroundColor="@color/light"
+            app:cardCornerRadius="0dp"
+            android:elevation="3dp">
 
-    <TextView
-            android:id="@+id/fitness"
-            android:text="@string/fitness_label"
-            android:padding="@dimen/large_dimen"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        <LinearLayout
+                android:id="@+id/label_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    <TextView
-            android:id="@+id/atm"
-            android:text="@string/atm_label"
-            android:padding="@dimen/large_dimen"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            <TextView
+                    style="@style/Label"
+                    android:id="@id/label_layout"
+                    android:text="@string/app_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
-    <TextView
-            android:id="@+id/catering"
-            android:text="@string/catering_label"
-            android:padding="@dimen/large_dimen"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
-    <TextView
-            android:id="@+id/barber"
-            android:text="@string/barber_label"
-            android:padding="@dimen/large_dimen"
-            android:gravity="center"
+    <androidx.cardview.widget.CardView
+            android:layout_margin="@dimen/large_dimen"
+            android:id="@+id/card_view_markets"
+            android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/light_grey"
+            app:cardCornerRadius="@dimen/smal_dimen">
+
+        <TextView
+                style="@style/Simple_Text"
+                android:id="@+id/market"
+                android:text="@string/market_label"
+                android:textStyle="bold"
+                android:padding="@dimen/large_dimen"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+            android:layout_margin="@dimen/large_dimen"
+            android:id="@+id/card_view_atm"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/light_grey"
+            app:cardCornerRadius="@dimen/smal_dimen">
+
+        <TextView
+                style="@style/Simple_Text"
+                android:id="@+id/atm"
+                android:text="@string/atm_label"
+                android:textStyle="bold"
+                android:padding="@dimen/large_dimen"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+            android:layout_margin="@dimen/large_dimen"
+            android:id="@+id/card_view_barber"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/light_grey"
+            app:cardCornerRadius="@dimen/smal_dimen">
+
+        <TextView
+                style="@style/Simple_Text"
+                android:id="@+id/barber"
+                android:text="@string/barber_label"
+                android:textStyle="bold"
+                android:padding="@dimen/large_dimen"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+            android:layout_margin="@dimen/large_dimen"
+            android:id="@+id/card_view_fitness"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/light_grey"
+            app:cardCornerRadius="@dimen/smal_dimen">
+
+        <TextView
+                style="@style/Simple_Text"
+                android:id="@+id/fitness"
+                android:text="@string/fitness_label"
+                android:textStyle="bold"
+                android:padding="@dimen/large_dimen"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+            android:layout_margin="@dimen/large_dimen"
+            android:id="@+id/card_view_catering"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/light_grey"
+            app:cardCornerRadius="@dimen/smal_dimen">
+
+        <TextView
+                style="@style/Simple_Text"
+                android:id="@+id/catering"
+                android:text="@string/catering_label"
+                android:textStyle="bold"
+                android:padding="@dimen/large_dimen"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

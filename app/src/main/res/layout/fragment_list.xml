@@ -6,7 +6,6 @@
 
     <include layout="@layout/label_layout"/>
 
-    <include layout="@layout/separator"/>
 
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
