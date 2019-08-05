@@ -6,7 +6,9 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.MarketRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local.LocalMarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote.RemoteMarketDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment.MarketFragment
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MarketActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MarketDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.MarketDataViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.MarketViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.ViewModelKey
 import dagger.Binds
@@ -51,10 +53,18 @@ internal abstract class MarketModule {
     }
 
     @ContributesAndroidInjector()
-    internal abstract fun marketFragment(): MarketFragment
+    internal abstract fun marketActivity(): MarketActivity
 
     @Binds
     @IntoMap
     @ViewModelKey(MarketViewModel::class)
     abstract fun bindMarketViewModel(viewModel: MarketViewModel): ViewModel
+
+    @ContributesAndroidInjector()
+    internal abstract fun marketDataActivity(): MarketDataActivity
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MarketDataViewModel::class)
+    abstract fun bindMarketDataViewModel(viewModel: MarketDataViewModel): ViewModel
 }

@@ -7,9 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.market_item.*
+import kotlinx.android.synthetic.main.item.*
 
-class MarketAdapter : RecyclerView.Adapter<MarketAdapter.ViewHolder>() {
+class MarketAdapter(var onClickListener: OnItemClickListener) : RecyclerView.Adapter<MarketAdapter.ViewHolder>() {
 
     var data: MutableList<MarketRecord> = mutableListOf()
         set(value) {
@@ -18,9 +18,9 @@ class MarketAdapter : RecyclerView.Adapter<MarketAdapter.ViewHolder>() {
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.market_item, parent, false))
+        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false))
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(data[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(data[position], onClickListener)
 
     override fun getItemCount() = data.size
 
@@ -29,7 +29,9 @@ class MarketAdapter : RecyclerView.Adapter<MarketAdapter.ViewHolder>() {
         override val containerView: View?
             get() = itemView
 
-        fun bind(item: MarketRecord) {
+        fun bind(item: MarketRecord, onClickListener: OnItemClickListener) {
+            itemView.setOnClickListener { onClickListener.onItemClick(itemView, position) }
+
             name_text_view.text = with(item) { "$name $street" }
         }
     }
