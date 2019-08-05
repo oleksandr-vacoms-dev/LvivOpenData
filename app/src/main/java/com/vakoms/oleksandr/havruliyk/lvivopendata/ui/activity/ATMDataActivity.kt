@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.*
 import javax.inject.Inject
 
-
 class ATMDataActivity : AppCompatActivity() {
 
     @Inject
@@ -21,7 +20,7 @@ class ATMDataActivity : AppCompatActivity() {
     private lateinit var viewModel: ATMDataViewModel
 
     private var record: ATMRecord? = null
-    private var recordId = intent.extras?.get(DATA_ID) as Int
+    private var recordId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

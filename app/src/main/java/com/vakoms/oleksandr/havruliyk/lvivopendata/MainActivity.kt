@@ -1,10 +1,10 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.fragment.ATMFragment
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.addFragmentToActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,10 +12,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        showFragment(ATMFragment())
+        initView()
     }
 
-    private fun showFragment(fragment: Fragment) {
-        addFragmentToActivity(supportFragmentManager, fragment, R.id.content_frame)
+    private fun initView() {
+        atm.setOnClickListener { startActivity(Intent(this, ATMActivity::class.java)) }
+        fitness.setOnClickListener { startActivity(Intent(this, FitnessActivity::class.java)) }
+        market.setOnClickListener { startActivity(Intent(this, MarketActivity::class.java)) }
+        catering.setOnClickListener { startActivity(Intent(this, CateringActivity::class.java)) }
+        barber.setOnClickListener { startActivity(Intent(this, BarberActivity::class.java)) }
     }
 }

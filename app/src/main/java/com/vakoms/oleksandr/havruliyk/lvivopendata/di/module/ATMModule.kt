@@ -67,5 +67,4 @@ internal abstract class ATMModule {
     @IntoMap
     @ViewModelKey(ATMDataViewModel::class)
     abstract fun bindATMDataViewModel(viewModel: ATMDataViewModel): ViewModel
-
 }

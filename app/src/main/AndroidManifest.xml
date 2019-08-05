@@ -21,6 +21,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".ui.activity.ATMActivity"/>
+        <activity android:name=".ui.activity.ATMDataActivity"/>
+        <activity android:name=".ui.activity.BarberActivity"/>
+        <activity android:name=".ui.activity.BarberDataActivity"/>
+        <activity android:name=".ui.activity.CateringActivity"/>
+        <activity android:name=".ui.activity.CateringDataActivity"/>
+        <activity android:name=".ui.activity.FitnessActivity"/>
+        <activity android:name=".ui.activity.FitnessDataActivity"/>
+        <activity android:name=".ui.activity.MarketActivity"/>
+        <activity android:name=".ui.activity.MarketDataActivity"/>
     </application>
 
 </manifest>
