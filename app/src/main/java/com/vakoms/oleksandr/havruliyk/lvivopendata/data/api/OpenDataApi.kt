@@ -3,7 +3,7 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.data.api
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringResponse
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.coordinates.CoordinatesResponse
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.CoordinatesResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResponse
 import retrofit2.Call

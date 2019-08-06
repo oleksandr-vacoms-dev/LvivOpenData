@@ -6,6 +6,8 @@
     <string name="atm_label">ATMs</string>
     <string name="barber_label">Barbers</string>
     <string name="catering_label">Catering</string>
+    <string name="map_label">Map</string>
+
     <string name="address">Адреса</string>
     <string name="work_time">Час роботи</string>
     <string name="district">Район</string>

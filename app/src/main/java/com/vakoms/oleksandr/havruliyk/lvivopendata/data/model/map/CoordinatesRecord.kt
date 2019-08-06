@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.coordinates
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map
 
 import com.google.gson.annotations.SerializedName
 
