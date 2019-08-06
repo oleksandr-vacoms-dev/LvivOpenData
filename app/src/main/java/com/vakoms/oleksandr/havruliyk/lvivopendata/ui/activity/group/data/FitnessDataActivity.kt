@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,34 +6,34 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapRepository
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromATMRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.ATMActivity.Companion.DATA_ID
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromFitnessRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.FitnessActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.ATMDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.datavm.FitnessDataViewModel
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_atm_data.*
+import kotlinx.android.synthetic.main.activity_fitness_data.*
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.*
 import javax.inject.Inject
 
-class ATMDataActivity : AppCompatActivity() {
+class FitnessDataActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: ATMDataViewModel
+    private lateinit var viewModel: FitnessDataViewModel
 
-    private var record: ATMRecord? = null
+    private var record: FitnessRecord? = null
     private var recordId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_atm_data)
+        setContentView(R.layout.activity_fitness_data)
 
         AndroidInjection.inject(this)
-        recordId = intent.extras?.get(DATA_ID) as Int
+        recordId = intent.extras?.get(FitnessActivity.DATA_ID) as Int
 
         initView()
         initViewModel()
@@ -47,7 +47,7 @@ class ATMDataActivity : AppCompatActivity() {
             val mapManager: MapManager? = MapRepository.getInstance()
             if (record != null) {
                 mapManager?.addRecords(
-                    getAddressRecordFromATMRecord(
+                    getAddressRecordFromFitnessRecord(
                         listOf(record!!)
                     )
                 )
@@ -59,11 +59,11 @@ class ATMDataActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(ATMDataViewModel::class.java)
+            .get(FitnessDataViewModel::class.java)
     }
 
     private fun initObserver() {
-        viewModel.getATMDataById(recordId)?.observe(
+        viewModel.getFitnessDataById(recordId)?.observe(
             this,
             androidx.lifecycle.Observer
             {
@@ -75,15 +75,23 @@ class ATMDataActivity : AppCompatActivity() {
             })
     }
 
-    private fun refreshRecordAndView(newRecord: ATMRecord) {
+    private fun refreshRecordAndView(newRecord: FitnessRecord) {
         record = newRecord
         refreshView()
     }
 
     private fun refreshView() {
-        label_view.text = record!!.bankLabel
-        address_view.text = record!!.address
-        work_time.text = record!!.workTime
+        with(record!!) {
+            label_view.text = name
+            district_view.text = district
+            address_view.text = "$street  $building"
+            enterpreneur_name_view.text = enterpreneurName
+            cellphone_view.text = cellphoneNumber1
+            square_view.text = square
+            weekday_view.text = "${resources.getString(R.string.friday)} $hoursOfWorkWeekdays"
+            saturday_view.text = "${resources.getString(R.string.saturday)} $hoursOfWorkSaturday"
+            sunday_view.text = "${resources.getString(R.string.sunday)} $hoursOfWorkSunday"
+        }
     }
 
     private fun setViewToEmpty() {

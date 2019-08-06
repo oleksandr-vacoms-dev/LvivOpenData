@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,18 +9,18 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.BarberDataActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.BarberAdapter
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data.MarketDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.MarketAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.OnItemClickListener
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.BarberViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.MarketViewModel
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.android.synthetic.main.label_layout.*
 import javax.inject.Inject
 
-class BarberActivity : AppCompatActivity(), OnItemClickListener {
+class MarketActivity : AppCompatActivity(), OnItemClickListener {
 
     companion object {
         const val DATA_ID = "DATA_ID"
@@ -28,10 +28,10 @@ class BarberActivity : AppCompatActivity(), OnItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: BarberViewModel
+    private lateinit var viewModel: MarketViewModel
 
-    private val records = mutableListOf<BarberRecord>()
-    private lateinit var recordsAdapter: BarberAdapter
+    private val records = mutableListOf<MarketRecord>()
+    private lateinit var recordsAdapter: MarketAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,13 +47,13 @@ class BarberActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     private fun initView() {
-        label_view.text = resources.getString(R.string.barber_label)
+        label_view.text = resources.getString(R.string.market_label)
 
         back_button.setOnClickListener { finish() }
     }
 
     private fun initAdapter() {
-        recordsAdapter = BarberAdapter(this)
+        recordsAdapter = MarketAdapter(this)
     }
 
     private fun initRecyclerView() {
@@ -67,11 +67,11 @@ class BarberActivity : AppCompatActivity(), OnItemClickListener {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(BarberViewModel::class.java)
+            .get(MarketViewModel::class.java)
     }
 
     private fun initObserver() {
-        viewModel.getBarberData()?.observe(
+        viewModel.getMarketData()?.observe(
             this,
             androidx.lifecycle.Observer
             {
@@ -83,7 +83,7 @@ class BarberActivity : AppCompatActivity(), OnItemClickListener {
             })
     }
 
-    private fun refreshRecordsAndView(newRecords: List<BarberRecord>) {
+    private fun refreshRecordsAndView(newRecords: List<MarketRecord>) {
         records.addAll(newRecords)
         recordsAdapter.data = records
     }
@@ -96,9 +96,9 @@ class BarberActivity : AppCompatActivity(), OnItemClickListener {
         startDataActivityWith(records[position])
     }
 
-    private fun startDataActivityWith(data: BarberRecord) {
-        val intent = Intent(this, BarberDataActivity::class.java)
-        intent.putExtra(DATA_ID, data._id)
+    private fun startDataActivityWith(data: MarketRecord) {
+        val intent = Intent(this, MarketDataActivity::class.java)
+        intent.putExtra(DATA_ID, data.id)
         startActivity(intent)
     }
 }

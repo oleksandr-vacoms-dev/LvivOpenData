@@ -6,10 +6,10 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.MarketRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local.LocalMarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote.RemoteMarketDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MarketActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.MarketDataActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.MarketDataViewModel
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.MarketViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.MarketActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data.MarketDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.datavm.MarketDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.MarketViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.ViewModelKey
 import dagger.Binds
 import dagger.Module

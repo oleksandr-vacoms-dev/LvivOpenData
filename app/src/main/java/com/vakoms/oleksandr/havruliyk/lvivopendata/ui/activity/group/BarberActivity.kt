@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,18 +9,18 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.ATMDataActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.ATMAdapter
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data.BarberDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.BarberAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.OnItemClickListener
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.ATMViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.BarberViewModel
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.android.synthetic.main.label_layout.*
 import javax.inject.Inject
 
-class ATMActivity : AppCompatActivity(), OnItemClickListener {
+class BarberActivity : AppCompatActivity(), OnItemClickListener {
 
     companion object {
         const val DATA_ID = "DATA_ID"
@@ -28,10 +28,10 @@ class ATMActivity : AppCompatActivity(), OnItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: ATMViewModel
+    private lateinit var viewModel: BarberViewModel
 
-    private val records = mutableListOf<ATMRecord>()
-    private lateinit var recordsAdapter: ATMAdapter
+    private val records = mutableListOf<BarberRecord>()
+    private lateinit var recordsAdapter: BarberAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,13 +47,13 @@ class ATMActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     private fun initView() {
-        label_view.text = resources.getString(R.string.atm_label)
+        label_view.text = resources.getString(R.string.barber_label)
 
         back_button.setOnClickListener { finish() }
     }
 
     private fun initAdapter() {
-        recordsAdapter = ATMAdapter(this)
+        recordsAdapter = BarberAdapter(this)
     }
 
     private fun initRecyclerView() {
@@ -67,11 +67,11 @@ class ATMActivity : AppCompatActivity(), OnItemClickListener {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(ATMViewModel::class.java)
+            .get(BarberViewModel::class.java)
     }
 
     private fun initObserver() {
-        viewModel.getATMData()?.observe(
+        viewModel.getBarberData()?.observe(
             this,
             androidx.lifecycle.Observer
             {
@@ -83,7 +83,7 @@ class ATMActivity : AppCompatActivity(), OnItemClickListener {
             })
     }
 
-    private fun refreshRecordsAndView(newRecords: List<ATMRecord>) {
+    private fun refreshRecordsAndView(newRecords: List<BarberRecord>) {
         records.addAll(newRecords)
         recordsAdapter.data = records
     }
@@ -96,8 +96,8 @@ class ATMActivity : AppCompatActivity(), OnItemClickListener {
         startDataActivityWith(records[position])
     }
 
-    private fun startDataActivityWith(data: ATMRecord) {
-        val intent = Intent(this, ATMDataActivity::class.java)
+    private fun startDataActivityWith(data: BarberRecord) {
+        val intent = Intent(this, BarberDataActivity::class.java)
         intent.putExtra(DATA_ID, data._id)
         startActivity(intent)
     }

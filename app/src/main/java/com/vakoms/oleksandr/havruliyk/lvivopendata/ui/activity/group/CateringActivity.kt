@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,18 +9,18 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.MarketDataActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.MarketAdapter
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data.CateringDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.CateringAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.OnItemClickListener
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.MarketViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.CateringViewModel
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.activity_list.*
+import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.*
 import javax.inject.Inject
 
-class MarketActivity : AppCompatActivity(), OnItemClickListener {
+class CateringActivity : AppCompatActivity(), OnItemClickListener {
 
     companion object {
         const val DATA_ID = "DATA_ID"
@@ -28,10 +28,10 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: MarketViewModel
+    private lateinit var viewModel: CateringViewModel
 
-    private val records = mutableListOf<MarketRecord>()
-    private lateinit var recordsAdapter: MarketAdapter
+    private val records = mutableListOf<CateringRecord>()
+    private lateinit var recordsAdapter: CateringAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,13 +47,13 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     private fun initView() {
-        label_view.text = resources.getString(R.string.market_label)
+        label_view.text = resources.getString(R.string.catering_label)
 
         back_button.setOnClickListener { finish() }
     }
 
     private fun initAdapter() {
-        recordsAdapter = MarketAdapter(this)
+        recordsAdapter = CateringAdapter(this)
     }
 
     private fun initRecyclerView() {
@@ -67,11 +67,11 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(MarketViewModel::class.java)
+            .get(CateringViewModel::class.java)
     }
 
     private fun initObserver() {
-        viewModel.getMarketData()?.observe(
+        viewModel.getCateringData()?.observe(
             this,
             androidx.lifecycle.Observer
             {
@@ -83,7 +83,7 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
             })
     }
 
-    private fun refreshRecordsAndView(newRecords: List<MarketRecord>) {
+    private fun refreshRecordsAndView(newRecords: List<CateringRecord>) {
         records.addAll(newRecords)
         recordsAdapter.data = records
     }
@@ -96,9 +96,9 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
         startDataActivityWith(records[position])
     }
 
-    private fun startDataActivityWith(data: MarketRecord) {
-        val intent = Intent(this, MarketDataActivity::class.java)
-        intent.putExtra(DATA_ID, data.id)
+    private fun startDataActivityWith(data: CateringRecord) {
+        val intent = Intent(this, CateringDataActivity::class.java)
+        intent.putExtra(DATA_ID, data._id)
         startActivity(intent)
     }
 }

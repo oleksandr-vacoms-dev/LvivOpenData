@@ -6,10 +6,10 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.BarberRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.local.LocalBarberDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.remote.RemoteBarberDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.BarberActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.BarberDataActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.BarberDataViewModel
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.BarberViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.BarberActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data.BarberDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.datavm.BarberDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.BarberViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.ViewModelKey
 import dagger.Binds
 import dagger.Module

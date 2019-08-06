@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel

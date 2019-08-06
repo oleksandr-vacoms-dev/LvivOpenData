@@ -6,10 +6,10 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.FitnessRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local.LocalFitnessDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.remote.RemoteFitnessDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.FitnessActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.FitnessDataActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.FitnessDataViewModel
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.FitnessViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.FitnessActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data.FitnessDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.datavm.FitnessDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.FitnessViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.ViewModelKey
 import dagger.Binds
 import dagger.Module

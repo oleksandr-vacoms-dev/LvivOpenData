@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.FitnessDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data.FitnessDataActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.FitnessAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.OnItemClickListener
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.FitnessViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.FitnessViewModel
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.activity_list.*

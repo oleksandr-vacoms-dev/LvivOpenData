@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,18 +9,18 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.CateringDataActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.CateringAdapter
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data.ATMDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.ATMAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.OnItemClickListener
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.CateringViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.ATMViewModel
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.android.synthetic.main.back_button.*
+import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.android.synthetic.main.label_layout.*
 import javax.inject.Inject
 
-class CateringActivity : AppCompatActivity(), OnItemClickListener {
+class ATMActivity : AppCompatActivity(), OnItemClickListener {
 
     companion object {
         const val DATA_ID = "DATA_ID"
@@ -28,10 +28,10 @@ class CateringActivity : AppCompatActivity(), OnItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: CateringViewModel
+    private lateinit var viewModel: ATMViewModel
 
-    private val records = mutableListOf<CateringRecord>()
-    private lateinit var recordsAdapter: CateringAdapter
+    private val records = mutableListOf<ATMRecord>()
+    private lateinit var recordsAdapter: ATMAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,13 +47,13 @@ class CateringActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     private fun initView() {
-        label_view.text = resources.getString(R.string.catering_label)
+        label_view.text = resources.getString(R.string.atm_label)
 
         back_button.setOnClickListener { finish() }
     }
 
     private fun initAdapter() {
-        recordsAdapter = CateringAdapter(this)
+        recordsAdapter = ATMAdapter(this)
     }
 
     private fun initRecyclerView() {
@@ -67,11 +67,11 @@ class CateringActivity : AppCompatActivity(), OnItemClickListener {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(CateringViewModel::class.java)
+            .get(ATMViewModel::class.java)
     }
 
     private fun initObserver() {
-        viewModel.getCateringData()?.observe(
+        viewModel.getATMData()?.observe(
             this,
             androidx.lifecycle.Observer
             {
@@ -83,7 +83,7 @@ class CateringActivity : AppCompatActivity(), OnItemClickListener {
             })
     }
 
-    private fun refreshRecordsAndView(newRecords: List<CateringRecord>) {
+    private fun refreshRecordsAndView(newRecords: List<ATMRecord>) {
         records.addAll(newRecords)
         recordsAdapter.data = records
     }
@@ -96,8 +96,8 @@ class CateringActivity : AppCompatActivity(), OnItemClickListener {
         startDataActivityWith(records[position])
     }
 
-    private fun startDataActivityWith(data: CateringRecord) {
-        val intent = Intent(this, CateringDataActivity::class.java)
+    private fun startDataActivityWith(data: ATMRecord) {
+        val intent = Intent(this, ATMDataActivity::class.java)
         intent.putExtra(DATA_ID, data._id)
         startActivity(intent)
     }

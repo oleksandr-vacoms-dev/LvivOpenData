@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,34 +6,34 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapRepository
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromFitnessRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.FitnessActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromCateringRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.CateringActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.FitnessDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.datavm.CateringDataViewModel
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_fitness_data.*
+import kotlinx.android.synthetic.main.activity_catering_data.*
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.*
 import javax.inject.Inject
 
-class FitnessDataActivity : AppCompatActivity() {
+class CateringDataActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: FitnessDataViewModel
+    private lateinit var viewModel: CateringDataViewModel
 
-    private var record: FitnessRecord? = null
+    private var record: CateringRecord? = null
     private var recordId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_fitness_data)
+        setContentView(R.layout.activity_catering_data)
 
         AndroidInjection.inject(this)
-        recordId = intent.extras?.get(FitnessActivity.DATA_ID) as Int
+        recordId = intent.extras?.get(CateringActivity.DATA_ID) as Int
 
         initView()
         initViewModel()
@@ -47,7 +47,7 @@ class FitnessDataActivity : AppCompatActivity() {
             val mapManager: MapManager? = MapRepository.getInstance()
             if (record != null) {
                 mapManager?.addRecords(
-                    getAddressRecordFromFitnessRecord(
+                    getAddressRecordFromCateringRecord(
                         listOf(record!!)
                     )
                 )
@@ -59,11 +59,11 @@ class FitnessDataActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(FitnessDataViewModel::class.java)
+            .get(CateringDataViewModel::class.java)
     }
 
     private fun initObserver() {
-        viewModel.getFitnessDataById(recordId)?.observe(
+        viewModel.getCateringDataById(recordId)?.observe(
             this,
             androidx.lifecycle.Observer
             {
@@ -75,7 +75,7 @@ class FitnessDataActivity : AppCompatActivity() {
             })
     }
 
-    private fun refreshRecordAndView(newRecord: FitnessRecord) {
+    private fun refreshRecordAndView(newRecord: CateringRecord) {
         record = newRecord
         refreshView()
     }
@@ -85,12 +85,17 @@ class FitnessDataActivity : AppCompatActivity() {
             label_view.text = name
             district_view.text = district
             address_view.text = "$street  $building"
-            enterpreneur_name_view.text = enterpreneurName
-            cellphone_view.text = cellphoneNumber1
-            square_view.text = square
-            weekday_view.text = "${resources.getString(R.string.friday)} $hoursOfWorkWeekdays"
-            saturday_view.text = "${resources.getString(R.string.saturday)} $hoursOfWorkSaturday"
-            sunday_view.text = "${resources.getString(R.string.sunday)} $hoursOfWorkSunday"
+            enterpreneur_name_view.text = enterpreneur_name
+            seats_view.text = seats
+            cellphone_view.text = cellphone_number_1
+            square_view.text = area
+            monday_view.text = "${resources.getString(R.string.monday)}  $hours_of_work_monday"
+            tuesday_view.text = "${resources.getString(R.string.tuesday)}  $hours_of_work_tuesday"
+            wednesday_view.text = "${resources.getString(R.string.wednesday)} $hours_of_work_wednesday"
+            thursday_view.text = "${resources.getString(R.string.thursday)} $hours_of_work_thursday"
+            friday_view.text = "${resources.getString(R.string.friday)} $hours_of_work_friday"
+            saturday_view.text = "${resources.getString(R.string.saturday)} $hours_of_work_saturday"
+            sunday_view.text = "${resources.getString(R.string.sunday)} $hours_of_work_sunday"
         }
     }
 

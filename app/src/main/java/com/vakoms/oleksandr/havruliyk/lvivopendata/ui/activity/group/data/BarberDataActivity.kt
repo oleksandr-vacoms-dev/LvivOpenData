@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,34 +6,34 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapRepository
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromCateringRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.CateringActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromBarberRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.BarberActivity.Companion.DATA_ID
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.CateringDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.datavm.BarberDataViewModel
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_catering_data.*
+import kotlinx.android.synthetic.main.activity_barber_data.*
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.*
 import javax.inject.Inject
 
-class CateringDataActivity : AppCompatActivity() {
+class BarberDataActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: CateringDataViewModel
+    private lateinit var viewModel: BarberDataViewModel
 
-    private var record: CateringRecord? = null
+    private var record: BarberRecord? = null
     private var recordId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_catering_data)
+        setContentView(R.layout.activity_barber_data)
 
         AndroidInjection.inject(this)
-        recordId = intent.extras?.get(CateringActivity.DATA_ID) as Int
+        recordId = intent.extras?.get(DATA_ID) as Int
 
         initView()
         initViewModel()
@@ -47,7 +47,7 @@ class CateringDataActivity : AppCompatActivity() {
             val mapManager: MapManager? = MapRepository.getInstance()
             if (record != null) {
                 mapManager?.addRecords(
-                    getAddressRecordFromCateringRecord(
+                    getAddressRecordFromBarberRecord(
                         listOf(record!!)
                     )
                 )
@@ -59,11 +59,11 @@ class CateringDataActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(CateringDataViewModel::class.java)
+            .get(BarberDataViewModel::class.java)
     }
 
     private fun initObserver() {
-        viewModel.getCateringDataById(recordId)?.observe(
+        viewModel.getBarberDataById(recordId)?.observe(
             this,
             androidx.lifecycle.Observer
             {
@@ -75,7 +75,7 @@ class CateringDataActivity : AppCompatActivity() {
             })
     }
 
-    private fun refreshRecordAndView(newRecord: CateringRecord) {
+    private fun refreshRecordAndView(newRecord: BarberRecord) {
         record = newRecord
         refreshView()
     }
@@ -85,10 +85,8 @@ class CateringDataActivity : AppCompatActivity() {
             label_view.text = name
             district_view.text = district
             address_view.text = "$street  $building"
-            enterpreneur_name_view.text = enterpreneur_name
-            seats_view.text = seats
+            enterpreneur_name_view.text = enterpreneur_name_1
             cellphone_view.text = cellphone_number_1
-            square_view.text = area
             monday_view.text = "${resources.getString(R.string.monday)}  $hours_of_work_monday"
             tuesday_view.text = "${resources.getString(R.string.tuesday)}  $hours_of_work_tuesday"
             wednesday_view.text = "${resources.getString(R.string.wednesday)} $hours_of_work_wednesday"

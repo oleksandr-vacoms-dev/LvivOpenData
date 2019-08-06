@@ -6,10 +6,10 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.CateringRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.local.LocalCateringDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.remote.RemoteCateringDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.CateringActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.CateringDataActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.CateringDataViewModel
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.CateringViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.CateringActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data.CateringDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.datavm.CateringDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.CateringViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.ViewModelKey
 import dagger.Binds
 import dagger.Module
