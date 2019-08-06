@@ -14,8 +14,8 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.CateringAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.OnItemClickListener
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.CateringViewModel
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.activity_list.*
+import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.*
 import javax.inject.Inject
 
@@ -27,10 +27,10 @@ class CateringActivity : AppCompatActivity(), OnItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: CateringViewModel
 
     private val records = mutableListOf<CateringRecord>()
     private lateinit var recordsAdapter: CateringAdapter
-    private lateinit var viewModel: CateringViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +46,7 @@ class CateringActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     private fun initView() {
-        label.text = resources.getString(R.string.catering_label)
+        label_view.text = resources.getString(R.string.catering_label)
 
         back_button.setOnClickListener { finish() }
     }

@@ -1,11 +1,15 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapManager
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapRepository
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromBarberRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.BarberActivity.Companion.DATA_ID
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.BarberDataViewModel
 import dagger.android.AndroidInjection
@@ -37,6 +41,19 @@ class BarberDataActivity : AppCompatActivity() {
 
     private fun initView() {
         back_button.setOnClickListener { finish() }
+
+        address_view.setOnClickListener {
+            val mapManager: MapManager? = MapRepository.getInstance()
+            if (record != null) {
+                mapManager?.addRecords(
+                    getAddressRecordFromBarberRecord(
+                        listOf(record!!)
+                    )
+                )
+            }
+
+            startActivity(Intent(this, MapActivity::class.java))
+        }
     }
 
     private fun initViewModel() {
@@ -64,7 +81,7 @@ class BarberDataActivity : AppCompatActivity() {
 
     private fun refreshView() {
         with(record!!) {
-            label.text = name
+            label_view.text = name
             district_view.text = district
             address_view.text = "$street  $building"
             enterpreneur_name_view.text = enterpreneur_name_1

@@ -27,10 +27,10 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: MarketViewModel
 
     private val records = mutableListOf<MarketRecord>()
     private lateinit var recordsAdapter: MarketAdapter
-    private lateinit var viewModel: MarketViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +46,7 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     private fun initView() {
-        label.text = resources.getString(R.string.market_label)
+        label_view.text = resources.getString(R.string.market_label)
 
         back_button.setOnClickListener { finish() }
     }

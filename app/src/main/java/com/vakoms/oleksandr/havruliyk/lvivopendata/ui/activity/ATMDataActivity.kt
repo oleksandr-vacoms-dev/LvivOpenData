@@ -1,11 +1,15 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapManager
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapRepository
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromATMRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.ATMActivity.Companion.DATA_ID
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.ATMDataViewModel
 import dagger.android.AndroidInjection
@@ -37,6 +41,19 @@ class ATMDataActivity : AppCompatActivity() {
 
     private fun initView() {
         back_button.setOnClickListener { finish() }
+
+        address_view.setOnClickListener {
+            val mapManager: MapManager? = MapRepository.getInstance()
+            if (record != null) {
+                mapManager?.addRecords(
+                    getAddressRecordFromATMRecord(
+                        listOf(record!!)
+                    )
+                )
+            }
+
+            startActivity(Intent(this, MapActivity::class.java))
+        }
     }
 
     private fun initViewModel() {
@@ -63,8 +80,8 @@ class ATMDataActivity : AppCompatActivity() {
     }
 
     private fun refreshView() {
-        label.text = record!!.bankLabel
-        address.text = record!!.address
+        label_view.text = record!!.bankLabel
+        address_view.text = record!!.address
         work_time.text = record!!.workTime
     }
 

@@ -27,10 +27,10 @@ class FitnessActivity : AppCompatActivity(), OnItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: FitnessViewModel
 
     private val records = mutableListOf<FitnessRecord>()
     private lateinit var recordsAdapter: FitnessAdapter
-    private lateinit var viewModel: FitnessViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +46,7 @@ class FitnessActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     private fun initView() {
-        label.text = resources.getString(R.string.fitness_label)
+        label_view.text = resources.getString(R.string.fitness_label)
 
         back_button.setOnClickListener { finish() }
     }

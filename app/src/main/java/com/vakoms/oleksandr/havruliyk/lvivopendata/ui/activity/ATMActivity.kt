@@ -27,10 +27,10 @@ class ATMActivity : AppCompatActivity(), OnItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: ATMViewModel
 
     private val records = mutableListOf<ATMRecord>()
     private lateinit var recordsAdapter: ATMAdapter
-    private lateinit var viewModel: ATMViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +46,7 @@ class ATMActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     private fun initView() {
-        label.text = resources.getString(R.string.atm_label)
+        label_view.text = resources.getString(R.string.atm_label)
 
         back_button.setOnClickListener { finish() }
     }

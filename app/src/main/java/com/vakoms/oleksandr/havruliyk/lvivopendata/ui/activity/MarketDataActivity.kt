@@ -1,11 +1,15 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapManager
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromMarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.MarketDataViewModel
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_market_data.*
@@ -36,6 +40,19 @@ class MarketDataActivity : AppCompatActivity() {
 
     private fun initView() {
         back_button.setOnClickListener { finish() }
+
+        address_view.setOnClickListener {
+            val mapManager: MapManager? = MapRepository.getInstance()
+            if (record != null) {
+                mapManager?.addRecords(
+                    getAddressRecordFromMarketRecord(
+                        listOf(record!!)
+                    )
+                )
+            }
+
+            startActivity(Intent(this, MapActivity::class.java))
+        }
     }
 
     private fun initViewModel() {
@@ -63,7 +80,7 @@ class MarketDataActivity : AppCompatActivity() {
 
     private fun refreshView() {
         with(record!!) {
-            label.text = name
+            label_view.text = name
             district_view.text = district
             address_view.text = "$street  $building"
             enterpreneur_name_view.text = enterpreneurName1

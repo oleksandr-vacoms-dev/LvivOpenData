@@ -27,10 +27,10 @@ class BarberActivity : AppCompatActivity(), OnItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+    private lateinit var viewModel: BarberViewModel
 
     private val records = mutableListOf<BarberRecord>()
     private lateinit var recordsAdapter: BarberAdapter
-    private lateinit var viewModel: BarberViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +46,7 @@ class BarberActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     private fun initView() {
-        label.text = resources.getString(R.string.barber_label)
+        label_view.text = resources.getString(R.string.barber_label)
 
         back_button.setOnClickListener { finish() }
     }
