@@ -32,8 +32,8 @@ class ATMAdapter(var onClickListener: OnItemClickListener) : RecyclerView.Adapte
         fun bind(item: ATMRecord, onClickListener: OnItemClickListener) {
             itemView.setOnClickListener { onClickListener.onItemClick(itemView, position) }
 
-            label.text = with(item) { bankLabel }
-            address.text = with(item) { address }
+            label_view.text = with(item) { bankLabel }
+            address_view.text = with(item) { address }
         }
     }
 }

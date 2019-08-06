@@ -30,7 +30,7 @@
                     style="@style/Simple_Text"
                     android:textStyle="bold"
                     android:layout_margin="@dimen/small_dimen"
-                    android:id="@+id/label"
+                    android:id="@+id/label_view"
                     android:text="@string/app_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -38,7 +38,7 @@
             <TextView
                     style="@style/Simple_Text"
                     android:layout_margin="@dimen/small_dimen"
-                    android:id="@+id/address"
+                    android:id="@+id/address_view"
                     android:textStyle="italic"
                     android:text="@string/app_name"
                     android:gravity="end"

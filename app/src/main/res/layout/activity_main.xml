@@ -137,4 +137,25 @@
 
     </androidx.cardview.widget.CardView>
 
+    <androidx.cardview.widget.CardView
+            android:layout_margin="@dimen/large_dimen"
+            android:id="@+id/card_view_map"
+            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/light_grey"
+            app:cardCornerRadius="@dimen/small_dimen">
+
+        <TextView
+                style="@style/Simple_Text"
+                android:id="@+id/map"
+                android:text="@string/map_label"
+                android:textStyle="bold"
+                android:padding="@dimen/large_dimen"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+    </androidx.cardview.widget.CardView>
+
 </LinearLayout>

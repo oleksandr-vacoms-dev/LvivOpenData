@@ -32,8 +32,8 @@ class MarketAdapter(var onClickListener: OnItemClickListener) : RecyclerView.Ada
         fun bind(item: MarketRecord, onClickListener: OnItemClickListener) {
             itemView.setOnClickListener { onClickListener.onItemClick(itemView, position) }
 
-            label.text = with(item) { name }
-            address.text = with(item) { "$street $building" }
+            label_view.text = with(item) { name }
+            address_view.text = with(item) { "$street $building" }
         }
     }
 }

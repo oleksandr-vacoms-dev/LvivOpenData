@@ -43,7 +43,7 @@
                 <TextView
                         style="@style/Simple_Text"
                         android:layout_margin="@dimen/small_dimen"
-                        android:id="@+id/address"
+                        android:id="@+id/address_view"
                         android:textStyle="italic"
                         android:text="@string/address"
                         android:gravity="center"

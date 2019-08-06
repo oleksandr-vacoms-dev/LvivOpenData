@@ -20,7 +20,7 @@
 
         <TextView
                 style="@style/Label"
-                android:id="@+id/label"
+                android:id="@+id/label_view"
                 android:gravity="center"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/very_large_dimen"

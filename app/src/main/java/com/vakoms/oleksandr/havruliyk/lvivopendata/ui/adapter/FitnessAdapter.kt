@@ -32,8 +32,8 @@ class FitnessAdapter(var onClickListener: OnItemClickListener) : RecyclerView.Ad
         fun bind(item: FitnessRecord, onClickListener: OnItemClickListener) {
             itemView.setOnClickListener { onClickListener.onItemClick(itemView, position) }
 
-            label.text = with(item) { "$name $street" }
-            address.text = with(item) { "$street $building" }
+            label_view.text = with(item) { "$name $street" }
+            address_view.text = with(item) { "$street $building" }
         }
     }
 }
