@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.FitnessDataActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.FitnessAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.OnItemClickListener
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.FitnessViewModel

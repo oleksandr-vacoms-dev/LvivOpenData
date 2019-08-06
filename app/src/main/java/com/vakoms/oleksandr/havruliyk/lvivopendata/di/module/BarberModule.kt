@@ -7,7 +7,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.BarberRepo
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.local.LocalBarberDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.remote.RemoteBarberDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.BarberActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.BarberDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.BarberDataActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.BarberDataViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.BarberViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.ViewModelKey

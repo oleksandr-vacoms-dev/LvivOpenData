@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,33 +6,34 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapManager
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromMarketRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapRepository
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromBarberRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.BarberActivity.Companion.DATA_ID
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.BarberDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MarketActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.MarketDataViewModel
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_barber_data.*
+import kotlinx.android.synthetic.main.activity_market_data.*
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.*
 import javax.inject.Inject
 
-class BarberDataActivity : AppCompatActivity() {
+class MarketDataActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: BarberDataViewModel
+    private lateinit var viewModel: MarketDataViewModel
 
-    private var record: BarberRecord? = null
+    private var record: MarketRecord? = null
     private var recordId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_barber_data)
+        setContentView(R.layout.activity_market_data)
 
         AndroidInjection.inject(this)
-        recordId = intent.extras?.get(DATA_ID) as Int
+        recordId = intent.extras?.get(MarketActivity.DATA_ID) as Int
 
         initView()
         initViewModel()
@@ -46,7 +47,7 @@ class BarberDataActivity : AppCompatActivity() {
             val mapManager: MapManager? = MapRepository.getInstance()
             if (record != null) {
                 mapManager?.addRecords(
-                    getAddressRecordFromBarberRecord(
+                    getAddressRecordFromMarketRecord(
                         listOf(record!!)
                     )
                 )
@@ -58,11 +59,11 @@ class BarberDataActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(BarberDataViewModel::class.java)
+            .get(MarketDataViewModel::class.java)
     }
 
     private fun initObserver() {
-        viewModel.getBarberDataById(recordId)?.observe(
+        viewModel.getMarketDataById(recordId)?.observe(
             this,
             androidx.lifecycle.Observer
             {
@@ -74,7 +75,7 @@ class BarberDataActivity : AppCompatActivity() {
             })
     }
 
-    private fun refreshRecordAndView(newRecord: BarberRecord) {
+    private fun refreshRecordAndView(newRecord: MarketRecord) {
         record = newRecord
         refreshView()
     }
@@ -84,15 +85,17 @@ class BarberDataActivity : AppCompatActivity() {
             label_view.text = name
             district_view.text = district
             address_view.text = "$street  $building"
-            enterpreneur_name_view.text = enterpreneur_name_1
-            cellphone_view.text = cellphone_number_1
-            monday_view.text = "${resources.getString(R.string.monday)}  $hours_of_work_monday"
-            tuesday_view.text = "${resources.getString(R.string.tuesday)}  $hours_of_work_tuesday"
-            wednesday_view.text = "${resources.getString(R.string.wednesday)} $hours_of_work_wednesday"
-            thursday_view.text = "${resources.getString(R.string.thursday)} $hours_of_work_thursday"
-            friday_view.text = "${resources.getString(R.string.friday)} $hours_of_work_friday"
-            saturday_view.text = "${resources.getString(R.string.saturday)} $hours_of_work_saturday"
-            sunday_view.text = "${resources.getString(R.string.sunday)} $hours_of_work_sunday"
+            enterpreneur_name_view.text = enterpreneurName1
+            specialization_view.text = specialization
+            cellphone_view.text = cellphoneNumber1
+            square_view.text = storeTotalSquare
+            monday_view.text = "${resources.getString(R.string.monday)}  $hoursOfWorkMonday"
+            tuesday_view.text = "${resources.getString(R.string.tuesday)}  $hoursOfWorkTuesday"
+            wednesday_view.text = "${resources.getString(R.string.wednesday)} $hoursOfWorkWednesday"
+            thursday_view.text = "${resources.getString(R.string.thursday)} $hoursOfWorkThursday"
+            friday_view.text = "${resources.getString(R.string.friday)} $hoursOfWorkFriday"
+            saturday_view.text = "${resources.getString(R.string.saturday)} $hoursOfWorkSaturday"
+            sunday_view.text = "${resources.getString(R.string.sunday)} $hoursOfWorkSunday"
         }
     }
 

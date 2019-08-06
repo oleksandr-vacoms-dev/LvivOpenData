@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.CateringDataActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.CateringAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.OnItemClickListener
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.CateringViewModel

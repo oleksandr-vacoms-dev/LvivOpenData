@@ -7,7 +7,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.Catering
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.local.LocalCateringDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.remote.RemoteCateringDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.CateringActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.CateringDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.CateringDataActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.CateringDataViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.CateringViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.ViewModelKey

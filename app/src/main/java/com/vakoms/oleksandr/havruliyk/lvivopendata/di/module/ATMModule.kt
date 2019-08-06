@@ -7,7 +7,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.ATMRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.local.LocalATMDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.remote.RemoteATMDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.ATMActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.ATMDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.ATMDataActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.ATMDataViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.ATMViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.ViewModelKey

@@ -7,7 +7,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.FitnessRe
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local.LocalFitnessDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.remote.RemoteFitnessDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.FitnessActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.FitnessDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.FitnessDataActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.FitnessDataViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.FitnessViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.ViewModelKey
