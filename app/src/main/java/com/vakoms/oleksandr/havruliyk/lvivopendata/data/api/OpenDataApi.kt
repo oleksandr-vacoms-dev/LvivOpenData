@@ -1,12 +1,14 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.api
 
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringResponse
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.coordinates.CoordinatesResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResponse
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface OpenDataApi {
     @GET("3/action/datastore_search?resource_id=2fc42d58-a332-4234-bc19-152d51f816a1")
@@ -23,4 +25,8 @@ interface OpenDataApi {
 
     @GET("3/action/datastore_search?resource_id=634c8a6d-c272-4375-bd29-92526722b7ac")
     fun getBarber(): Call<BarberResponse>
+
+    @GET("3/action/datastore_search_sql")
+    fun getCoordinatesByAddress(@Query("sql") sql: String): Call<CoordinatesResponse>
+
 }
