@@ -14,6 +14,8 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.MapViewModel
 import dagger.android.AndroidInjection
+import kotlinx.android.synthetic.main.back_button.*
+import kotlinx.android.synthetic.main.item_list.*
 import javax.inject.Inject
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -37,9 +39,16 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
         AndroidInjection.inject(this)
 
+        initView()
         initMapFragment()
         initViewModel()
         initObserver()
+    }
+
+    private fun initView(){
+        label_view.text = resources.getString(R.string.map_label)
+
+        back_button.setOnClickListener { finish() }
     }
 
     private fun initMapFragment() {

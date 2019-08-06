@@ -5,9 +5,11 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
+    <include layout="@layout/label_layout"> </include>
 
     <fragment
             android:id="@+id/map"
+            android:layout_marginTop="@dimen/default_height_label"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
