@@ -1,25 +1,13 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.local
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
+import javax.inject.Inject
 
-class LocalBarberDataStorage(context: Context) : DataStorage<BarberRecord> {
-
-    private var barberDao: BarberDao
-
-    init {
-        val roomDB: BarberRoomDatabase = Room.databaseBuilder(
-            context,
-            BarberRoomDatabase::class.java, "barber_db"
-        )
-            .allowMainThreadQueries()
-            .build()
-
-        barberDao = roomDB.barberDao()
-    }
+class LocalBarberDataStorage @Inject constructor(database: BarberRoomDatabase) : DataStorage<BarberRecord> {
+    private var barberDao: BarberDao = database.barberDao()
 
     override fun getAll(): LiveData<List<BarberRecord>> {
         return barberDao.getAll()

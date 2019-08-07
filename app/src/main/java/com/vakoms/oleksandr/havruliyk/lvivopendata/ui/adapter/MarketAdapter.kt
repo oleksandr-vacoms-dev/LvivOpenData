@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener.OnItemClickListener
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_list.*
 
 class MarketAdapter(var onClickListener: OnItemClickListener) : RecyclerView.Adapter<MarketAdapter.ViewHolder>() {
 
-    var data: MutableList<MarketRecord> = mutableListOf()
+    var data: List<MarketRecord> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()

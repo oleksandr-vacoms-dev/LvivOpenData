@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener.OnItemClickListener
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_list.*
 
 class BarberAdapter(var onClickListener: OnItemClickListener) : RecyclerView.Adapter<BarberAdapter.ViewHolder>() {
 
-    var data: MutableList<BarberRecord> = mutableListOf()
+    var data: List<BarberRecord> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()

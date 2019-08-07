@@ -1,25 +1,13 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local
 
-import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.room.Room
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
+import javax.inject.Inject
 
-class LocalMarketDataStorage(context: Context) : DataStorage<MarketRecord> {
+class LocalMarketDataStorage @Inject constructor(database: MarketRoomDatabase) : DataStorage<MarketRecord> {
 
-    private var marketDao: MarketDao
-
-    init {
-        val roomDB: MarketRoomDatabase = Room.databaseBuilder(
-            context,
-            MarketRoomDatabase::class.java, "market_db"
-        )
-            .allowMainThreadQueries()
-            .build()
-
-        marketDao = roomDB.marketDao()
-    }
+    var marketDao: MarketDao = database.marketDao()
 
     override fun getAll(): LiveData<List<MarketRecord>>? {
         return marketDao.getAll()

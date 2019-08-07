@@ -3,19 +3,15 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.remote
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.RetrofitService
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class RemoteCateringDataStorage : DataStorage<CateringRecord> {
-
-    private val openDataApi: OpenDataApi = RetrofitService.createService(
-        OpenDataApi::class.java
-    )
+class RemoteCateringDataStorage @Inject constructor(var openDataApi: OpenDataApi) : DataStorage<CateringRecord> {
 
     override fun getAll(): MutableLiveData<List<CateringRecord>> {
         val data = MutableLiveData<List<CateringRecord>>()

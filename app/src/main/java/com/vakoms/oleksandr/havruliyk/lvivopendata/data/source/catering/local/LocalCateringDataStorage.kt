@@ -1,25 +1,13 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.local
 
-import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.room.Room
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
+import javax.inject.Inject
 
-class LocalCateringDataStorage(context: Context) : DataStorage<CateringRecord> {
+class LocalCateringDataStorage @Inject constructor(database: CateringRoomDatabase) : DataStorage<CateringRecord> {
 
-    private var cateringDao: CateringDao
-
-    init {
-        val roomDB: CateringRoomDatabase = Room.databaseBuilder(
-            context,
-            CateringRoomDatabase::class.java, "catering_db"
-        )
-            .allowMainThreadQueries()
-            .build()
-
-        cateringDao = roomDB.cateringDao()
-    }
+    private var cateringDao: CateringDao = database.cateringDao()
 
     override fun getAll(): LiveData<List<CateringRecord>> {
         return cateringDao.getAll()

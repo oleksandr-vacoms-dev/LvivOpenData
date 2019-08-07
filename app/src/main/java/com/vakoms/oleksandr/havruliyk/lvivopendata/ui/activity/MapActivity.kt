@@ -34,10 +34,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private val records = mutableListOf<MapRecord>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-
-        AndroidInjection.inject(this)
 
         initView()
         initMapFragment()
@@ -45,7 +44,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         initObserver()
     }
 
-    private fun initView(){
+    private fun initView() {
         label_view.text = resources.getString(R.string.map_label)
 
         back_button.setOnClickListener { finish() }

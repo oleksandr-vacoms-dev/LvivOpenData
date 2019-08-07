@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener.OnItemClickListener
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_list.*
 
 class ATMAdapter(var onClickListener: OnItemClickListener) : RecyclerView.Adapter<ATMAdapter.ViewHolder>() {
 
-    var data: MutableList<ATMRecord> = mutableListOf()
+    var data: List<ATMRecord> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()

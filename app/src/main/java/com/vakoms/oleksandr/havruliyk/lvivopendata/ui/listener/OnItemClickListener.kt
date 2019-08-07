@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener
 
 import android.view.View
 

@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener.OnItemClickListener
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_list.*
 
 class FitnessAdapter(var onClickListener: OnItemClickListener) : RecyclerView.Adapter<FitnessAdapter.ViewHolder>() {
 
-    var data: MutableList<FitnessRecord> = mutableListOf()
+    var data: List<FitnessRecord> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()

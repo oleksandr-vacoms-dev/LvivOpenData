@@ -3,19 +3,15 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.remote
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.RetrofitService
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class RemoteFitnessDataStorage : DataStorage<FitnessRecord> {
-
-    private val openDataApi: OpenDataApi = RetrofitService.createService(
-        OpenDataApi::class.java
-    )
+class RemoteFitnessDataStorage @Inject constructor(var openDataApi: OpenDataApi) : DataStorage<FitnessRecord> {
 
     override fun getAll(): MutableLiveData<List<FitnessRecord>> {
         val data = MutableLiveData<List<FitnessRecord>>()
