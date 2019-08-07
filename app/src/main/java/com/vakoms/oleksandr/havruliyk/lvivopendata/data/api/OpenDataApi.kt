@@ -28,4 +28,7 @@ interface OpenDataApi {
 
     @GET("3/action/datastore_search_sql")
     fun getCoordinatesByAddress(@Query("sql") sql: String): Call<CoordinatesResponse>
+
+    @GET("3/action/datastore_search_sql")
+    fun getMarketByName(@Query("sql") sql: String): Call<MarketsResponse>
 }

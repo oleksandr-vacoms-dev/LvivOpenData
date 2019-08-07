@@ -11,4 +11,6 @@ interface DataStorage<T> {
     fun deleteAll()
 
     fun getById(id: Int): LiveData<T>?
+
+    fun getByName(name: String): LiveData<List<T>>?
 }

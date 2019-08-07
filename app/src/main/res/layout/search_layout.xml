@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_height_label"
+        app:cardBackgroundColor="@color/green_light_grey"
+        app:cardCornerRadius="0dp"
+        android:elevation="3dp">
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <include
+                android:id="@+id/back_button_layout"
+                layout="@layout/back_button"
+                android:layout_centerVertical="true" android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+        <TextView
+                style="@style/Label"
+                android:focusableInTouchMode="true"
+                android:id="@+id/label_view"
+                android:gravity="center"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/very_large_dimen"
+                android:layout_marginEnd="@dimen/very_large_dimen"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+       <SearchView
+               android:id="@+id/search_view"
+               android:gravity="center"
+               android:layout_centerVertical="true"
+               android:layout_marginStart="@dimen/very_large_dimen"
+               android:layout_marginEnd="@dimen/very_large_dimen"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+
+       </SearchView>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

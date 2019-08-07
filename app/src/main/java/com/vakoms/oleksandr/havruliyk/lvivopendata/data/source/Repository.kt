@@ -31,10 +31,30 @@ abstract class Repository<T>(
 
     override fun getById(id: Int): LiveData<T>? = localDataStorage.getById(id)
 
+    override fun getByName(name: String): LiveData<List<T>>? {
+        netManager.isConnectedToInternet?.let {
+            return if (it) {
+                getDataFromRemoteAndRefreshLocalByName(name)
+            } else {
+                localDataStorage.getByName(name)
+            }
+        }
+        return null
+    }
 
     private fun getDataFromRemoteAndRefreshLocal(): LiveData<List<T>>? {
         val data = remoteDataStorage.getAll()
         data?.observeForever { refreshSavedData(it) }
+        return data
+    }
+
+    private fun getDataFromRemoteAndRefreshLocalByName(name: String): LiveData<List<T>>? {
+        val data = remoteDataStorage.getByName(name)
+        data?.observeForever {
+            doAsync {
+                saveAll(it)
+            }
+        }
         return data
     }
 
