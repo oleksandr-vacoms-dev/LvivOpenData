@@ -6,12 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener.OnItemClickListener
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_list.*
 
 class CateringAdapter(var onClickListener: OnItemClickListener) : RecyclerView.Adapter<CateringAdapter.ViewHolder>() {
 
-    var data: MutableList<CateringRecord> = mutableListOf()
+    var data: List<CateringRecord> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()

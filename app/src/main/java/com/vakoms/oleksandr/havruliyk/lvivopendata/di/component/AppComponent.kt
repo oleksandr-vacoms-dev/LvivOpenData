@@ -1,5 +1,6 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.di.component
 
+import com.vakoms.oleksandr.havruliyk.lvivopendata.OpenDataApp
 import com.vakoms.oleksandr.havruliyk.lvivopendata.di.module.ActivitiesModule
 import com.vakoms.oleksandr.havruliyk.lvivopendata.di.module.AppModule
 import dagger.BindsInstance

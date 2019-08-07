@@ -44,7 +44,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         initObserver()
     }
 
-    private fun initView(){
+    private fun initView() {
         label_view.text = resources.getString(R.string.map_label)
 
         back_button.setOnClickListener { finish() }

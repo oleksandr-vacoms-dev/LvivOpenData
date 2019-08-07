@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.datavm
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

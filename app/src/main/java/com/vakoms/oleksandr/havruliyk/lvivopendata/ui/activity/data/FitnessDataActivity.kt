@@ -1,18 +1,16 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapManager
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapRepository
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromFitnessRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.FitnessActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.datavm.FitnessDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.data.FitnessDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_fitness_data.*
 import kotlinx.android.synthetic.main.back_button.*
@@ -33,7 +31,7 @@ class FitnessDataActivity : AppCompatActivity() {
         setContentView(R.layout.activity_fitness_data)
 
         AndroidInjection.inject(this)
-        recordId = intent.extras?.get(FitnessActivity.DATA_ID) as Int
+        recordId = intent.extras?.get(DATA_ID) as Int
 
         initView()
         initViewModel()
@@ -44,44 +42,29 @@ class FitnessDataActivity : AppCompatActivity() {
         back_button.setOnClickListener { finish() }
 
         address_view.setOnClickListener {
-            val mapManager: MapManager? = MapRepository.getInstance()
             if (record != null) {
-                mapManager?.addRecords(
-                    getAddressRecordFromFitnessRecord(
-                        listOf(record!!)
-                    )
-                )
+                viewModel.addRecordsToMap(listOf(record!!))
+                startActivity(Intent(this, MapActivity::class.java))
             }
-
-            startActivity(Intent(this, MapActivity::class.java))
         }
     }
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(FitnessDataViewModel::class.java)
+
+        viewModel.setRecordId(intent.extras?.get(DATA_ID) as Int)
     }
 
     private fun initObserver() {
-        viewModel.getFitnessDataById(recordId)?.observe(
-            this,
-            androidx.lifecycle.Observer
-            {
-                if (it != null) {
-                    refreshRecordAndView(it)
-                } else {
-                    setViewToEmpty()
-                }
-            })
+        viewModel.record.observe(this, Observer<FitnessRecord> { record ->
+            upDataView(record)
+        })
     }
 
-    private fun refreshRecordAndView(newRecord: FitnessRecord) {
-        record = newRecord
-        refreshView()
-    }
-
-    private fun refreshView() {
-        with(record!!) {
+    private fun upDataView(record: FitnessRecord) {
+        this.record = record
+        with(record) {
             label_view.text = name
             district_view.text = district
             address_view.text = "$street  $building"
@@ -92,9 +75,5 @@ class FitnessDataActivity : AppCompatActivity() {
             saturday_view.text = "${resources.getString(R.string.saturday)} $hoursOfWorkSaturday"
             sunday_view.text = "${resources.getString(R.string.sunday)} $hoursOfWorkSunday"
         }
-    }
-
-    private fun setViewToEmpty() {
-        //TODO : show reference image or text(don't have data)
     }
 }

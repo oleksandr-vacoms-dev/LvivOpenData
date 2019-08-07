@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <application
-            android:name=".di.component.OpenDataApp"
+            android:name=".OpenDataApp"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
@@ -22,15 +22,15 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.activity.group.ATMActivity"/>
-        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data.ATMDataActivity"/>
+        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.ATMDataActivity"/>
         <activity android:name=".ui.activity.group.BarberActivity"/>
-        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data.BarberDataActivity"/>
+        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.BarberDataActivity"/>
         <activity android:name=".ui.activity.group.CateringActivity"/>
-        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data.CateringDataActivity"/>
+        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.CateringDataActivity"/>
         <activity android:name=".ui.activity.group.FitnessActivity"/>
-        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data.FitnessDataActivity"/>
+        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.FitnessDataActivity"/>
         <activity android:name=".ui.activity.group.MarketActivity"/>
-        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data.MarketDataActivity"/>
+        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.MarketDataActivity"/>
         <activity android:name=".ui.activity.MapActivity"/>
 
         <meta-data

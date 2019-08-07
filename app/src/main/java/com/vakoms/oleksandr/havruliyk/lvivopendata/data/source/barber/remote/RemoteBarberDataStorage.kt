@@ -3,19 +3,15 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.remote
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.RetrofitService
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class RemoteBarberDataStorage : DataStorage<BarberRecord> {
-
-    private val openDataApi: OpenDataApi = RetrofitService.createService(
-        OpenDataApi::class.java
-    )
+class RemoteBarberDataStorage @Inject constructor(var openDataApi: OpenDataApi) : DataStorage<BarberRecord> {
 
     override fun getAll(): MutableLiveData<List<BarberRecord>> {
         val data = MutableLiveData<List<BarberRecord>>()

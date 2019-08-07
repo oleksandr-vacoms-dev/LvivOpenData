@@ -1,15 +1,16 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.MarketActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.datavm.MarketDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.data.MarketDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_market_data.*
 import kotlinx.android.synthetic.main.back_button.*
@@ -49,29 +50,18 @@ class MarketDataActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(MarketDataViewModel::class.java)
 
-        viewModel.setRecordId(intent.extras?.get(MarketActivity.DATA_ID) as Int)
+        viewModel.setRecordId(intent.extras?.get(DATA_ID) as Int)
     }
 
     private fun initObserver() {
-        viewModel.record.observe(
-            this,
-            androidx.lifecycle.Observer
-            {
-                if (it != null) {
-                    refreshRecordAndView(it)
-                } else {
-                    setViewToEmpty()
-                }
-            })
+        viewModel.record.observe(this, Observer<MarketRecord> { record ->
+            upDataView(record)
+        })
     }
 
-    private fun refreshRecordAndView(newRecord: MarketRecord) {
-        record = newRecord
-        refreshView()
-    }
-
-    private fun refreshView() {
-        with(record!!) {
+    private fun upDataView(record: MarketRecord) {
+        this.record = record
+        with(record) {
             label_view.text = name
             district_view.text = district
             address_view.text = "$street  $building"
@@ -87,9 +77,5 @@ class MarketDataActivity : AppCompatActivity() {
             saturday_view.text = "${resources.getString(R.string.saturday)} $hoursOfWorkSaturday"
             sunday_view.text = "${resources.getString(R.string.sunday)} $hoursOfWorkSunday"
         }
-    }
-
-    private fun setViewToEmpty() {
-        //TODO : show reference image or text(don't have data)
     }
 }

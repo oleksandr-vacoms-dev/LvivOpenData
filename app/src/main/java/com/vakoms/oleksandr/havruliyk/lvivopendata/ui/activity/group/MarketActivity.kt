@@ -11,21 +11,19 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data.MarketDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.MarketDataActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.MarketAdapter
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.OnItemClickListener
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.MarketViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener.OnItemClickListener
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.group.MarketViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.android.synthetic.main.label_layout.*
 import javax.inject.Inject
 
-class MarketActivity : AppCompatActivity(), OnItemClickListener {
-
-    companion object {
-        const val DATA_ID = "DATA_ID"
-    }
+class MarketActivity : AppCompatActivity(),
+    OnItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -72,16 +70,25 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
 
     private fun initObserver() {
         viewModel.data.observe(this, Observer<List<MarketRecord>> { records ->
+            upDataView(records)
+        })
+    }
+
+    private fun upDataView(records: List<MarketRecord>) {
+        if(records.isEmpty()){
+            showEmptyView()
+        } else {
             this.records = records
             recordsAdapter.data = records
-        })
+            showRecyclerView()
+        }
     }
 
     private fun showEmptyView() {
         recycler_view.visibility = View.GONE
     }
 
-    private fun showRecords(newRecords: List<MarketRecord>){
+    private fun showRecyclerView(){
         recycler_view.visibility = View.VISIBLE
     }
 

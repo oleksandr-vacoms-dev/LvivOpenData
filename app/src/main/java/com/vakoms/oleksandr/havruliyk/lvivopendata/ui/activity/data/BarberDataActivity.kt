@@ -1,22 +1,21 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapManager
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapRepository
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromBarberRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.BarberActivity.Companion.DATA_ID
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.datavm.BarberDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.data.BarberDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_barber_data.*
 import kotlinx.android.synthetic.main.back_button.*
-import kotlinx.android.synthetic.main.label_layout.*
+import kotlinx.android.synthetic.main.item_list.*
+import kotlinx.android.synthetic.main.item_list.address_view
 import javax.inject.Inject
 
 class BarberDataActivity : AppCompatActivity() {
@@ -44,44 +43,29 @@ class BarberDataActivity : AppCompatActivity() {
         back_button.setOnClickListener { finish() }
 
         address_view.setOnClickListener {
-            val mapManager: MapManager? = MapRepository.getInstance()
             if (record != null) {
-                mapManager?.addRecords(
-                    getAddressRecordFromBarberRecord(
-                        listOf(record!!)
-                    )
-                )
+                viewModel.addRecordsToMap(listOf(record!!))
+                startActivity(Intent(this, MapActivity::class.java))
             }
-
-            startActivity(Intent(this, MapActivity::class.java))
         }
     }
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(BarberDataViewModel::class.java)
+
+        viewModel.setRecordId(intent.extras?.get(DATA_ID) as Int)
     }
 
     private fun initObserver() {
-        viewModel.getBarberDataById(recordId)?.observe(
-            this,
-            androidx.lifecycle.Observer
-            {
-                if (it != null) {
-                    refreshRecordAndView(it)
-                } else {
-                    setViewToEmpty()
-                }
-            })
+        viewModel.record.observe(this, Observer<BarberRecord> { record ->
+            upDataView(record)
+        })
     }
 
-    private fun refreshRecordAndView(newRecord: BarberRecord) {
-        record = newRecord
-        refreshView()
-    }
-
-    private fun refreshView() {
-        with(record!!) {
+    private fun upDataView(record: BarberRecord) {
+        this.record = record
+        with(record) {
             label_view.text = name
             district_view.text = district
             address_view.text = "$street  $building"
@@ -95,9 +79,5 @@ class BarberDataActivity : AppCompatActivity() {
             saturday_view.text = "${resources.getString(R.string.saturday)} $hours_of_work_saturday"
             sunday_view.text = "${resources.getString(R.string.sunday)} $hours_of_work_sunday"
         }
-    }
-
-    private fun setViewToEmpty() {
-        //TODO : show reference image or text(don't have data)
     }
 }

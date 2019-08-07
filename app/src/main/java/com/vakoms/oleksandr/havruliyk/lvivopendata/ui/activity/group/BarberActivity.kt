@@ -4,40 +4,38 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.data.BarberDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.BarberDataActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.BarberAdapter
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.OnItemClickListener
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.BarberViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener.OnItemClickListener
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.group.BarberViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.activity_list.*
+import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.*
 import javax.inject.Inject
 
-class BarberActivity : AppCompatActivity(), OnItemClickListener {
-
-    companion object {
-        const val DATA_ID = "DATA_ID"
-    }
+class BarberActivity : AppCompatActivity(),
+    OnItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: BarberViewModel
 
-    private val records = mutableListOf<BarberRecord>()
+    private var records = listOf<BarberRecord>()
     private lateinit var recordsAdapter: BarberAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
-
-        AndroidInjection.inject(this)
 
         initAdapter()
         initView()
@@ -71,21 +69,27 @@ class BarberActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     private fun initObserver() {
-        viewModel.getBarberData()?.observe(
-            this,
-            androidx.lifecycle.Observer
-            {
-                if (it != null) {
-                    refreshRecordsAndView(it)
-                } else {
-                    setViewToEmpty()
-                }
-            })
+        viewModel.data.observe(this, Observer<List<BarberRecord>> { records ->
+            upDataView(records)
+        })
     }
 
-    private fun refreshRecordsAndView(newRecords: List<BarberRecord>) {
-        records.addAll(newRecords)
-        recordsAdapter.data = records
+    private fun upDataView(records: List<BarberRecord>) {
+        if (records.isEmpty()) {
+            showEmptyView()
+        } else {
+            this.records = records
+            recordsAdapter.data = records
+            showRecyclerView()
+        }
+    }
+
+    private fun showEmptyView() {
+        recycler_view.visibility = View.GONE
+    }
+
+    private fun showRecyclerView() {
+        recycler_view.visibility = View.VISIBLE
     }
 
     private fun setViewToEmpty() {

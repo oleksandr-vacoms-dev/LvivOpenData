@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory
+package com.vakoms.oleksandr.havruliyk.lvivopendata.di.factory
 
 import androidx.lifecycle.ViewModelProvider
 import dagger.Binds
