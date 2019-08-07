@@ -26,14 +26,12 @@ class MarketDataActivity : AppCompatActivity() {
     private lateinit var viewModel: MarketDataViewModel
 
     private var record: MarketRecord? = null
-    private var recordId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_market_data)
 
         AndroidInjection.inject(this)
-        recordId = intent.extras?.get(MarketActivity.DATA_ID) as Int
 
         initView()
         initViewModel()
@@ -60,10 +58,12 @@ class MarketDataActivity : AppCompatActivity() {
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(MarketDataViewModel::class.java)
+
+        viewModel.setRecordId(intent.extras?.get(MarketActivity.DATA_ID) as Int)
     }
 
     private fun initObserver() {
-        viewModel.getMarketDataById(recordId)?.observe(
+        viewModel.record.observe(
             this,
             androidx.lifecycle.Observer
             {

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -30,7 +31,7 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: MarketViewModel
 
-    private val records = mutableListOf<MarketRecord>()
+    private val records = listOf<MarketRecord>()
     private lateinit var recordsAdapter: MarketAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,25 +72,17 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     private fun initObserver() {
-        viewModel.getMarketData()?.observe(
-            this,
-            androidx.lifecycle.Observer
-            {
-                if (it != null) {
-                    refreshRecordsAndView(it)
-                } else {
-                    setViewToEmpty()
-                }
-            })
+        viewModel.data.observe(this, Observer<List<MarketRecord>> { records ->
+            recordsAdapter.data = records
+        })
     }
 
-    private fun refreshRecordsAndView(newRecords: List<MarketRecord>) {
-        records.addAll(newRecords)
-        recordsAdapter.data = records
-    }
-
-    private fun setViewToEmpty() {
+    private fun showEmptyView() {
         recycler_view.visibility = View.GONE
+    }
+
+    private fun showRecords(newRecords: List<MarketRecord>){
+        recycler_view.visibility = View.VISIBLE
     }
 
     override fun onItemClick(view: View, position: Int) {

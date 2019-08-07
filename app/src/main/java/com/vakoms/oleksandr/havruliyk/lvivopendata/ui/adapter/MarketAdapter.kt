@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_list.*
 
 class MarketAdapter(var onClickListener: OnItemClickListener) : RecyclerView.Adapter<MarketAdapter.ViewHolder>() {
 
-    var data: MutableList<MarketRecord> = mutableListOf()
+    var data: List<MarketRecord> = listOf()
         set(value) {
             field = value
             notifyDataSetChanged()

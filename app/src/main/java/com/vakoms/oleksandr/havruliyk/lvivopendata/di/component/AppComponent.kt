@@ -1,10 +1,11 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.di.component
 
-import com.vakoms.oleksandr.havruliyk.lvivopendata.OpenDataApplication
+import android.app.Application
+import com.vakoms.oleksandr.havruliyk.lvivopendata.OpenDataApp
 import com.vakoms.oleksandr.havruliyk.lvivopendata.di.module.*
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.factory.ViewModelBuilder
+import dagger.BindsInstance
 import dagger.Component
-import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
 import javax.inject.Singleton
 
@@ -23,8 +24,15 @@ import javax.inject.Singleton
     ]
 )
 
-interface AppComponent : AndroidInjector<OpenDataApplication> {
+interface AppComponent {
 
     @Component.Builder
-    abstract class Builder : AndroidInjector.Builder<OpenDataApplication>()
+    interface Builder {
+        @BindsInstance
+        fun application(application: Application): Builder
+
+        fun build(): AppComponent
+    }
+
+    fun inject(app: OpenDataApp)
 }
