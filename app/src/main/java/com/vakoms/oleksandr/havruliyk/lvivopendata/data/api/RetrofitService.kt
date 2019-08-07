@@ -1,9 +1,10 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.api
 
-
+import dagger.Reusable
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+@Reusable
 class RetrofitService {
 
     companion object{

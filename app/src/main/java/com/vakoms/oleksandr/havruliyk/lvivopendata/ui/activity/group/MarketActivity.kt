@@ -31,14 +31,13 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: MarketViewModel
 
-    private val records = listOf<MarketRecord>()
+    private var records = listOf<MarketRecord>()
     private lateinit var recordsAdapter: MarketAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
-
-        AndroidInjection.inject(this)
 
         initAdapter()
         initView()
@@ -73,6 +72,7 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
 
     private fun initObserver() {
         viewModel.data.observe(this, Observer<List<MarketRecord>> { records ->
+            this.records = records
             recordsAdapter.data = records
         })
     }

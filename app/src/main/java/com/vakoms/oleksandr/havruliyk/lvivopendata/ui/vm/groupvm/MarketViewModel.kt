@@ -7,13 +7,9 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecor
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.MarketRepository
 import javax.inject.Inject
 
-class MarketViewModel @Inject constructor(marketRepository: MarketRepository) : ViewModel() {
+class MarketViewModel @Inject constructor(repository: MarketRepository) : ViewModel() {
 
-    val data: MutableLiveData<List<MarketRecord>> by lazy {
-        MutableLiveData<List<MarketRecord>>().also {
-            marketRepository.getAll()
-        }
-    }
+    var data: MutableLiveData<List<MarketRecord>> = repository.getAll() as MutableLiveData<List<MarketRecord>>
 
     fun getData(): LiveData<List<MarketRecord>> {
         return data

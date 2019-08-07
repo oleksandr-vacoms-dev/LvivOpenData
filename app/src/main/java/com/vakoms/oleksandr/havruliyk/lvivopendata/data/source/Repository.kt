@@ -2,6 +2,7 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source
 
 import androidx.lifecycle.LiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
+import org.jetbrains.anko.doAsync
 
 abstract class Repository<T>(
     private val localDataStorage: DataStorage<T>,
@@ -38,7 +39,9 @@ abstract class Repository<T>(
     }
 
     private fun refreshSavedData(data: List<T>?) {
-        deleteAll()
-        data?.let { saveAll(it) }
+        doAsync {
+            deleteAll()
+            data?.let { saveAll(it) }
+        }
     }
 }

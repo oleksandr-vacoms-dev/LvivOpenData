@@ -34,10 +34,9 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     private val records = mutableListOf<MapRecord>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
-
-        AndroidInjection.inject(this)
 
         initView()
         initMapFragment()

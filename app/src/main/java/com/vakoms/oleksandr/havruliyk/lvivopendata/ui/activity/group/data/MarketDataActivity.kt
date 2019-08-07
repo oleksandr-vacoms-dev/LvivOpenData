@@ -6,10 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapManager
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromMarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group.MarketActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.groupvm.datavm.MarketDataViewModel
@@ -28,10 +25,9 @@ class MarketDataActivity : AppCompatActivity() {
     private var record: MarketRecord? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_market_data)
-
-        AndroidInjection.inject(this)
 
         initView()
         initViewModel()
@@ -42,16 +38,10 @@ class MarketDataActivity : AppCompatActivity() {
         back_button.setOnClickListener { finish() }
 
         address_view.setOnClickListener {
-            val mapManager: MapManager? = MapRepository.getInstance()
             if (record != null) {
-                mapManager?.addRecords(
-                    getAddressRecordFromMarketRecord(
-                        listOf(record!!)
-                    )
-                )
+                viewModel.addRecordsToMap(listOf(record!!))
+                startActivity(Intent(this, MapActivity::class.java))
             }
-
-            startActivity(Intent(this, MapActivity::class.java))
         }
     }
 

@@ -1,22 +1,17 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote
 
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.RetrofitService
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import javax.inject.Inject
 
-class RemoteMarketDataStorage : DataStorage<MarketRecord> {
-
-    private val openDataApi: OpenDataApi = RetrofitService.createService(
-        OpenDataApi::class.java
-    )
+class RemoteMarketDataStorage @Inject constructor(var openDataApi: OpenDataApi) : DataStorage<MarketRecord> {
 
     override fun getAll(): MutableLiveData<List<MarketRecord>> {
         val data = MutableLiveData<List<MarketRecord>>()

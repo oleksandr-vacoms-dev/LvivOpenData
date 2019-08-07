@@ -5,9 +5,15 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecor
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
+import javax.inject.Inject
+import javax.inject.Singleton
 
-interface MapManager {
-    fun addRecords(records: List<AddressRecord>)
+@Singleton
+class MapManager @Inject constructor(var mapRepository: MapRepository) {
+
+    fun addRecords(records: List<AddressRecord>) {
+        mapRepository.addressRecords = records
+    }
 }
 
 fun getAddressRecordFromFitnessRecord(data: List<FitnessRecord>): List<AddressRecord> {
