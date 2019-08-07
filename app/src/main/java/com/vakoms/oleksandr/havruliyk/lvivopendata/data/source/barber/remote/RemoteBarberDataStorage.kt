@@ -32,6 +32,24 @@ class RemoteBarberDataStorage @Inject constructor(var openDataApi: OpenDataApi) 
         return data
     }
 
+    override fun getByName(name: String): LiveData<List<BarberRecord>>? {
+        val data = MutableLiveData<List<BarberRecord>>()
+        openDataApi.getBarberByName(getBarberSql(name)).enqueue(object : Callback<BarberResponse> {
+            override fun onResponse(
+                call: Call<BarberResponse>,
+                response: Response<BarberResponse>
+            ) {
+                if (response.isSuccessful) {
+                    data.value = response.body().result.records
+                }
+            }
+
+            override fun onFailure(call: Call<BarberResponse>, t: Throwable) {
+                data.value = null
+            }
+        })
+        return data    }
+
     override fun saveAll(data: List<BarberRecord>) {
 
     }
@@ -42,5 +60,10 @@ class RemoteBarberDataStorage @Inject constructor(var openDataApi: OpenDataApi) 
 
     override fun getById(id: Int): LiveData<BarberRecord>? {
         return null
+    }
+
+    private fun getBarberSql(name: String): String {
+        return "SELECT * from \"634c8a6d-c272-4375-bd29-92526722b7ac\"" +
+                " WHERE name LIKE '%$name'"
     }
 }

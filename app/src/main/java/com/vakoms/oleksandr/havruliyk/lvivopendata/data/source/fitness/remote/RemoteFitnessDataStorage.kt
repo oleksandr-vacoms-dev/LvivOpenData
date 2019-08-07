@@ -32,6 +32,25 @@ class RemoteFitnessDataStorage @Inject constructor(var openDataApi: OpenDataApi)
         return data
     }
 
+    override fun getByName(name: String): LiveData<List<FitnessRecord>>? {
+        val data = MutableLiveData<List<FitnessRecord>>()
+        openDataApi.getFitnessByName(getFitnessSql(name)).enqueue(object : Callback<FitnessResponse> {
+            override fun onResponse(
+                call: Call<FitnessResponse>,
+                response: Response<FitnessResponse>
+            ) {
+                if (response.isSuccessful) {
+                    data.value = response.body().result.records
+                }
+            }
+
+            override fun onFailure(call: Call<FitnessResponse>, t: Throwable) {
+                data.value = null
+            }
+        })
+        return data
+    }
+
     override fun saveAll(data: List<FitnessRecord>) {
 
     }
@@ -42,5 +61,10 @@ class RemoteFitnessDataStorage @Inject constructor(var openDataApi: OpenDataApi)
 
     override fun getById(id: Int): LiveData<FitnessRecord>? {
         return null
+    }
+
+    private fun getFitnessSql(name: String): String {
+        return "SELECT * from \"29782a2a-bf39-4d3b-9a6d-ac1880f2d498\"" +
+                " WHERE name LIKE '%$name'"
     }
 }

@@ -22,4 +22,7 @@ class LocalFitnessDataStorage @Inject constructor(database: FitnessRoomDatabase)
     }
 
     override fun getById(id: Int): LiveData<FitnessRecord> = fitnessDao.getById(id)
+
+    override fun getByName(name: String): LiveData<List<FitnessRecord>>? = fitnessDao.getByName(name)
+
 }

@@ -1,12 +1,12 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.local
 
 import androidx.lifecycle.LiveData
-import androidx.room.Room
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import javax.inject.Inject
 
 class LocalBarberDataStorage @Inject constructor(database: BarberRoomDatabase) : DataStorage<BarberRecord> {
+
     private var barberDao: BarberDao = database.barberDao()
 
     override fun getAll(): LiveData<List<BarberRecord>> {
@@ -22,4 +22,6 @@ class LocalBarberDataStorage @Inject constructor(database: BarberRoomDatabase) :
     }
 
     override fun getById(id: Int): LiveData<BarberRecord> = barberDao.getById(id)
+
+    override fun getByName(name: String): LiveData<List<BarberRecord>>? = barberDao.getByName(name)
 }

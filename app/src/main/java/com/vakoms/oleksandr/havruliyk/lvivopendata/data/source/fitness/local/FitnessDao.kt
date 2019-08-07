@@ -19,4 +19,7 @@ interface FitnessDao {
 
     @Query("SELECT * FROM fitness WHERE id=:id")
     fun getById(id: Int): LiveData<FitnessRecord>
+
+    @Query("SELECT * FROM fitness WHERE name LIKE :name")
+    fun getByName(name: String): LiveData<List<FitnessRecord>>
 }

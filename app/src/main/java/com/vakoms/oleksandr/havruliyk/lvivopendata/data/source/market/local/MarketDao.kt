@@ -19,4 +19,7 @@ interface MarketDao {
 
     @Query("SELECT * FROM market WHERE id=:id")
     fun getById(id: Int): LiveData<MarketRecord>
+
+    @Query("SELECT * FROM market WHERE name LIKE :name")
+    fun getByName(name: String): LiveData<List<MarketRecord>>
 }

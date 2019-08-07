@@ -32,6 +32,25 @@ class RemoteMarketDataStorage @Inject constructor(var openDataApi: OpenDataApi) 
         return data
     }
 
+    override fun getByName(name: String): LiveData<List<MarketRecord>>? {
+        val data = MutableLiveData<List<MarketRecord>>()
+        openDataApi.getMarketByName(getMarketSql(name)).enqueue(object : Callback<MarketsResponse> {
+            override fun onResponse(
+                call: Call<MarketsResponse>,
+                response: Response<MarketsResponse>
+            ) {
+                if (response.isSuccessful) {
+                    data.value = response.body().result.records
+                }
+            }
+
+            override fun onFailure(call: Call<MarketsResponse>, t: Throwable) {
+                data.value = null
+            }
+        })
+        return data
+    }
+
     override fun saveAll(data: List<MarketRecord>) {
 
     }
@@ -42,5 +61,10 @@ class RemoteMarketDataStorage @Inject constructor(var openDataApi: OpenDataApi) 
 
     override fun getById(id: Int): LiveData<MarketRecord>? {
         return null
+    }
+
+    private fun getMarketSql(name: String): String {
+        return "SELECT * from \"2fc42d58-a332-4234-bc19-152d51f816a1\"" +
+                " WHERE name LIKE '%$name' OR name LIKE '$name%'"
     }
 }

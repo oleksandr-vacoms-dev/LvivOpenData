@@ -31,4 +31,16 @@ interface OpenDataApi {
 
     @GET("3/action/datastore_search_sql")
     fun getMarketByName(@Query("sql") sql: String): Call<MarketsResponse>
+
+    @GET("3/action/datastore_search_sql")
+    fun getFitnessByName(@Query("sql") sql: String): Call<FitnessResponse>
+
+    @GET("3/action/datastore_search_sql")
+    fun getBarberByName(@Query("sql") sql: String): Call<BarberResponse>
+
+    @GET("3/action/datastore_search_sql")
+    fun getATMByName(@Query("sql") sql: String): Call<ATMResponse>
+
+    @GET("3/action/datastore_search_sql")
+    fun getCateringByName(@Query("sql") sql: String): Call<CateringResponse>
 }

@@ -22,4 +22,6 @@ class LocalCateringDataStorage @Inject constructor(database: CateringRoomDatabas
     }
 
     override fun getById(id: Int): LiveData<CateringRecord> = cateringDao.getById(id)
+
+    override fun getByName(name: String): LiveData<List<CateringRecord>>? = cateringDao.getByName(name)
 }

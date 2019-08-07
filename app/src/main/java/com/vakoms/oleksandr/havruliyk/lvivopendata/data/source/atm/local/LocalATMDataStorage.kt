@@ -22,4 +22,6 @@ class LocalATMDataStorage @Inject constructor(database: ATMRoomDatabase) : DataS
     }
 
     override fun getById(id: Int): LiveData<ATMRecord> = atmDao.getById(id)
+
+    override fun getByName(name: String): LiveData<List<ATMRecord>>? = atmDao.getByName(name)
 }

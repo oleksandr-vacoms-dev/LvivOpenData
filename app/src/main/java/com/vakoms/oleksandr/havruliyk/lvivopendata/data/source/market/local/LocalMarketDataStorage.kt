@@ -22,4 +22,6 @@ class LocalMarketDataStorage @Inject constructor(database: MarketRoomDatabase) :
     }
 
     override fun getById(id: Int): LiveData<MarketRecord> = marketDao.getById(id)
+
+    override fun getByName(name: String): LiveData<List<MarketRecord>>? = marketDao.getByName(name)
 }

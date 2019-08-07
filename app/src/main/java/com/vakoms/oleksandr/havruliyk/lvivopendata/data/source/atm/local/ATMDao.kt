@@ -19,4 +19,7 @@ interface ATMDao {
 
     @Insert
     fun insert(data: List<ATMRecord>)
+
+    @Query("SELECT * FROM atm WHERE bankLabel LIKE :name")
+    fun getByName(name: String): LiveData<List<ATMRecord>>
 }

@@ -19,4 +19,7 @@ interface CateringDao {
 
     @Query("SELECT * FROM catering WHERE _id=:id")
     fun getById(id: Int): LiveData<CateringRecord>
+
+    @Query("SELECT * FROM catering WHERE name LIKE :name")
+    fun getByName(name: String): LiveData<List<CateringRecord>>
 }

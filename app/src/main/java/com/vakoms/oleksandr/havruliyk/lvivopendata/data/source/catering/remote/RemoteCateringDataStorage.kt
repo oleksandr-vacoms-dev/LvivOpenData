@@ -32,6 +32,26 @@ class RemoteCateringDataStorage @Inject constructor(var openDataApi: OpenDataApi
         return data
     }
 
+    override fun getByName(name: String): LiveData<List<CateringRecord>>? {
+        val data = MutableLiveData<List<CateringRecord>>()
+        openDataApi.getCateringByName(getCateringSql(name)).enqueue(object : Callback<CateringResponse> {
+            override fun onResponse(
+                call: Call<CateringResponse>,
+                response: Response<CateringResponse>
+            ) {
+                if (response.isSuccessful) {
+                    data.value = response.body().result.records
+                }
+            }
+
+            override fun onFailure(call: Call<CateringResponse>, t: Throwable) {
+                data.value = null
+            }
+        })
+        return data
+    }
+
+
     override fun saveAll(data: List<CateringRecord>) {
 
     }
@@ -42,5 +62,10 @@ class RemoteCateringDataStorage @Inject constructor(var openDataApi: OpenDataApi
 
     override fun getById(id: Int): LiveData<CateringRecord>? {
         return null
+    }
+
+    private fun getCateringSql(name: String): String {
+        return "SELECT * from \"a656bf70-fde7-404c-9528-7100401040b2\"" +
+                " WHERE name LIKE '%$name' OR name LIKE '$name%'"
     }
 }

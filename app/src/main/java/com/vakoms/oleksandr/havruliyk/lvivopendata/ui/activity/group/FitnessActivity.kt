@@ -3,6 +3,7 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.group
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -16,10 +17,12 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.FitnessAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener.OnItemClickListener
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.group.FitnessViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.hideKeyboard
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.android.synthetic.main.back_button.*
-import kotlinx.android.synthetic.main.label_layout.*
+import kotlinx.android.synthetic.main.label_layout.label_view
+import kotlinx.android.synthetic.main.search_layout.*
 import javax.inject.Inject
 
 class FitnessActivity : AppCompatActivity(),
@@ -30,6 +33,7 @@ class FitnessActivity : AppCompatActivity(),
     private lateinit var viewModel: FitnessViewModel
 
     private var records = listOf<FitnessRecord>()
+    private var cacheRecords = listOf<FitnessRecord>()
     private lateinit var recordsAdapter: FitnessAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +52,33 @@ class FitnessActivity : AppCompatActivity(),
         label_view.text = resources.getString(R.string.fitness_label)
 
         back_button.setOnClickListener { finish() }
+        initSearchView()
+    }
+
+    private fun initSearchView() {
+        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.setSearchData(search_view.query.toString())
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                if (newText.isNotEmpty()) {
+                    label_view.visibility = View.GONE
+                } else {
+                    label_view.visibility = View.VISIBLE
+                }
+                return true
+            }
+        })
+
+        search_view.setOnCloseListener {
+            search_view.setQuery("", false)
+            label_view.requestFocus()
+            hideKeyboard(this)
+            upDateView(cacheRecords)
+            true
+        }
     }
 
     private fun initAdapter() {
@@ -70,11 +101,26 @@ class FitnessActivity : AppCompatActivity(),
 
     private fun initObserver() {
         viewModel.data.observe(this, Observer<List<FitnessRecord>> { records ->
-            upDataView(records)
+            upDateView(records)
+        })
+
+        viewModel.searchData.observe(this, Observer<List<FitnessRecord>> { records ->
+            upDateSearchView(records)
         })
     }
 
-    private fun upDataView(records: List<FitnessRecord>) {
+    private fun upDateView(records: List<FitnessRecord>) {
+        if (records.isEmpty()) {
+            showEmptyView()
+        } else {
+            this.records = records
+            cacheRecords = records
+            recordsAdapter.data = records
+            showRecyclerView()
+        }
+    }
+
+    private fun upDateSearchView(records: List<FitnessRecord>) {
         if (records.isEmpty()) {
             showEmptyView()
         } else {

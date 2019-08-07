@@ -19,4 +19,7 @@ interface BarberDao {
 
     @Query("SELECT * FROM barber WHERE _id=:id")
     fun getById(id: Int): LiveData<BarberRecord>
+
+    @Query("SELECT * FROM barber WHERE name LIKE :name")
+    fun getByName(name: String): LiveData<List<BarberRecord>>
 }

@@ -32,6 +32,25 @@ class RemoteATMDataStorage @Inject constructor(var openDataApi: OpenDataApi) : D
         return data
     }
 
+    override fun getByName(name: String): LiveData<List<ATMRecord>>? {
+        val data = MutableLiveData<List<ATMRecord>>()
+        openDataApi.getATMByName(name).enqueue(object : Callback<ATMResponse> {
+            override fun onResponse(
+                call: Call<ATMResponse>,
+                response: Response<ATMResponse>
+            ) {
+                if (response.isSuccessful) {
+                    data.value = response.body().result.records
+                }
+            }
+
+            override fun onFailure(call: Call<ATMResponse>, t: Throwable) {
+                data.value = null
+            }
+        })
+        return data    }
+
+
     override fun saveAll(data: List<ATMRecord>) {
 
     }
@@ -42,5 +61,10 @@ class RemoteATMDataStorage @Inject constructor(var openDataApi: OpenDataApi) : D
 
     override fun getById(id: Int): LiveData<ATMRecord>? {
         return null
+    }
+
+    private fun getATMSql(name: String): String {
+        return "SELECT * from \"64e9be16-bd89-4b3b-97aa-086b86e681f6\"" +
+                " WHERE name LIKE '%$name'"
     }
 }
