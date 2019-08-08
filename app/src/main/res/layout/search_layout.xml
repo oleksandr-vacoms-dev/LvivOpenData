@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/default_height_label"
+        android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/green_light_grey"
         app:cardCornerRadius="0dp"
         android:elevation="3dp">
@@ -40,8 +40,8 @@
                 android:id="@+id/search_view"
                 android:gravity="center"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/very_large_dimen"
-                android:layout_marginEnd="@dimen/very_large_dimen"
+                android:layout_marginEnd="@dimen/larger_dimen"
+                android:layout_marginStart="@dimen/larger_dimen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
         </SearchView>
