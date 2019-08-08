@@ -9,6 +9,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.local.Ca
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local.FitnessRoomDatabase
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local.MarketRoomDatabase
 import com.vakoms.oleksandr.havruliyk.lvivopendata.OpenDataApp
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -29,7 +30,7 @@ class AppModule {
     @Reusable
     fun provideOpenDataApi(): OpenDataApi {
         return Retrofit.Builder()
-            .baseUrl("https://opendata.city-adm.lviv.ua/api/")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(OpenDataApi::class.java)

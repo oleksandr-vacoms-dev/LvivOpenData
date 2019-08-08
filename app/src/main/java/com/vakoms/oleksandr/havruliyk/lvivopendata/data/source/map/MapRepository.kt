@@ -1,12 +1,11 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map
 
 import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.maps.model.LatLng
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.CoordinatesRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.CoordinatesResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.MapDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getDefaultLatLnt
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.coordinatesSql
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getLatLng
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -22,7 +21,7 @@ class MapRepository @Inject constructor(var openDataApi: OpenDataApi) : MapDataS
         val data = MutableLiveData<MapRecord>()
 
         for (address: AddressRecord in addressRecords) {
-            openDataApi.getCoordinatesByAddress(getCoordinatesSql(address.streetName, address.buildingNumber))
+            openDataApi.getCoordinatesByAddress(coordinatesSql(address.streetName, address.buildingNumber))
                 .enqueue(object : Callback<CoordinatesResponse> {
                     override fun onResponse(
                         call: Call<CoordinatesResponse>,

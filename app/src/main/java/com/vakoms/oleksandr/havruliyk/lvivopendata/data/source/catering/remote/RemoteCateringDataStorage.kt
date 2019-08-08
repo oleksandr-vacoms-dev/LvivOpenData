@@ -6,6 +6,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.cateringSql
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,7 +35,7 @@ class RemoteCateringDataStorage @Inject constructor(var openDataApi: OpenDataApi
 
     override fun getByName(name: String): LiveData<List<CateringRecord>>? {
         val data = MutableLiveData<List<CateringRecord>>()
-        openDataApi.getCateringByName(getCateringSql(name)).enqueue(object : Callback<CateringResponse> {
+        openDataApi.getCateringByName(cateringSql(name)).enqueue(object : Callback<CateringResponse> {
             override fun onResponse(
                 call: Call<CateringResponse>,
                 response: Response<CateringResponse>
@@ -62,10 +63,5 @@ class RemoteCateringDataStorage @Inject constructor(var openDataApi: OpenDataApi
 
     override fun getById(id: Int): LiveData<CateringRecord>? {
         return null
-    }
-
-    private fun getCateringSql(name: String): String {
-        return "SELECT * from \"a656bf70-fde7-404c-9528-7100401040b2\"" +
-                " WHERE name LIKE '%$name' OR name LIKE '$name%'"
     }
 }

@@ -6,6 +6,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.marketSql
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,7 +35,7 @@ class RemoteMarketDataStorage @Inject constructor(var openDataApi: OpenDataApi) 
 
     override fun getByName(name: String): LiveData<List<MarketRecord>>? {
         val data = MutableLiveData<List<MarketRecord>>()
-        openDataApi.getMarketByName(getMarketSql(name)).enqueue(object : Callback<MarketsResponse> {
+        openDataApi.getMarketByName(marketSql(name)).enqueue(object : Callback<MarketsResponse> {
             override fun onResponse(
                 call: Call<MarketsResponse>,
                 response: Response<MarketsResponse>
@@ -61,10 +62,5 @@ class RemoteMarketDataStorage @Inject constructor(var openDataApi: OpenDataApi) 
 
     override fun getById(id: Int): LiveData<MarketRecord>? {
         return null
-    }
-
-    private fun getMarketSql(name: String): String {
-        return "SELECT * from \"2fc42d58-a332-4234-bc19-152d51f816a1\"" +
-                " WHERE name LIKE '%$name' OR name LIKE '$name%'"
     }
 }

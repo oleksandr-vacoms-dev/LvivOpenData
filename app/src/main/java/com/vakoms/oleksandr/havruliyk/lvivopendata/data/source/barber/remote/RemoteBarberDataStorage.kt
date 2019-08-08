@@ -6,6 +6,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.barberSql
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -32,9 +33,9 @@ class RemoteBarberDataStorage @Inject constructor(var openDataApi: OpenDataApi) 
         return data
     }
 
-    override fun getByName(name: String): LiveData<List<BarberRecord>>? {
+    override fun getByName(bankLabel: String): LiveData<List<BarberRecord>>? {
         val data = MutableLiveData<List<BarberRecord>>()
-        openDataApi.getBarberByName(getBarberSql(name)).enqueue(object : Callback<BarberResponse> {
+        openDataApi.getBarberByName(barberSql(bankLabel)).enqueue(object : Callback<BarberResponse> {
             override fun onResponse(
                 call: Call<BarberResponse>,
                 response: Response<BarberResponse>
@@ -60,10 +61,5 @@ class RemoteBarberDataStorage @Inject constructor(var openDataApi: OpenDataApi) 
 
     override fun getById(id: Int): LiveData<BarberRecord>? {
         return null
-    }
-
-    private fun getBarberSql(name: String): String {
-        return "SELECT * from \"634c8a6d-c272-4375-bd29-92526722b7ac\"" +
-                " WHERE name LIKE '%$name'"
     }
 }

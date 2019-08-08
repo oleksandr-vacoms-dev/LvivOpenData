@@ -6,6 +6,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.atmSql
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,7 +35,7 @@ class RemoteATMDataStorage @Inject constructor(var openDataApi: OpenDataApi) : D
 
     override fun getByName(name: String): LiveData<List<ATMRecord>>? {
         val data = MutableLiveData<List<ATMRecord>>()
-        openDataApi.getATMByName(name).enqueue(object : Callback<ATMResponse> {
+        openDataApi.getATMByName(atmSql(name)).enqueue(object : Callback<ATMResponse> {
             override fun onResponse(
                 call: Call<ATMResponse>,
                 response: Response<ATMResponse>
@@ -61,10 +62,5 @@ class RemoteATMDataStorage @Inject constructor(var openDataApi: OpenDataApi) : D
 
     override fun getById(id: Int): LiveData<ATMRecord>? {
         return null
-    }
-
-    private fun getATMSql(name: String): String {
-        return "SELECT * from \"64e9be16-bd89-4b3b-97aa-086b86e681f6\"" +
-                " WHERE name LIKE '%$name'"
     }
 }

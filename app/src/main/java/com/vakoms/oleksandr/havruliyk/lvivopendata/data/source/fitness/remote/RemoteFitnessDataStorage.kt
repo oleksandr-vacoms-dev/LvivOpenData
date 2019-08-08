@@ -6,6 +6,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.fitnessSql
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,7 +16,7 @@ class RemoteFitnessDataStorage @Inject constructor(var openDataApi: OpenDataApi)
 
     override fun getAll(): MutableLiveData<List<FitnessRecord>> {
         val data = MutableLiveData<List<FitnessRecord>>()
-        openDataApi.getFitnessCenters().enqueue(object : Callback<FitnessResponse> {
+        openDataApi.getFitness().enqueue(object : Callback<FitnessResponse> {
             override fun onResponse(
                 call: Call<FitnessResponse>,
                 response: Response<FitnessResponse>
@@ -34,7 +35,7 @@ class RemoteFitnessDataStorage @Inject constructor(var openDataApi: OpenDataApi)
 
     override fun getByName(name: String): LiveData<List<FitnessRecord>>? {
         val data = MutableLiveData<List<FitnessRecord>>()
-        openDataApi.getFitnessByName(getFitnessSql(name)).enqueue(object : Callback<FitnessResponse> {
+        openDataApi.getFitnessByName(fitnessSql(name)).enqueue(object : Callback<FitnessResponse> {
             override fun onResponse(
                 call: Call<FitnessResponse>,
                 response: Response<FitnessResponse>
@@ -61,10 +62,5 @@ class RemoteFitnessDataStorage @Inject constructor(var openDataApi: OpenDataApi)
 
     override fun getById(id: Int): LiveData<FitnessRecord>? {
         return null
-    }
-
-    private fun getFitnessSql(name: String): String {
-        return "SELECT * from \"29782a2a-bf39-4d3b-9a6d-ac1880f2d498\"" +
-                " WHERE name LIKE '%$name'"
     }
 }
