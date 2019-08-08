@@ -2,6 +2,7 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -62,16 +63,13 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun initObserver() {
-        viewModel.getMapsRecords()?.observe(
-            this,
-            androidx.lifecycle.Observer
-            {
-                refreshRecordsAndView(it)
-            })
+        viewModel.mapRecords.observe(this, Observer { records ->
+            upDataView(records)
+        })
     }
 
-    private fun refreshRecordsAndView(newRecord: MapRecord) {
-        records.add(newRecord)
+    private fun upDataView(newRecords: List<MapRecord>) {
+        records.addAll(newRecords)
         showMarkers()
     }
 

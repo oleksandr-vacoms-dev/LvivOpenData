@@ -1,14 +1,18 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager
 
+import androidx.lifecycle.MutableLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.AddressRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class MapManager @Inject constructor(var mapRepository: MapRepository) {
+class MapManager @Inject constructor() {
+
+    private val addressRecords = MutableLiveData<List<AddressRecord>>()
 
     fun addRecords(records: List<AddressRecord>) {
-        mapRepository.addressRecords = records
+        addressRecords.value = records
     }
+
+    fun getAll() = addressRecords
 }

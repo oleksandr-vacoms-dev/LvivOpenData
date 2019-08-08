@@ -29,8 +29,8 @@ fun barberSql(name: String) = getSqlQueryLike(BARBER_ID, name)
 fun atmSql(bankLabel: String) = getSqlQueryLike(ATM_ID, bankLabel)
 
 private fun getSqlQueryLike(name: String, resourceId: String): String {
-    return "SELECT * from \"$resourceId\"" +
-            " WHERE name LIKE '%$name' OR name LIKE '$name%'"
+    return "SELECT * from \"$resourceId\" " +
+            "WHERE (name LIKE '%$name' OR name LIKE '$name%')"
 }
 
 fun coordinatesSql(streetName: String, houseNumber: String): String {

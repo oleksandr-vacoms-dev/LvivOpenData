@@ -6,6 +6,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.AddressRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.CoordinatesResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.MapRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.MapDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.add
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.coordinatesSql
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getLatLng
 import retrofit2.Call
@@ -17,10 +18,8 @@ import javax.inject.Singleton
 @Singleton
 class MapRepository @Inject constructor(var openDataApi: OpenDataApi) : MapDataStorage {
 
-    var addressRecords = listOf<AddressRecord>()
-
-    override fun getMapRecords(): MutableLiveData<MapRecord> {
-        val data = MutableLiveData<MapRecord>()
+    override fun getMapRecordsByAddressRecords(addressRecords: List<AddressRecord>): MutableLiveData<List<MapRecord>> {
+        val data = MutableLiveData<List<MapRecord>>()
 
         for (address: AddressRecord in addressRecords) {
             openDataApi.getCoordinatesByAddress(coordinatesSql(address.streetName, address.buildingNumber))
@@ -31,10 +30,7 @@ class MapRepository @Inject constructor(var openDataApi: OpenDataApi) : MapDataS
                     ) {
                         if (response.isSuccessful) {
                             val coordinates = response.body().result.records
-                            data.value = MapRecord(
-                                address,
-                                coordinates.getLatLng()
-                            )
+                            data.add(MapRecord(address, coordinates.getLatLng()))
                         }
                     }
 
