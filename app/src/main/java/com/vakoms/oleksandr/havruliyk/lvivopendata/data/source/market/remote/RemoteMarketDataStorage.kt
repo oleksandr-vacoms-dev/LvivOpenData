@@ -27,7 +27,7 @@ class RemoteMarketDataStorage @Inject constructor(var openDataApi: OpenDataApi) 
             }
 
             override fun onFailure(call: Call<MarketsResponse>, t: Throwable) {
-                data.value = null
+                data.value = listOf()
             }
         })
         return data
@@ -46,7 +46,7 @@ class RemoteMarketDataStorage @Inject constructor(var openDataApi: OpenDataApi) 
             }
 
             override fun onFailure(call: Call<MarketsResponse>, t: Throwable) {
-                data.value = null
+                data.value = listOf()
             }
         })
         return data

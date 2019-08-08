@@ -28,7 +28,7 @@ class RemoteCateringDataStorage @Inject constructor(var openDataApi: OpenDataApi
             }
 
             override fun onFailure(call: Call<CateringResponse>, t: Throwable) {
-                data.value = null
+                data.value = listOf()
             }
         })
         return data
@@ -47,7 +47,7 @@ class RemoteCateringDataStorage @Inject constructor(var openDataApi: OpenDataApi
             }
 
             override fun onFailure(call: Call<CateringResponse>, t: Throwable) {
-                data.value = null
+                data.value = listOf()
             }
         })
         return data

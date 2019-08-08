@@ -27,7 +27,7 @@ class RemoteFitnessDataStorage @Inject constructor(var openDataApi: OpenDataApi)
             }
 
             override fun onFailure(call: Call<FitnessResponse>, t: Throwable) {
-                data.value = null
+                data.value = listOf()
             }
         })
         return data
@@ -46,7 +46,7 @@ class RemoteFitnessDataStorage @Inject constructor(var openDataApi: OpenDataApi)
             }
 
             override fun onFailure(call: Call<FitnessResponse>, t: Throwable) {
-                data.value = null
+                data.value = listOf()
             }
         })
         return data

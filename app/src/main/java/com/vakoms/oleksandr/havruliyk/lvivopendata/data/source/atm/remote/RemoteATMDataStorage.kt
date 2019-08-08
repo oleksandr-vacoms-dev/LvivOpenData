@@ -27,7 +27,7 @@ class RemoteATMDataStorage @Inject constructor(var openDataApi: OpenDataApi) : R
             }
 
             override fun onFailure(call: Call<ATMResponse>, t: Throwable) {
-                data.value = null
+                data.value = listOf()
             }
         })
         return data
@@ -46,7 +46,7 @@ class RemoteATMDataStorage @Inject constructor(var openDataApi: OpenDataApi) : R
             }
 
             override fun onFailure(call: Call<ATMResponse>, t: Throwable) {
-                data.value = null
+                data.value = listOf()
             }
         })
         return data

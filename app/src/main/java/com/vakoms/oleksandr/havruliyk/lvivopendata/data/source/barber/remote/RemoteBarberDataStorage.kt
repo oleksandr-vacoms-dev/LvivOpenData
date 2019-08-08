@@ -27,7 +27,7 @@ class RemoteBarberDataStorage @Inject constructor(var openDataApi: OpenDataApi) 
             }
 
             override fun onFailure(call: Call<BarberResponse>, t: Throwable) {
-                data.value = null
+                data.value = listOf()
             }
         })
         return data
@@ -46,7 +46,7 @@ class RemoteBarberDataStorage @Inject constructor(var openDataApi: OpenDataApi) 
             }
 
             override fun onFailure(call: Call<BarberResponse>, t: Throwable) {
-                data.value = null
+                data.value = listOf()
             }
         })
         return data
