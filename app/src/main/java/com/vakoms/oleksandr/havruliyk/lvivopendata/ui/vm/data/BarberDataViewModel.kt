@@ -6,7 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.BarberRepository
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapManager
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.MapManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromBarberRecord
 import javax.inject.Inject
 

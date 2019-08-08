@@ -1,7 +1,7 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source
 
 import androidx.lifecycle.LiveData
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.NetManager
 import org.jetbrains.anko.doAsync
 
 abstract class Repository<T>(

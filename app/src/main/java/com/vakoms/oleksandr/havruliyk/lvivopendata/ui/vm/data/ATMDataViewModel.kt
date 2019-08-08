@@ -6,7 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.ATMRepository
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapManager
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.MapManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromATMRecord
 import javax.inject.Inject
 

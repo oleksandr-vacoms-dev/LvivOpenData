@@ -1,20 +1,18 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map
+package com.vakoms.oleksandr.havruliyk.lvivopendata.util
 
+import com.google.android.gms.maps.model.LatLng
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.AddressRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.CoordinatesRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class MapManager @Inject constructor(var mapRepository: MapRepository) {
+const val DEFAULT_LATITUDE = 0.0
+const val DEFAULT_LONGITUDE = 0.0
 
-    fun addRecords(records: List<AddressRecord>) {
-        mapRepository.addressRecords = records
-    }
-}
+fun getDefaultLatLnt() = LatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
 
 fun getAddressRecordFromFitnessRecord(data: List<FitnessRecord>): List<AddressRecord> {
     val addressRecords = mutableListOf<AddressRecord>()
@@ -118,4 +116,12 @@ fun getBuildingNumber(buildingNumber: String): String {
         return buildingNumber.split(".")[0]
     }
     return buildingNumber
+}
+
+fun List<CoordinatesRecord>.getLatLng(): LatLng {
+    return if (isNotEmpty()) {
+        with(this[0]){ LatLng(y, x) }
+    } else {
+        getDefaultLatLnt()
+    }
 }

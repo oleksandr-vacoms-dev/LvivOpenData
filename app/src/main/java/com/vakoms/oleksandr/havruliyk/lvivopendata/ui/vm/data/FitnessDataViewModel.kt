@@ -6,7 +6,7 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.FitnessRepository
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapManager
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.MapManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromFitnessRecord
 import javax.inject.Inject
 

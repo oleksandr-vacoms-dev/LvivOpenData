@@ -1,6 +1,6 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering
 
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.Repository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.local.LocalCateringDataStorage

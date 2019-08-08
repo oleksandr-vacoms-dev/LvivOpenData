@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapManager
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.MapManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromMarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.MarketRepository
 import javax.inject.Inject

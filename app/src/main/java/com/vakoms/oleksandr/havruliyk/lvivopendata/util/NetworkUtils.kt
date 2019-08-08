@@ -1,5 +1,8 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.util
 
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+
 
 const val BASE_URL = "https://opendata.city-adm.lviv.ua/api/3/action/"
 
@@ -38,3 +41,15 @@ fun coordinatesSql(streetName: String, houseNumber: String): String {
             " AND housenumber LIKE '$houseNumber'" +
             ")"
 }
+
+fun isConnected(networkCapabilities: NetworkCapabilities?): Boolean {
+    return when (networkCapabilities) {
+        null -> false
+        else -> with(networkCapabilities) { hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || hasTransport(
+            NetworkCapabilities.TRANSPORT_WIFI
+        ) }
+    }
+}
+
+fun ConnectivityManager.isConnected() =
+    isConnected(getNetworkCapabilities(activeNetwork))

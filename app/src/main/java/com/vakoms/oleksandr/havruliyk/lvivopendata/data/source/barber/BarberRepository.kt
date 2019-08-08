@@ -1,6 +1,6 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber
 
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.NetManager
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.NetManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.Repository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.local.LocalBarberDataStorage
