@@ -15,6 +15,7 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_fitness_data.*
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.*
+import kotlinx.android.synthetic.main.map_button.*
 import java.lang.String.format
 import javax.inject.Inject
 
@@ -25,14 +26,11 @@ class FitnessDataActivity : AppCompatActivity() {
     private lateinit var viewModel: FitnessDataViewModel
 
     private var record: FitnessRecord? = null
-    private var recordId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fitness_data)
-
-        AndroidInjection.inject(this)
-        recordId = intent.extras?.get(DATA_ID) as Int
 
         initView()
         initViewModel()
@@ -41,13 +39,7 @@ class FitnessDataActivity : AppCompatActivity() {
 
     private fun initView() {
         back_button.setOnClickListener { finish() }
-
-        address_view.setOnClickListener {
-            if (record != null) {
-                viewModel.addRecordsToMap(listOf(record!!))
-                startActivity(Intent(this, MapActivity::class.java))
-            }
-        }
+        map_button.setOnClickListener { showOnMap() }
     }
 
     private fun initViewModel() {
@@ -61,6 +53,13 @@ class FitnessDataActivity : AppCompatActivity() {
         viewModel.record.observe(this, Observer<FitnessRecord> { record ->
             upDataView(record)
         })
+    }
+
+    private fun showOnMap() {
+        if (record != null) {
+            viewModel.addRecordsToMap(listOf(record!!))
+            startActivity(Intent(this, MapActivity::class.java))
+        }
     }
 
     private fun upDataView(record: FitnessRecord) {

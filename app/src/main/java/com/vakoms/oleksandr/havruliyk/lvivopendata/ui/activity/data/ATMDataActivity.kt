@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_atm_data.*
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.item_list.*
 import kotlinx.android.synthetic.main.item_list.address_view
+import kotlinx.android.synthetic.main.map_button.*
 import javax.inject.Inject
 
 class ATMDataActivity : AppCompatActivity() {
@@ -25,14 +26,11 @@ class ATMDataActivity : AppCompatActivity() {
     private lateinit var viewModel: ATMDataViewModel
 
     private var record: ATMRecord? = null
-    private var recordId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_atm_data)
-
-        AndroidInjection.inject(this)
-        recordId = intent.extras?.get(DATA_ID) as Int
 
         initView()
         initViewModel()
@@ -41,13 +39,7 @@ class ATMDataActivity : AppCompatActivity() {
 
     private fun initView() {
         back_button.setOnClickListener { finish() }
-
-        address_view.setOnClickListener {
-            if (record != null) {
-                viewModel.addRecordsToMap(listOf(record!!))
-                startActivity(Intent(this, MapActivity::class.java))
-            }
-        }
+        map_button.setOnClickListener { showOnMap() }
     }
 
     private fun initViewModel() {
@@ -61,6 +53,13 @@ class ATMDataActivity : AppCompatActivity() {
         viewModel.record.observe(this, Observer<ATMRecord> { record ->
             upDataView(record)
         })
+    }
+
+    private fun showOnMap() {
+        if (record != null) {
+            viewModel.addRecordsToMap(listOf(record!!))
+            startActivity(Intent(this, MapActivity::class.java))
+        }
     }
 
     private fun upDataView(record: ATMRecord) {

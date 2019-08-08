@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_barber_data.*
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.item_list.*
 import kotlinx.android.synthetic.main.item_list.address_view
+import kotlinx.android.synthetic.main.map_button.*
 import java.lang.String.format
 import javax.inject.Inject
 
@@ -26,14 +27,11 @@ class BarberDataActivity : AppCompatActivity() {
     private lateinit var viewModel: BarberDataViewModel
 
     private var record: BarberRecord? = null
-    private var recordId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_barber_data)
-
-        AndroidInjection.inject(this)
-        recordId = intent.extras?.get(DATA_ID) as Int
 
         initView()
         initViewModel()
@@ -42,13 +40,7 @@ class BarberDataActivity : AppCompatActivity() {
 
     private fun initView() {
         back_button.setOnClickListener { finish() }
-
-        address_view.setOnClickListener {
-            if (record != null) {
-                viewModel.addRecordsToMap(listOf(record!!))
-                startActivity(Intent(this, MapActivity::class.java))
-            }
-        }
+        map_button.setOnClickListener { showOnMap() }
     }
 
     private fun initViewModel() {
@@ -62,6 +54,13 @@ class BarberDataActivity : AppCompatActivity() {
         viewModel.record.observe(this, Observer<BarberRecord> { record ->
             upDataView(record)
         })
+    }
+
+    private fun showOnMap() {
+        if (record != null) {
+            viewModel.addRecordsToMap(listOf(record!!))
+            startActivity(Intent(this, MapActivity::class.java))
+        }
     }
 
     private fun upDataView(record: BarberRecord) {
