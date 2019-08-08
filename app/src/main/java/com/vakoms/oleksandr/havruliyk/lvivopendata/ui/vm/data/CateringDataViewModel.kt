@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.CateringRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.MapManager
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromCateringRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromCateringRecord
 import javax.inject.Inject
 
 class CateringDataViewModel @Inject constructor(var repository: CateringRepository, var mapManager: MapManager) :

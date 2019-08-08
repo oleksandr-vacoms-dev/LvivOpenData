@@ -6,8 +6,8 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.MapManager
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromMarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.MarketRepository
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromMarketRecord
 import javax.inject.Inject
 
 class MarketDataViewModel @Inject constructor(var repository: MarketRepository, var mapManager: MapManager) : ViewModel() {

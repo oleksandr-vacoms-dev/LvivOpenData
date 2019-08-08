@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.BarberRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.MapManager
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.getAddressRecordFromBarberRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromBarberRecord
 import javax.inject.Inject
 
 class BarberDataViewModel @Inject constructor(var repository: BarberRepository, var mapManager: MapManager) :
