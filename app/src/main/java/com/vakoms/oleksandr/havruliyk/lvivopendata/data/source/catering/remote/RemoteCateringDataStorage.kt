@@ -2,17 +2,18 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.remote
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.RemoteDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringResponse
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.cateringSql
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
-class RemoteCateringDataStorage @Inject constructor(var openDataApi: OpenDataApi) : DataStorage<CateringRecord> {
+class RemoteCateringDataStorage @Inject constructor(var openDataApi: OpenDataApi) :
+    RemoteDataStorage<CateringRecord>() {
 
     override fun getAll(): MutableLiveData<List<CateringRecord>> {
         val data = MutableLiveData<List<CateringRecord>>()
@@ -50,18 +51,5 @@ class RemoteCateringDataStorage @Inject constructor(var openDataApi: OpenDataApi
             }
         })
         return data
-    }
-
-
-    override fun saveAll(data: List<CateringRecord>) {
-
-    }
-
-    override fun deleteAll() {
-
-    }
-
-    override fun getById(id: Int): LiveData<CateringRecord>? {
-        return null
     }
 }

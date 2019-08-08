@@ -2,17 +2,17 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.remote
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.RemoteDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMResponse
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.atmSql
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
-class RemoteATMDataStorage @Inject constructor(var openDataApi: OpenDataApi) : DataStorage<ATMRecord> {
+class RemoteATMDataStorage @Inject constructor(var openDataApi: OpenDataApi) : RemoteDataStorage<ATMRecord>() {
 
     override fun getAll(): MutableLiveData<List<ATMRecord>> {
         val data = MutableLiveData<List<ATMRecord>>()
@@ -33,9 +33,9 @@ class RemoteATMDataStorage @Inject constructor(var openDataApi: OpenDataApi) : D
         return data
     }
 
-    override fun getByName(bankLabel: String): LiveData<List<ATMRecord>>? {
+    override fun getByName(name: String): LiveData<List<ATMRecord>>? {
         val data = MutableLiveData<List<ATMRecord>>()
-        openDataApi.getATMByName(atmSql(bankLabel)).enqueue(object : Callback<ATMResponse> {
+        openDataApi.getATMByName(atmSql(name)).enqueue(object : Callback<ATMResponse> {
             override fun onResponse(
                 call: Call<ATMResponse>,
                 response: Response<ATMResponse>
@@ -49,18 +49,6 @@ class RemoteATMDataStorage @Inject constructor(var openDataApi: OpenDataApi) : D
                 data.value = null
             }
         })
-        return data    }
-
-
-    override fun saveAll(data: List<ATMRecord>) {
-
-    }
-
-    override fun deleteAll() {
-
-    }
-
-    override fun getById(id: Int): LiveData<ATMRecord>? {
-        return null
+        return data
     }
 }
