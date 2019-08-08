@@ -22,6 +22,5 @@ class MainActivity : AppCompatActivity() {
         market.setOnClickListener { startActivity(Intent(this, MarketActivity::class.java)) }
         catering.setOnClickListener { startActivity(Intent(this, CateringActivity::class.java)) }
         barber.setOnClickListener { startActivity(Intent(this, BarberActivity::class.java)) }
-        map.setOnClickListener { startActivity(Intent(this, MapActivity::class.java)) }
     }
 }
