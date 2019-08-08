@@ -33,9 +33,9 @@ class RemoteBarberDataStorage @Inject constructor(var openDataApi: OpenDataApi) 
         return data
     }
 
-    override fun getByName(bankLabel: String): LiveData<List<BarberRecord>>? {
+    override fun getByName(name: String): LiveData<List<BarberRecord>>? {
         val data = MutableLiveData<List<BarberRecord>>()
-        openDataApi.getBarberByName(barberSql(bankLabel)).enqueue(object : Callback<BarberResponse> {
+        openDataApi.getBarberByName(barberSql(name)).enqueue(object : Callback<BarberResponse> {
             override fun onResponse(
                 call: Call<BarberResponse>,
                 response: Response<BarberResponse>

@@ -21,10 +21,10 @@ interface OpenDataApi {
     @GET("$SEARCH?$ID=$CATERING_ID")
     fun getCatering(): Call<CateringResponse>
 
-    @GET("$SEARCH?$ID=$BARBER_ID")
+    @GET("$SEARCH?$ID=$ATM_ID")
     fun getATM(): Call<ATMResponse>
 
-    @GET("$SEARCH?$ID=$ATM_ID")
+    @GET("$SEARCH?$ID=$BARBER_ID")
     fun getBarber(): Call<BarberResponse>
 
     @GET(SEARCH_SQL)

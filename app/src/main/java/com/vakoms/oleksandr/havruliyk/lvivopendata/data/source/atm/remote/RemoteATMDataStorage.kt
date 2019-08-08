@@ -33,9 +33,9 @@ class RemoteATMDataStorage @Inject constructor(var openDataApi: OpenDataApi) : D
         return data
     }
 
-    override fun getByName(name: String): LiveData<List<ATMRecord>>? {
+    override fun getByName(bankLabel: String): LiveData<List<ATMRecord>>? {
         val data = MutableLiveData<List<ATMRecord>>()
-        openDataApi.getATMByName(atmSql(name)).enqueue(object : Callback<ATMResponse> {
+        openDataApi.getATMByName(atmSql(bankLabel)).enqueue(object : Callback<ATMResponse> {
             override fun onResponse(
                 call: Call<ATMResponse>,
                 response: Response<ATMResponse>

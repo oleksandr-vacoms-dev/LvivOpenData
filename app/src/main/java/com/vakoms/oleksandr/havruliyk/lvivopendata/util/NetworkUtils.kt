@@ -26,21 +26,18 @@ fun cateringSql(name: String) = getSqlQueryLike(CATERING_ID, name)
 
 fun barberSql(name: String) = getSqlQueryLike(BARBER_ID, name)
 
-fun atmSql(bankLabel: String) = getSqlQueryLike(ATM_ID, bankLabel)
+fun atmSql(bankLabel: String) = "SELECT * from \"$ATM_ID\"" +
+        " WHERE Банкомат LIKE '$bankLabel%' OR Банкомат LIKE '%$bankLabel'"
 
-private fun getSqlQueryLike(resourceId: String, name: String): String {
-    return "SELECT * from \"$resourceId\"" +
-            " WHERE name LIKE '$name%' OR name LIKE '%$name'"
-}
+private fun getSqlQueryLike(resourceId: String, name: String): String = "SELECT * from \"$resourceId\"" +
+        " WHERE name LIKE '$name%' OR name LIKE '%$name'"
 
-fun coordinatesSql(streetName: String, houseNumber: String): String {
-    return "SELECT * from \"$COORDINATES_ID\"" +
-            " WHERE (" +
-            "(" +
-            "(street_s_name LIKE '%$streetName') OR (street_d_name LIKE '%$streetName'))" +
-            " AND housenumber LIKE '$houseNumber'" +
-            ")"
-}
+fun coordinatesSql(streetName: String, houseNumber: String) = "SELECT * from \"$COORDINATES_ID\"" +
+        " WHERE (" +
+        "(" +
+        "(street_s_name LIKE '%$streetName') OR (street_d_name LIKE '%$streetName'))" +
+        " AND housenumber LIKE '$houseNumber'" +
+        ")"
 
 fun isConnected(networkCapabilities: NetworkCapabilities?): Boolean {
     return when (networkCapabilities) {
