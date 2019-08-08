@@ -25,4 +25,14 @@
     <string name="weekday">Пн-Пт</string>
     <string name="seats">Місць</string>
 
+    <string name="street_building">вул. %1$s, %2$s</string>
+    <string name="monday_work_time">Понеділок: %s</string>
+    <string name="tuesday_work_time">Віторок: %s</string>
+    <string name="wednesday_work_time">Середа: %s</string>
+    <string name="thursday_work_time">Четвер: %s</string>
+    <string name="friday_work_time">П\'ятниця: %s</string>
+    <string name="saturday_work_time">Субота: %s</string>
+    <string name="sunday_work_time">Неділя: %s</string>
+    <string name="weekday_work_time">Пн-Пт: %s</string>
+
 </resources>

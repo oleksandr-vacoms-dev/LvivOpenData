@@ -15,6 +15,7 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_fitness_data.*
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.*
+import java.lang.String.format
 import javax.inject.Inject
 
 class FitnessDataActivity : AppCompatActivity() {
@@ -67,13 +68,18 @@ class FitnessDataActivity : AppCompatActivity() {
         with(record) {
             label_view.text = name
             district_view.text = district
-            address_view.text = "$street  $building"
+            address_view.text = address()
             enterpreneur_name_view.text = enterpreneurName
             cellphone_view.text = cellphoneNumber1
             square_view.text = square
-            weekday_view.text = "${resources.getString(R.string.friday)} $hoursOfWorkWeekdays"
-            saturday_view.text = "${resources.getString(R.string.saturday)} $hoursOfWorkSaturday"
-            sunday_view.text = "${resources.getString(R.string.sunday)} $hoursOfWorkSunday"
+            weekday_view.text = weekday()
+            saturday_view.text = saturday()
+            sunday_view.text = sunday()
         }
     }
+
+    fun FitnessRecord.address() = format(resources.getString(R.string.street_building), street, building)
+    fun FitnessRecord.saturday() = format(resources.getString(R.string.saturday_work_time), hoursOfWorkSaturday)
+    fun FitnessRecord.sunday() = format(resources.getString(R.string.sunday_work_time), hoursOfWorkSunday)
+    fun FitnessRecord.weekday() = format(resources.getString(R.string.weekday_work_time), hoursOfWorkWeekdays)
 }

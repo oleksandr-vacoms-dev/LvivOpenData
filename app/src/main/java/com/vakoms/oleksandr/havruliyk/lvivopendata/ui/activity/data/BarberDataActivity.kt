@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_barber_data.*
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.item_list.*
 import kotlinx.android.synthetic.main.item_list.address_view
+import java.lang.String.format
 import javax.inject.Inject
 
 class BarberDataActivity : AppCompatActivity() {
@@ -68,16 +69,25 @@ class BarberDataActivity : AppCompatActivity() {
         with(record) {
             label_view.text = name
             district_view.text = district
-            address_view.text = "$street  $building"
+            address_view.text = address()
             enterpreneur_name_view.text = enterpreneur_name_1
             cellphone_view.text = cellphone_number_1
-            monday_view.text = "${resources.getString(R.string.monday)}  $hours_of_work_monday"
-            tuesday_view.text = "${resources.getString(R.string.tuesday)}  $hours_of_work_tuesday"
-            wednesday_view.text = "${resources.getString(R.string.wednesday)} $hours_of_work_wednesday"
-            thursday_view.text = "${resources.getString(R.string.thursday)} $hours_of_work_thursday"
-            friday_view.text = "${resources.getString(R.string.friday)} $hours_of_work_friday"
-            saturday_view.text = "${resources.getString(R.string.saturday)} $hours_of_work_saturday"
-            sunday_view.text = "${resources.getString(R.string.sunday)} $hours_of_work_sunday"
+            monday_view.text = monday()
+            tuesday_view.text = tuesday()
+            wednesday_view.text = wednesday()
+            thursday_view.text = thursday()
+            friday_view.text = friday()
+            saturday_view.text = saturday()
+            sunday_view.text = sunday()
         }
     }
+
+    fun BarberRecord.address() = format(resources.getString(R.string.street_building), street, building)
+    fun BarberRecord.monday() = format(resources.getString(R.string.monday_work_time), hours_of_work_monday)
+    fun BarberRecord.tuesday() = format(resources.getString(R.string.tuesday_work_time), hours_of_work_tuesday)
+    fun BarberRecord.wednesday() = format(resources.getString(R.string.wednesday_work_time), hours_of_work_wednesday)
+    fun BarberRecord.thursday() = format(resources.getString(R.string.thursday_work_time), hours_of_work_thursday)
+    fun BarberRecord.friday() = format(resources.getString(R.string.friday_work_time), hours_of_work_friday)
+    fun BarberRecord.saturday() = format(resources.getString(R.string.saturday_work_time), hours_of_work_saturday)
+    fun BarberRecord.sunday() = format(resources.getString(R.string.sunday_work_time), hours_of_work_sunday)
 }

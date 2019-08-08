@@ -15,6 +15,7 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_market_data.*
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.*
+import java.lang.String.format
 import javax.inject.Inject
 
 class MarketDataActivity : AppCompatActivity() {
@@ -64,18 +65,27 @@ class MarketDataActivity : AppCompatActivity() {
         with(record) {
             label_view.text = name
             district_view.text = district
-            address_view.text = "$street  $building"
+            address_view.text = address()
             enterpreneur_name_view.text = enterpreneurName1
             specialization_view.text = specialization
             cellphone_view.text = cellphoneNumber1
             square_view.text = storeTotalSquare
-            monday_view.text = "${resources.getString(R.string.monday)}  $hoursOfWorkMonday"
-            tuesday_view.text = "${resources.getString(R.string.tuesday)}  $hoursOfWorkTuesday"
-            wednesday_view.text = "${resources.getString(R.string.wednesday)} $hoursOfWorkWednesday"
-            thursday_view.text = "${resources.getString(R.string.thursday)} $hoursOfWorkThursday"
-            friday_view.text = "${resources.getString(R.string.friday)} $hoursOfWorkFriday"
-            saturday_view.text = "${resources.getString(R.string.saturday)} $hoursOfWorkSaturday"
-            sunday_view.text = "${resources.getString(R.string.sunday)} $hoursOfWorkSunday"
+            monday_view.text = monday()
+            tuesday_view.text = tuesday()
+            wednesday_view.text = wednesday()
+            thursday_view.text = thursday()
+            friday_view.text = friday()
+            saturday_view.text = saturday()
+            sunday_view.text = sunday()
         }
     }
+
+    fun MarketRecord.address() = format(resources.getString(R.string.street_building), street, building)
+    fun MarketRecord.monday() = format(resources.getString(R.string.monday_work_time), hoursOfWorkMonday)
+    fun MarketRecord.tuesday() = format(resources.getString(R.string.tuesday_work_time), hoursOfWorkTuesday)
+    fun MarketRecord.wednesday() = format(resources.getString(R.string.wednesday_work_time), hoursOfWorkWednesday)
+    fun MarketRecord.thursday() = format(resources.getString(R.string.thursday_work_time), hoursOfWorkThursday)
+    fun MarketRecord.friday() = format(resources.getString(R.string.friday_work_time), hoursOfWorkFriday)
+    fun MarketRecord.saturday() = format(resources.getString(R.string.saturday_work_time), hoursOfWorkSaturday)
+    fun MarketRecord.sunday() = format(resources.getString(R.string.sunday_work_time), hoursOfWorkSunday)
 }
