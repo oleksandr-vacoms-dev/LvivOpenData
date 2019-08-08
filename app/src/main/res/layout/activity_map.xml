@@ -5,7 +5,7 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
-    <include layout="@layout/label_layout"> </include>
+    <include layout="@layout/simple_label"></include>
 
     <fragment
             android:id="@+id/map"

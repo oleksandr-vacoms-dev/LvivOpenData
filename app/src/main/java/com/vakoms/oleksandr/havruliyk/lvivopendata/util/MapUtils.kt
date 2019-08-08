@@ -127,9 +127,3 @@ fun List<CoordinatesRecord>.getLatLng(): LatLng {
         getDefaultLatLnt()
     }
 }
-fun MutableLiveData<List<MapRecord>>.add(record: MapRecord){
-    val newList = mutableListOf<MapRecord>()
-    value?.let { newList.addAll(it) }
-    newList.add(record)
-    value = newList
-}

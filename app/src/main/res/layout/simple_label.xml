@@ -18,13 +18,6 @@
                 android:layout_centerVertical="true" android:layout_height="wrap_content"
                 android:layout_width="wrap_content"/>
 
-        <include
-                android:id="@+id/map_layout_layout"
-                layout="@layout/map_button"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true" android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
-
         <TextView
                 android:focusableInTouchMode="true"
                 style="@style/Label"
@@ -35,16 +28,6 @@
                 android:layout_marginEnd="@dimen/very_large_dimen"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
-        <SearchView
-                android:id="@+id/search_view"
-                android:gravity="center"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/very_large_dimen"
-                android:layout_marginEnd="@dimen/very_large_dimen"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-        </SearchView>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

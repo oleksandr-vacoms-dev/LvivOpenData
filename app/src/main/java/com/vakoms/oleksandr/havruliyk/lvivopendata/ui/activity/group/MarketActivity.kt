@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.MarketDataActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.MarketAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener.OnItemClickListener
@@ -20,8 +21,10 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.hideKeyboard
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_list.*
+import kotlinx.android.synthetic.main.activity_market_data.*
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.label_view
+import kotlinx.android.synthetic.main.map_button.*
 import kotlinx.android.synthetic.main.search_layout.*
 import javax.inject.Inject
 
@@ -52,7 +55,10 @@ class MarketActivity : AppCompatActivity(),
         label_view.text = resources.getString(R.string.market_label)
 
         back_button.setOnClickListener { finish() }
+        map_button.setOnClickListener { showOnMap() }
+
         initSearchView()
+
     }
 
     private fun initSearchView() {
@@ -140,6 +146,13 @@ class MarketActivity : AppCompatActivity(),
 
     override fun onItemClick(view: View, position: Int) {
         startDataActivityWith(records[position])
+    }
+
+    private fun showOnMap() {
+        if (records.isNotEmpty()) {
+            viewModel.addRecordsToMap(records)
+            startActivity(Intent(this, MapActivity::class.java))
+        }
     }
 
     private fun startDataActivityWith(data: MarketRecord) {
