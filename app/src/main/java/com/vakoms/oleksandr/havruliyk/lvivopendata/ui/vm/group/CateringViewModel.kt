@@ -4,11 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.MapManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.CateringRepository
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromCateringRecord
 import javax.inject.Inject
 
-class CateringViewModel @Inject constructor(repository: CateringRepository) : ViewModel() {
+class CateringViewModel @Inject constructor(var repository: CateringRepository, var mapManager: MapManager) : ViewModel() {
     var data: MutableLiveData<List<CateringRecord>> = repository.getAll() as MutableLiveData<List<CateringRecord>>
 
     private val searchString = MutableLiveData<String>()
@@ -18,5 +20,9 @@ class CateringViewModel @Inject constructor(repository: CateringRepository) : Vi
 
     fun setSearchData(search: String) {
         searchString.value = search
+    }
+
+    fun addRecordsToMap(record: List<CateringRecord>){
+        mapManager.addRecords(getAddressRecordFromCateringRecord(record))
     }
 }

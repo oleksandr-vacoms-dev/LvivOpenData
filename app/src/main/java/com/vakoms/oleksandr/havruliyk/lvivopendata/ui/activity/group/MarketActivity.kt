@@ -46,6 +46,7 @@ class MarketActivity : AppCompatActivity(),
 
         initAdapter()
         initView()
+        initSearchView()
         initRecyclerView()
         initViewModel()
         initObserver()
@@ -56,9 +57,6 @@ class MarketActivity : AppCompatActivity(),
 
         back_button.setOnClickListener { finish() }
         map_button.setOnClickListener { showOnMap() }
-
-        initSearchView()
-
     }
 
     private fun initSearchView() {

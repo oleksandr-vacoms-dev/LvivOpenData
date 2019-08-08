@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.FitnessDataActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.FitnessAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener.OnItemClickListener
@@ -22,6 +23,7 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.label_view
+import kotlinx.android.synthetic.main.map_button.*
 import kotlinx.android.synthetic.main.search_layout.*
 import javax.inject.Inject
 
@@ -43,6 +45,7 @@ class FitnessActivity : AppCompatActivity(),
 
         initAdapter()
         initView()
+        initSearchView()
         initRecyclerView()
         initViewModel()
         initObserver()
@@ -52,7 +55,7 @@ class FitnessActivity : AppCompatActivity(),
         label_view.text = resources.getString(R.string.fitness_label)
 
         back_button.setOnClickListener { finish() }
-        initSearchView()
+        map_button.setOnClickListener { showOnMap() }
     }
 
     private fun initSearchView() {
@@ -140,6 +143,13 @@ class FitnessActivity : AppCompatActivity(),
 
     override fun onItemClick(view: View, position: Int) {
         startDataActivityWith(records[position])
+    }
+
+    private fun showOnMap() {
+        if (records.isNotEmpty()) {
+            viewModel.addRecordsToMap(records)
+            startActivity(Intent(this, MapActivity::class.java))
+        }
     }
 
     private fun startDataActivityWith(data: FitnessRecord) {
