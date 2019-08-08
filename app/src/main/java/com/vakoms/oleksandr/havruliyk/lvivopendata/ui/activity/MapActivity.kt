@@ -11,7 +11,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.MapRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.MapViewModel
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.back_button.*
@@ -77,7 +77,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun showMarkers() {
         for (r: MapRecord in records) {
-            addMarker(r.latLng, r.adrress.title)
+            addMarker(r.latLng, r.address.title)
         }
     }
 

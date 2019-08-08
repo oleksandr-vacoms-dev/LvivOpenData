@@ -2,7 +2,9 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map
 
 import androidx.lifecycle.MutableLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.AddressRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.CoordinatesResponse
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.MapRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.MapDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.coordinatesSql
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getLatLng
@@ -28,9 +30,10 @@ class MapRepository @Inject constructor(var openDataApi: OpenDataApi) : MapDataS
                         response: Response<CoordinatesResponse>
                     ) {
                         if (response.isSuccessful) {
+                            val coordinates = response.body().result.records
                             data.value = MapRecord(
                                 address,
-                                getLatLng(response.body().result.records)
+                                coordinates.getLatLng()
                             )
                         }
                     }
@@ -41,22 +44,5 @@ class MapRepository @Inject constructor(var openDataApi: OpenDataApi) : MapDataS
                 })
         }
         return data
-    }
-
-    private fun getLatLng(records: List<CoordinatesRecord>): LatLng {
-        if (records.isNotEmpty()) {
-            return with(records[0]) {
-                LatLng(y, x)
-            }
-        }
-        return getDefaultLatLnt()
-    }
-
-    private fun getCoordinatesSql(streetName: String, houseNumber: String): String {
-        return "SELECT * from \"8d10826b-c00d-4fbd-b196-e8a231b0f4c0\"" +
-                " WHERE (" +
-                "((street_s_name LIKE '%$streetName') OR (street_d_name LIKE '%$streetName'))" +
-                " AND housenumber LIKE '$houseNumber'" +
-                ")"
     }
 }

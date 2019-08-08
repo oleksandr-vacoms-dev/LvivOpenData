@@ -3,7 +3,7 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.MapRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapRepository
 import javax.inject.Inject
 
