@@ -21,15 +21,13 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.hideKeyboard
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_list.*
-import kotlinx.android.synthetic.main.activity_market_data.*
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.label_layout.label_view
 import kotlinx.android.synthetic.main.map_button.*
 import kotlinx.android.synthetic.main.search_layout.*
 import javax.inject.Inject
 
-class MarketActivity : AppCompatActivity(),
-    OnItemClickListener {
+class MarketActivity : AppCompatActivity(), OnItemClickListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -38,6 +36,8 @@ class MarketActivity : AppCompatActivity(),
     private var records = listOf<MarketRecord>()
     private var cacheRecords = listOf<MarketRecord>()
     private lateinit var recordsAdapter: MarketAdapter
+
+    private lateinit var pagedListAdapter: MarketPagedListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -50,6 +50,10 @@ class MarketActivity : AppCompatActivity(),
         initRecyclerView()
         initViewModel()
         initObserver()
+
+        viewModel.pagedListLiveData.observe(this, Observer {
+            pagedListAdapter.submitList(it)
+        })
     }
 
     private fun initView() {
@@ -87,12 +91,14 @@ class MarketActivity : AppCompatActivity(),
 
     private fun initAdapter() {
         recordsAdapter = MarketAdapter(this)
+        pagedListAdapter = MarketPagedListAdapter()
     }
 
     private fun initRecyclerView() {
         with(recycler_view) {
             layoutManager = LinearLayoutManager(context?.applicationContext)
-            adapter = recordsAdapter
+            //adapter = recordsAdapter
+            adapter = pagedListAdapter
             itemAnimator = DefaultItemAnimator()
             isNestedScrollingEnabled = true
         }

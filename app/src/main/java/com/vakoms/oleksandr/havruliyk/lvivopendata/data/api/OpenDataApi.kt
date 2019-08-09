@@ -44,4 +44,10 @@ interface OpenDataApi {
 
     @GET(SEARCH_SQL)
     fun getCateringByName(@Query(SQL) sql: String): Call<CateringResponse>
+
+    @GET("$SEARCH?$ID=$MARKET_ID")
+    fun getMarkets(@Query(OFFSET) offset: Int): Call<MarketsResponse>
+
+    @GET(SEARCH)
+    fun get(@Query(ID) id: String, @Query(OFFSET) offset: Int): Call<MarketsResponse>
 }

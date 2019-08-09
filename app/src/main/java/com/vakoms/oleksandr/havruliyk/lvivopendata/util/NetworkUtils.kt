@@ -2,7 +2,7 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.util
 
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-
+import androidx.paging.PagedList
 
 const val BASE_URL = "https://opendata.city-adm.lviv.ua/api/3/action/"
 
@@ -15,8 +15,11 @@ const val COORDINATES_ID = "8d10826b-c00d-4fbd-b196-e8a231b0f4c0"
 
 const val SEARCH = "datastore_search"
 const val SQL = "sql"
+const val OFFSET = "offset"
 const val SEARCH_SQL = "${SEARCH}_$SQL"
 const val ID = "resource_id"
+
+const val PAGE_SIZE = 100
 
 fun marketSql(name: String) = getSqlQueryLike(MARKET_ID, name)
 
@@ -52,3 +55,11 @@ fun isConnected(networkCapabilities: NetworkCapabilities?): Boolean {
 
 fun ConnectivityManager.isConnected() =
     isConnected(getNetworkCapabilities(activeNetwork))
+
+fun pagedListConfig(): PagedList.Config {
+    return PagedList.Config.Builder()
+        .setEnablePlaceholders(false)
+        .setInitialLoadSizeHint(PAGE_SIZE * 2)
+        .setPageSize(PAGE_SIZE)
+        .build()
+}
