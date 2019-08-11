@@ -37,11 +37,7 @@ class AppModule {
     @Provides
     @Reusable
     fun provideOpenDataApi(): OpenDataApi {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(OpenDataApi::class.java)
+        return OpenDataApi.create()
     }
 
     @Singleton

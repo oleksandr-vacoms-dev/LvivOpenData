@@ -2,6 +2,7 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.util
 
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.view.View
 import androidx.paging.PagedList
 
 const val BASE_URL = "https://opendata.city-adm.lviv.ua/api/3/action/"
@@ -36,6 +37,9 @@ fun atmSql(bankLabel: String) = "SELECT * from \"$ATM_ID\"" +
 private fun getSqlQueryLike(resourceId: String, name: String): String = "SELECT * from \"$resourceId\"" +
         " WHERE name LIKE '$name%' OR name LIKE '%$name'"
 
+fun getSqlOrderedById(resourceId: String, offset: Int, pageSize: Int): String = "SELECT*from\"$resourceId\"" +
+        " WHERE _id>$offset AND _id<${offset + pageSize} ORDER BY _id"
+
 fun coordinatesSql(streetName: String, houseNumber: String) = "SELECT * from \"$COORDINATES_ID\"" +
         " WHERE (" +
         "(" +
@@ -60,7 +64,14 @@ fun ConnectivityManager.isConnected() =
 fun pagedListConfig(): PagedList.Config {
     return PagedList.Config.Builder()
         .setEnablePlaceholders(false)
-        .setInitialLoadSizeHint(PAGE_SIZE * 2)
         .setPageSize(PAGE_SIZE)
         .build()
+}
+
+fun toVisibility(constraint: Boolean): Int {
+    return if (constraint) {
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
 }

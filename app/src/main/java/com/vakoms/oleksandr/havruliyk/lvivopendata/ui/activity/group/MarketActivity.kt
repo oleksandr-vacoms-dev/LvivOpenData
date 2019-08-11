@@ -8,18 +8,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.NetworkState
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.test_paging.adapter.MarketItemAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.MarketDataActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.MarketAdapter
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.MarketItemAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener.OnItemClickListener
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.group.MarketViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.hideKeyboard
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_list.*
@@ -37,7 +34,6 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
 
     private var records = listOf<MarketRecord>()
     private var cacheRecords = listOf<MarketRecord>()
-    private lateinit var recordsAdapter: MarketAdapter
 
     private lateinit var pagedListAdapter: MarketItemAdapter
 
@@ -46,13 +42,14 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
+        initViewModel()
+
         initAdapter()
+        initSwipeToRefresh()
         initView()
         initSearchView()
-        initRecyclerView()
-        initViewModel()
+
         initObserver()
-        initSwipeToRefresh()
     }
 
     private fun initView() {
@@ -88,27 +85,15 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
         }
     }
 
-    private fun initRecyclerView() {
-        with(recycler_view) {
-            layoutManager = LinearLayoutManager(context?.applicationContext)
-            //adapter = recordsAdapter
-            adapter = pagedListAdapter
-            itemAnimator = DefaultItemAnimator()
-            isNestedScrollingEnabled = true
-        }
-    }
-
-
     private fun initAdapter() {
-        pagedListAdapter = MarketItemAdapter {
-            viewModel.retry()
-        }
+        pagedListAdapter = MarketItemAdapter(
+            retryCallback = { viewModel.retry() },
+            onItemClickListener = { record -> startDataActivityWith(record) })
+
+        recycler_view.adapter = pagedListAdapter
     }
 
     private fun initSwipeToRefresh() {
-        viewModel.refreshState.observe(this, Observer {
-            swipe_refresh.isRefreshing = it == NetworkState.LOADING
-        })
         swipe_refresh.setOnRefreshListener {
             viewModel.refresh()
         }
@@ -120,12 +105,16 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     private fun initObserver() {
-        viewModel.searchData.observe(this, Observer<List<MarketRecord>> { records ->
-            upDateSearchView(records)
+//        viewModel.searchData.observe(this, Observer<List<MarketRecord>> { records ->
+//            upDateSearchView(records)
+//        })
+
+        viewModel.pagedList.observe(this, Observer {
+            pagedListAdapter.submitList(it)
         })
 
-        viewModel.remotePagedList.observe(this, Observer {
-            pagedListAdapter.submitList(it)
+        viewModel.refreshState.observe(this, Observer {
+            swipe_refresh.isRefreshing = it == NetworkState.LOADING
         })
 
         viewModel.networkState.observe(this, Observer {
@@ -139,7 +128,7 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
         } else {
             this.records = records
             cacheRecords = records
-            recordsAdapter.data = records
+            //recordsAdapter.data = records
             showRecyclerView()
         }
     }
@@ -149,7 +138,7 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
             showEmptyView()
         } else {
             this.records = records
-            recordsAdapter.data = records
+            //recordsAdapter.data = records
             showRecyclerView()
         }
     }

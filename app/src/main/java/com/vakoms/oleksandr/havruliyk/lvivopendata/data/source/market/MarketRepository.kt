@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.toLiveData
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.NetworkState
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
@@ -13,7 +12,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResp
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.Repository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local.LocalMarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote.MarketBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.PAGE_SIZE
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,7 +42,7 @@ class MarketRepository @Inject constructor(
         }
 
         val livePagedList = localDataStorage.marketDao.getAll().toLiveData(
-            pageSize = PAGE_SIZE,
+            config = pagedListConfig(),
             boundaryCallback = boundaryCallback
         )
 
@@ -63,8 +62,8 @@ class MarketRepository @Inject constructor(
     @MainThread
     private fun refresh(): LiveData<NetworkState> {
         val networkState = MutableLiveData<NetworkState>()
-        networkState.value = NetworkState.LOADING
-        openDataApi.getMarkets(PAGE_SIZE).enqueue(
+        networkState.value = networkState.value
+        openDataApi.getMarkets(getSqlOrderedById(MARKET_ID, FIRST_ITEM, PAGE_SIZE)).enqueue(
             object : Callback<MarketsResponse> {
                 override fun onFailure(call: Call<MarketsResponse>, t: Throwable) {
                     networkState.value = NetworkState.error(t.message)

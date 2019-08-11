@@ -1,10 +1,9 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.api
+package com.vakoms.oleksandr.havruliyk.lvivopendata.util
 
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
-
 
 object ApiRequestHelper {
 

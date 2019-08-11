@@ -7,8 +7,7 @@ import androidx.paging.PagingRequestHelper
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResponse
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.FIRST_ITEM
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.createStatusLiveData
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,7 +25,7 @@ class MarketBoundaryCallback(
     @MainThread
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
-            webservice.getMarkets(FIRST_ITEM)
+            webservice.getMarkets(getSqlOrderedById(MARKET_ID, FIRST_ITEM, PAGE_SIZE))
                 .enqueue(createWebserviceCallback(it))
         }
     }
@@ -34,9 +33,9 @@ class MarketBoundaryCallback(
     @MainThread
     override fun onItemAtEndLoaded(itemAtEnd: MarketRecord) {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-            webservice.getMarkets(itemAtEnd.id)
+            webservice.getMarkets(getSqlOrderedById(MARKET_ID, itemAtEnd.id, PAGE_SIZE))
                 .enqueue(createWebserviceCallback(it))
-            Log.d("MarketBoundaryCallback", "onItemAtEndLoaded -> ${itemAtEnd.street}")
+            Log.d("MarketBoundaryCallback", "onItemAtEndLoaded -> ${itemAtEnd.id}")
         }
     }
 

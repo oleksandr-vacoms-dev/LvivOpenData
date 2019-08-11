@@ -3,7 +3,6 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.util
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingRequestHelper
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.NetworkState
 
 private fun getErrorMessage(report: PagingRequestHelper.StatusReport): String {
     return PagingRequestHelper.RequestType.values().mapNotNull {

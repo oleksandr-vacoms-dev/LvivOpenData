@@ -21,7 +21,7 @@ class MarketViewModel @Inject constructor(
     }
 
     private val itemResult = repository.getData()
-    val remotePagedList = itemResult.pagedList
+    val pagedList = itemResult.pagedList
     val networkState = itemResult.networkState
     val refreshState = itemResult.refreshState
 

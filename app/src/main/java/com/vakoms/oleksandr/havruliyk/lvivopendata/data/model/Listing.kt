@@ -2,7 +2,7 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.data.model
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.NetworkState
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
 
 data class Listing<T>(
     // the LiveData of paged lists for the UI to observe
