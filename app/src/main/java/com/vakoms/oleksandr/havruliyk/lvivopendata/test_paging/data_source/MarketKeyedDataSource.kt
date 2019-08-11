@@ -43,6 +43,7 @@ class MarketKeyedDataSource(openDataApi: OpenDataApi, retryExecutor: Executor, c
 
     override fun getData(response: MarketsResponse?): List<MarketRecord> {
         val data = response?.result?.records ?: listOf()
+        // TODO: added to load data to room leave or delete
         doAsync { local.marketDao().insert(data) }
 
         return data

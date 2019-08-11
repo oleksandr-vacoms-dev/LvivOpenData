@@ -11,12 +11,10 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromATMR
 import javax.inject.Inject
 
 class ATMViewModel @Inject constructor(var repository: ATMRepository, var mapManager: MapManager) : ViewModel() {
-    var data: MutableLiveData<List<ATMRecord>> = repository.getAll() as MutableLiveData<List<ATMRecord>>
+    lateinit var data: MutableLiveData<List<ATMRecord>> //= repository.getAll() as MutableLiveData<List<ATMRecord>>
 
     private val searchString = MutableLiveData<String>()
-    val searchData: LiveData<List<ATMRecord>> = Transformations.switchMap(searchString) { name ->
-        repository.getByName(name)
-    }
+    lateinit var searchData: LiveData<List<ATMRecord>>// = Transformations.switchMap(searchString) { name -> repository.getByName(name) }
 
     fun setSearchData(search: String) {
         searchString.value = search

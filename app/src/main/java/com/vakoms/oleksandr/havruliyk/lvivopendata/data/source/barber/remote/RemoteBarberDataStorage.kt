@@ -12,9 +12,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
-class RemoteBarberDataStorage @Inject constructor(var openDataApi: OpenDataApi) : RemoteDataStorage<BarberRecord>() {
+class RemoteBarberDataStorage @Inject constructor(var openDataApi: OpenDataApi) {
 
-    override fun getAll(): MutableLiveData<List<BarberRecord>> {
+     fun getAll(): MutableLiveData<List<BarberRecord>> {
         val data = MutableLiveData<List<BarberRecord>>()
         openDataApi.getBarber().enqueue(object : Callback<BarberResponse> {
             override fun onResponse(
@@ -33,7 +33,7 @@ class RemoteBarberDataStorage @Inject constructor(var openDataApi: OpenDataApi) 
         return data
     }
 
-    override fun getByName(name: String): LiveData<List<BarberRecord>>? {
+     fun getByName(name: String): LiveData<List<BarberRecord>>? {
         val data = MutableLiveData<List<BarberRecord>>()
         openDataApi.getBarberByName(barberSql(name)).enqueue(object : Callback<BarberResponse> {
             override fun onResponse(

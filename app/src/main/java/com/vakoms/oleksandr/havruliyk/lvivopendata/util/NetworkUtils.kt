@@ -19,6 +19,7 @@ const val OFFSET = "offset"
 const val SEARCH_SQL = "${SEARCH}_$SQL"
 const val ID = "resource_id"
 
+const val FIRST_ITEM = 0
 const val PAGE_SIZE = 100
 
 fun marketSql(name: String) = getSqlQueryLike(MARKET_ID, name)

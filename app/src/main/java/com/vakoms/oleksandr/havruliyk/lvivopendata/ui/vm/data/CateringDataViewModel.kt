@@ -14,7 +14,7 @@ class CateringDataViewModel @Inject constructor(var repository: CateringReposito
     ViewModel() {
 
     private val recordId = MutableLiveData<Int>()
-    val record: LiveData<CateringRecord> = Transformations.switchMap(recordId) { id -> repository.getById(id) }
+    lateinit var record: LiveData<CateringRecord>// = Transformations.switchMap(recordId) { id -> repository.getById(id) }
 
     fun setRecordId(resourceId: Int) {
         this.recordId.value = resourceId

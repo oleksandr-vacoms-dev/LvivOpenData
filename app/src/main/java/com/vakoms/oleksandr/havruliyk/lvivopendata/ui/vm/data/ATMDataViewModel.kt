@@ -14,7 +14,7 @@ class ATMDataViewModel @Inject constructor(var repository: ATMRepository, var ma
     ViewModel() {
 
     private val recordId = MutableLiveData<Int>()
-    val record: LiveData<ATMRecord> = Transformations.switchMap(recordId) { id -> repository.getById(id) }
+    lateinit var record: LiveData<ATMRecord>// = Transformations.switchMap(recordId) { id -> repository.getById(id) }
 
     fun setRecordId(resourceId: Int) {
         this.recordId.value = resourceId

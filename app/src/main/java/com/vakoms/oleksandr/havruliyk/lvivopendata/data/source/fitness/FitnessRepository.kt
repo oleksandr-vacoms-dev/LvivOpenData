@@ -11,4 +11,4 @@ class FitnessRepository @Inject constructor(
     localDataStorage: LocalFitnessDataStorage,
     remoteDataStorage: RemoteFitnessDataStorage,
     netManager: NetManager
-) : Repository<FitnessRecord>(localDataStorage, remoteDataStorage, netManager)
+) //: Repository<FitnessRecord>(localDataStorage, remoteDataStorage, netManager)

@@ -11,12 +11,10 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromCate
 import javax.inject.Inject
 
 class CateringViewModel @Inject constructor(var repository: CateringRepository, var mapManager: MapManager) : ViewModel() {
-    var data: MutableLiveData<List<CateringRecord>> = repository.getAll() as MutableLiveData<List<CateringRecord>>
+    lateinit var data: MutableLiveData<List<CateringRecord>>//= repository.getAll() as MutableLiveData<List<CateringRecord>>
 
     private val searchString = MutableLiveData<String>()
-    val searchData: LiveData<List<CateringRecord>> = Transformations.switchMap(searchString) { name ->
-        repository.getByName(name)
-    }
+    lateinit var searchData: LiveData<List<CateringRecord>>// = Transformations.switchMap(searchString) { name -> repository.getByName(name) }
 
     fun setSearchData(search: String) {
         searchString.value = search

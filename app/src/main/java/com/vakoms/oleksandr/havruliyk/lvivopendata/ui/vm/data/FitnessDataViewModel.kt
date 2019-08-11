@@ -13,7 +13,7 @@ import javax.inject.Inject
 class FitnessDataViewModel @Inject constructor(var repository: FitnessRepository, var mapManager: MapManager) : ViewModel() {
 
     private val recordId = MutableLiveData<Int>()
-    val record: LiveData<FitnessRecord> = Transformations.switchMap(recordId) { id -> repository.getById(id) }
+    lateinit var record: LiveData<FitnessRecord>// = Transformations.switchMap(recordId) { id -> repository.getById(id) }
 
     fun setRecordId(resourceId: Int) {
         this.recordId.value = resourceId

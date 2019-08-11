@@ -11,4 +11,4 @@ class BarberRepository @Inject constructor(
     localDataStorage: LocalBarberDataStorage,
     remoteDataStorage: RemoteBarberDataStorage,
     netManager: NetManager
-) : Repository<BarberRecord>(localDataStorage, remoteDataStorage, netManager)
+) //: Repository<BarberRecord>(localDataStorage, remoteDataStorage, netManager)

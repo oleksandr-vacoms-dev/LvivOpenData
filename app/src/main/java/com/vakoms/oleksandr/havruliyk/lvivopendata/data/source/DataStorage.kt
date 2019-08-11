@@ -1,14 +1,11 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source
 
 import androidx.lifecycle.LiveData
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 
 interface DataStorage<T> {
 
-    fun getAll(): LiveData<List<T>>?
-
-    fun saveAll(data: List<T>)
-
-    fun deleteAll()
+    fun getData(): Listing<T>
 
     fun getById(id: Int): LiveData<T>?
 

@@ -2,19 +2,21 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.di.module
 
 import android.content.Context
 import androidx.room.Room
+import com.vakoms.oleksandr.havruliyk.lvivopendata.OpenDataApp
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.local.ATMRoomDatabase
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.local.BarberRoomDatabase
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.local.CateringRoomDatabase
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local.FitnessRoomDatabase
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local.MarketRoomDatabase
-import com.vakoms.oleksandr.havruliyk.lvivopendata.OpenDataApp
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.BASE_URL
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 import javax.inject.Singleton
 
 @Module(includes = [ViewModelsModule::class])
@@ -24,6 +26,12 @@ class AppModule {
     @Singleton
     internal fun provideContext(application: OpenDataApp): Context {
         return application
+    }
+
+    @Provides
+    @Reusable
+    fun provideExecutor(): Executor {
+        return Executors.newSingleThreadExecutor()
     }
 
     @Provides

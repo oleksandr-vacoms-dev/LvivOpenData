@@ -13,7 +13,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.util.pagedListConfig
 import java.util.concurrent.Executor
 
 class InMemoryByPageKeyRepository(
-    private val openDataApi: OpenDataApi,
+    val openDataApi: OpenDataApi,
     private val networkExecutor: Executor,
     private val context: Context
 ) {

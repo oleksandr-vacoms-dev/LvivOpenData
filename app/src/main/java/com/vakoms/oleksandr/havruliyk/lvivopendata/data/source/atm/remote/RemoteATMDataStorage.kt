@@ -12,9 +12,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import javax.inject.Inject
 
-class RemoteATMDataStorage @Inject constructor(var openDataApi: OpenDataApi) : RemoteDataStorage<ATMRecord>() {
+class RemoteATMDataStorage @Inject constructor(var openDataApi: OpenDataApi) {
 
-    override fun getAll(): MutableLiveData<List<ATMRecord>> {
+     fun getAll(): MutableLiveData<List<ATMRecord>> {
         val data = MutableLiveData<List<ATMRecord>>()
         openDataApi.getATM().enqueue(object : Callback<ATMResponse> {
             override fun onResponse(
@@ -33,7 +33,7 @@ class RemoteATMDataStorage @Inject constructor(var openDataApi: OpenDataApi) : R
         return data
     }
 
-    override fun getByName(name: String): LiveData<List<ATMRecord>>? {
+    fun getByName(name: String): LiveData<List<ATMRecord>>? {
         val data = MutableLiveData<List<ATMRecord>>()
         openDataApi.getATMByName(atmSql(name)).enqueue(object : Callback<ATMResponse> {
             override fun onResponse(

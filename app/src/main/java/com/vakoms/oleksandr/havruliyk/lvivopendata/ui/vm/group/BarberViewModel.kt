@@ -11,12 +11,10 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromBarb
 import javax.inject.Inject
 
 class BarberViewModel @Inject constructor(var repository: BarberRepository, var mapManager: MapManager) : ViewModel() {
-    var data: MutableLiveData<List<BarberRecord>> = repository.getAll() as MutableLiveData<List<BarberRecord>>
+    lateinit var data: MutableLiveData<List<BarberRecord>>// = repository.getAll() as MutableLiveData<List<BarberRecord>>
 
     private val searchString = MutableLiveData<String>()
-    val searchData: LiveData<List<BarberRecord>> = Transformations.switchMap(searchString) { name ->
-        repository.getByName(name)
-    }
+    lateinit var searchData: LiveData<List<BarberRecord>>// = Transformations.switchMap(searchString) { name -> repository.getByName(name) }
 
     fun setSearchData(search: String) {
         searchString.value = search

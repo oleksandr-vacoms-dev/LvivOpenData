@@ -4,26 +4,33 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import androidx.paging.PagedList
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.MapManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.MarketRepository
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local.LocalMarketDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote.RemoteMarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromMarketRecord
 import javax.inject.Inject
 
 class MarketViewModel @Inject constructor(
     var repository: MarketRepository,
-    var mapManager: MapManager,
-    var local: LocalMarketDataStorage,
-    var remote: RemoteMarketDataStorage
+    var mapManager: MapManager
 ) : ViewModel() {
-    var data: MutableLiveData<List<MarketRecord>> = repository.getAll() as MutableLiveData<List<MarketRecord>>
 
     private val searchString = MutableLiveData<String>()
     val searchData: LiveData<List<MarketRecord>> = Transformations.switchMap(searchString) { name ->
         repository.getByName(name)
+    }
+
+    private val itemResult = repository.getData()
+    val remotePagedList = itemResult.pagedList
+    val networkState = itemResult.networkState
+    val refreshState = itemResult.refreshState
+
+    fun refresh() {
+        itemResult.refresh.invoke()
+    }
+
+    fun retry() {
+        itemResult.retry.invoke()
     }
 
     fun setSearchData(search: String) {
@@ -32,9 +39,5 @@ class MarketViewModel @Inject constructor(
 
     fun addRecordsToMap(record: List<MarketRecord>) {
         mapManager.addRecords(getAddressRecordFromMarketRecord(record))
-    }
-
-    val pagedListLiveData: LiveData<PagedList<MarketRecord>> by lazy {
-        local.selectPaged()
     }
 }

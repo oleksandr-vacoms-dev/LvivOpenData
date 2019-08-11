@@ -14,7 +14,7 @@ class BarberDataViewModel @Inject constructor(var repository: BarberRepository, 
     ViewModel() {
 
     private val recordId = MutableLiveData<Int>()
-    val record: LiveData<BarberRecord> = Transformations.switchMap(recordId) { id -> repository.getById(id) }
+    lateinit var record: LiveData<BarberRecord>// = Transformations.switchMap(recordId) { id -> repository.getById(id) }
 
     fun setRecordId(resourceId: Int) {
         this.recordId.value = resourceId

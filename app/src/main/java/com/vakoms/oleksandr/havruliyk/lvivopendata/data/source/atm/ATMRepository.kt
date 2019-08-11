@@ -11,4 +11,4 @@ class ATMRepository @Inject constructor(
     localDataStorage: LocalATMDataStorage,
     remoteDataStorage: RemoteATMDataStorage,
     netManager: NetManager
-) : Repository<ATMRecord>(localDataStorage, remoteDataStorage, netManager)
+) //: Repository<ATMRecord>(localDataStorage, remoteDataStorage, netManager)

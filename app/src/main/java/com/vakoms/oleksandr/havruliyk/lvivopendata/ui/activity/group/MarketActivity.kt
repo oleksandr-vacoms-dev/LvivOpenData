@@ -11,7 +11,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.NetworkState
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.test_paging.adapter.MarketItemAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.MarketDataActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.MarketAdapter
@@ -37,7 +39,7 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
     private var cacheRecords = listOf<MarketRecord>()
     private lateinit var recordsAdapter: MarketAdapter
 
-    private lateinit var pagedListAdapter: MarketPagedListAdapter
+    private lateinit var pagedListAdapter: MarketItemAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -50,10 +52,7 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
         initRecyclerView()
         initViewModel()
         initObserver()
-
-        viewModel.pagedListLiveData.observe(this, Observer {
-            pagedListAdapter.submitList(it)
-        })
+        initSwipeToRefresh()
     }
 
     private fun initView() {
@@ -89,11 +88,6 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
         }
     }
 
-    private fun initAdapter() {
-        recordsAdapter = MarketAdapter(this)
-        pagedListAdapter = MarketPagedListAdapter()
-    }
-
     private fun initRecyclerView() {
         with(recycler_view) {
             layoutManager = LinearLayoutManager(context?.applicationContext)
@@ -104,18 +98,38 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
         }
     }
 
+
+    private fun initAdapter() {
+        pagedListAdapter = MarketItemAdapter {
+            viewModel.retry()
+        }
+    }
+
+    private fun initSwipeToRefresh() {
+        viewModel.refreshState.observe(this, Observer {
+            swipe_refresh.isRefreshing = it == NetworkState.LOADING
+        })
+        swipe_refresh.setOnRefreshListener {
+            viewModel.refresh()
+        }
+    }
+
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
             .get(MarketViewModel::class.java)
     }
 
     private fun initObserver() {
-        viewModel.data.observe(this, Observer<List<MarketRecord>> { records ->
-            upDateView(records)
-        })
-
         viewModel.searchData.observe(this, Observer<List<MarketRecord>> { records ->
             upDateSearchView(records)
+        })
+
+        viewModel.remotePagedList.observe(this, Observer {
+            pagedListAdapter.submitList(it)
+        })
+
+        viewModel.networkState.observe(this, Observer {
+            pagedListAdapter.setNetworkState(it)
         })
     }
 

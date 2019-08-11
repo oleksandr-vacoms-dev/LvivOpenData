@@ -11,4 +11,4 @@ class CateringRepository @Inject constructor(
     localDataStorage: LocalCateringDataStorage,
     remoteDataStorage: RemoteCateringDataStorage,
     netManager: NetManager
-) : Repository<CateringRecord>(localDataStorage, remoteDataStorage, netManager)
+) //: Repository<CateringRecord>(localDataStorage, remoteDataStorage, netManager)
