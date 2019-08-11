@@ -11,9 +11,6 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecor
 @Dao
 interface MarketDao {
 
-    @Query("DELETE FROM market WHERE id BETWEEN :firstId AND :lastId")
-    fun deleteRange(firstId: Int, lastId: Int)
-
     @Query("DELETE FROM market")
     fun deleteAll()
 

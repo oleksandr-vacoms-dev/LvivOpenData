@@ -1,26 +1,25 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.local
 
-import androidx.lifecycle.LiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.LocalDataStorage
 import javax.inject.Inject
 
-class LocalATMDataStorage @Inject constructor(database: ATMRoomDatabase) {
+class LocalATMDataStorage @Inject constructor(database: ATMRoomDatabase) :
+    LocalDataStorage<ATMRecord> {
 
-    private var atmDao: ATMDao = database.atmDao()
+    private var atmDao = database.atmDao()
 
-    fun getAll(): LiveData<List<ATMRecord>> {
-        return atmDao.getAll()
-    }
+    override fun getAll() = atmDao.getAll()
 
-    fun saveAll(data: List<ATMRecord>) {
+    override fun saveAll(data: List<ATMRecord>) {
         atmDao.insert(data)
     }
 
-    fun deleteAll() {
+    override fun deleteAll() {
         atmDao.deleteAll()
     }
 
-    fun getById(id: Int): LiveData<ATMRecord> = atmDao.getById(id)
+    override fun getById(id: Int) = atmDao.getById(id)
 
-    fun getByName(name: String): LiveData<List<ATMRecord>>? = atmDao.getByName(name)
+    override fun getByName(name: String) = atmDao.getByName(name)
 }

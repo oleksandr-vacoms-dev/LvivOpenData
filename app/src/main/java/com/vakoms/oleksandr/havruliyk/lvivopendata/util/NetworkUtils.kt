@@ -24,24 +24,34 @@ const val API = "API"
 const val FIRST_ITEM = 0
 const val PAGE_SIZE = 100
 
-fun marketSql(name: String) = getSqlQueryLike(MARKET_ID, name)
-
-fun fitnessSql(name: String) = getSqlQueryLike(FITNESS_ID, name)
-
-fun cateringSql(name: String) = getSqlQueryLike(CATERING_ID, name)
-
-fun barberSql(name: String) = getSqlQueryLike(BARBER_ID, name)
-
-fun atmSql(bankLabel: String) = "SELECT * from \"$ATM_ID\"" +
-        " WHERE Банкомат LIKE '$bankLabel%' OR Банкомат LIKE '%$bankLabel'"
-
-private fun getSqlQueryLike(resourceId: String, name: String): String = "SELECT * from \"$resourceId\"" +
-        " WHERE name LIKE '$name%' OR name LIKE '%$name' ORDER BY _id "
-
 fun sqlMarkets(offset: Int): String = "SELECT*from\"$MARKET_ID\"" +
         " WHERE _id>$offset AND _id<=${offset + PAGE_SIZE} ORDER BY _id"
 
 fun sqlMarketsSearchByName(name: String, offset: Int): String = "SELECT * from \"$MARKET_ID\"" +
+        " WHERE (name LIKE '%$name%' OR name LIKE '%$name') AND _id > $offset ORDER BY _id "
+
+fun sqlFitness(offset: Int): String = "SELECT*from\"${FITNESS_ID}_ID\"" +
+        " WHERE _id>$offset AND _id<=${offset + PAGE_SIZE} ORDER BY _id"
+
+fun sqlFitnessSearchByName(name: String, offset: Int): String = "SELECT * from \"$FITNESS_ID\"" +
+        " WHERE (name LIKE '%$name%' OR name LIKE '%$name') AND _id > $offset ORDER BY _id "
+
+fun sqlCatering(offset: Int): String = "SELECT*from\"$CATERING_ID\"" +
+        " WHERE _id>$offset AND _id<=${offset + PAGE_SIZE} ORDER BY _id"
+
+fun sqlCateringSearchByName(name: String, offset: Int): String = "SELECT * from \"$CATERING_ID\"" +
+        " WHERE (name LIKE '%$name%' OR name LIKE '%$name') AND _id > $offset ORDER BY _id "
+
+fun sqlBarber(offset: Int): String = "SELECT*from\"$BARBER_ID\"" +
+        " WHERE _id>$offset AND _id<=${offset + PAGE_SIZE} ORDER BY _id"
+
+fun sqlBarberSearchByName(name: String, offset: Int): String = "SELECT * from \"$BARBER_ID\"" +
+        " WHERE (name LIKE '%$name%' OR name LIKE '%$name') AND _id > $offset ORDER BY _id "
+
+fun sqlATM(offset: Int): String = "SELECT*from\"$ATM_ID\"" +
+        " WHERE _id>$offset AND _id<=${offset + PAGE_SIZE} ORDER BY _id"
+
+fun sqlATMSearchByName(name: String, offset: Int): String = "SELECT * from \"$ATM_ID\"" +
         " WHERE (name LIKE '%$name%' OR name LIKE '%$name') AND _id > $offset ORDER BY _id "
 
 fun coordinatesSql(streetName: String, houseNumber: String) = "SELECT * from \"$COORDINATES_ID\"" +

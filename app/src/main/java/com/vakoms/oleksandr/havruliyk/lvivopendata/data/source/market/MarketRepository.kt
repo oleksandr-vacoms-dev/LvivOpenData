@@ -10,7 +10,8 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResponse
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.RecordBoundaryCallback
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataBoundaryCallback
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local.LocalMarketDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote.MarketBoundaryCallback
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote.MarketByNameBoundaryCallback
@@ -25,18 +26,17 @@ class MarketRepository @Inject constructor(
     var localDataStorage: LocalMarketDataStorage,
     var openDataApi: OpenDataApi,
     var ioExecutor: Executor
-) //: Repository<MarketRecord>(localDataStorage, openDataApi)
-{
+) : DataStorage<MarketRecord> {
 
     @MainThread
-    fun getData(): Listing<MarketRecord> {
+    override fun getData(): Listing<MarketRecord> {
         val boundaryCallback = MarketBoundaryCallback(
             webservice = openDataApi,
             handleResponse = { data -> localDataStorage.saveAll(data) },
             ioExecutor = ioExecutor
         )
 
-        val livePagedList = localDataStorage.marketDao.getAll().toLiveData(
+        val livePagedList = localDataStorage.getAll().toLiveData(
             config = pagedListConfig(),
             boundaryCallback = boundaryCallback
         )
@@ -45,14 +45,14 @@ class MarketRepository @Inject constructor(
     }
 
     @MainThread
-    fun getDataByName(name: String): Listing<MarketRecord> {
+    override fun getDataByName(name: String): Listing<MarketRecord> {
         val boundaryCallback = MarketByNameBoundaryCallback(
             webservice = openDataApi,
             handleResponse = { data -> localDataStorage.saveAll(data) },
             ioExecutor = ioExecutor,
             name = name
         )
-        val livePagedList = localDataStorage.marketDao.getByName("%$name%").toLiveData(
+        val livePagedList = localDataStorage.getByName("%$name%").toLiveData(
             config = pagedListConfig(),
             boundaryCallback = boundaryCallback
         )
@@ -61,7 +61,7 @@ class MarketRepository @Inject constructor(
     }
 
     private fun getListing(
-        boundaryCallback: RecordBoundaryCallback<MarketRecord>,
+        boundaryCallback: DataBoundaryCallback<MarketRecord>,
         livePagedList: LiveData<PagedList<MarketRecord>>,
         refreshStateLiveData: () -> LiveData<NetworkState>
     ): Listing<MarketRecord> {
@@ -128,8 +128,8 @@ class MarketRepository @Inject constructor(
                 ) {
                     ioExecutor.execute {
                         localDataStorage.saveAll(response.body().result.records)
+                        networkState.postValue(NetworkState.LOADED)
                     }
-                    networkState.postValue(NetworkState.LOADED)
                 }
             }
         )

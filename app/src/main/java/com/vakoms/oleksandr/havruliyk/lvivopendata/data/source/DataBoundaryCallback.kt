@@ -5,7 +5,7 @@ import androidx.paging.PagingRequestHelper
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.createStatusLiveData
 import java.util.concurrent.Executor
 
-abstract class RecordBoundaryCallback<T>(
+abstract class DataBoundaryCallback<T>(
     ioExecutor: Executor
 ) : PagedList.BoundaryCallback<T>() {
 

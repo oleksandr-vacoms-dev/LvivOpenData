@@ -5,7 +5,7 @@ import androidx.paging.PagingRequestHelper
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResponse
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.RecordBoundaryCallback
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataBoundaryCallback
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.FIRST_ITEM
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlMarkets
 import retrofit2.Call
@@ -17,7 +17,7 @@ class MarketBoundaryCallback(
     private val webservice: OpenDataApi,
     private val handleResponse: (List<MarketRecord>) -> Unit,
     private val ioExecutor: Executor
-) : RecordBoundaryCallback<MarketRecord>(ioExecutor) {
+) : DataBoundaryCallback<MarketRecord>(ioExecutor) {
 
     @MainThread
     override fun onZeroItemsLoaded() {

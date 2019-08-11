@@ -1,43 +1,43 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.remote
 
 import androidx.annotation.MainThread
 import androidx.paging.PagingRequestHelper
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResponse
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataBoundaryCallback
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.FIRST_ITEM
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlMarketsSearchByName
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlCateringSearchByName
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executor
 
-class MarketByNameBoundaryCallback(
+class CateringByNameBoundaryCallback(
     private val webservice: OpenDataApi,
-    private val handleResponse: (List<MarketRecord>) -> Unit,
+    private val handleResponse: (List<CateringRecord>) -> Unit,
     private val ioExecutor: Executor,
     private val name: String
-) : DataBoundaryCallback<MarketRecord>(ioExecutor) {
+) : DataBoundaryCallback<CateringRecord>(ioExecutor) {
 
     @MainThread
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
-            webservice.getMarkets(sqlMarketsSearchByName(name, FIRST_ITEM))
+            webservice.getCatering(sqlCateringSearchByName(name, FIRST_ITEM))
                 .enqueue(createWebserviceCallback(it))
         }
     }
 
     @MainThread
-    override fun onItemAtEndLoaded(itemAtEnd: MarketRecord) {
+    override fun onItemAtEndLoaded(itemAtEnd: CateringRecord) {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
-            webservice.getMarkets(sqlMarketsSearchByName(name, itemAtEnd.id))
+            webservice.getCatering(sqlCateringSearchByName(name, itemAtEnd._id))
                 .enqueue(createWebserviceCallback(it))
         }
     }
 
     private fun insertItemsIntoDb(
-        response: Response<MarketsResponse>,
+        response: Response<CateringResponse>,
         it: PagingRequestHelper.Request.Callback
     ) {
         ioExecutor.execute {
@@ -47,18 +47,18 @@ class MarketByNameBoundaryCallback(
     }
 
     private fun createWebserviceCallback(it: PagingRequestHelper.Request.Callback)
-            : Callback<MarketsResponse> {
-        return object : Callback<MarketsResponse> {
+            : Callback<CateringResponse> {
+        return object : Callback<CateringResponse> {
             override fun onFailure(
-                call: Call<MarketsResponse>,
+                call: Call<CateringResponse>,
                 t: Throwable
             ) {
                 it.recordFailure(t)
             }
 
             override fun onResponse(
-                call: Call<MarketsResponse>,
-                response: Response<MarketsResponse>
+                call: Call<CateringResponse>,
+                response: Response<CateringResponse>
             ) {
                 insertItemsIntoDb(response, it)
             }

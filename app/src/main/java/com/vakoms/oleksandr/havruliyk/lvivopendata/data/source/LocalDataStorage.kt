@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source
 
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
