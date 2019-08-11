@@ -59,29 +59,29 @@ class FitnessActivity : AppCompatActivity(),
     }
 
     private fun initSearchView() {
-        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.setSearchData(search_view.query.toString())
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                if (newText.isNotEmpty()) {
-                    label_view.visibility = View.GONE
-                } else {
-                    label_view.visibility = View.VISIBLE
-                }
-                return true
-            }
-        })
-
-        search_view.setOnCloseListener {
-            search_view.setQuery("", false)
-            label_view.requestFocus()
-            hideKeyboard(this)
-            upDateView(cacheRecords)
-            true
-        }
+//        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                viewModel.getDataByQuery(search_view.query.toString())
+//                return false
+//            }
+//
+//            override fun onQueryTextChange(newText: String): Boolean {
+//                if (newText.isNotEmpty()) {
+//                    label_view.visibility = View.GONE
+//                } else {
+//                    label_view.visibility = View.VISIBLE
+//                }
+//                return true
+//            }
+//        })
+//
+//        search_view.setOnCloseListener {
+//            search_view.setQuery("", false)
+//            label_view.requestFocus()
+//            hideKeyboard(this)
+//            upDateView(cacheRecords)
+//            true
+//        }
     }
 
     private fun initAdapter() {

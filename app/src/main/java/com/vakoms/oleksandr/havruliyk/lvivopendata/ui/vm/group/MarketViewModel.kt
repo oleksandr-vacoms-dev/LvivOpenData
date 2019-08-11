@@ -4,9 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.paging.PagedList
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.MapManager
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.MarketRepository
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromMarketRecord
 import javax.inject.Inject
 
@@ -15,29 +18,43 @@ class MarketViewModel @Inject constructor(
     var mapManager: MapManager
 ) : ViewModel() {
 
+    private lateinit var listing: Listing<MarketRecord>
+
+    var networkState: LiveData<NetworkState> = MutableLiveData()
+    var refreshState: LiveData<NetworkState> = MutableLiveData()
+    var pagedList: LiveData<PagedList<MarketRecord>> = MutableLiveData()
+
     private val searchString = MutableLiveData<String>()
-    val searchData: LiveData<List<MarketRecord>> = Transformations.switchMap(searchString) { name ->
-        repository.getByName(name)
+    var searchNetworkState: LiveData<NetworkState> = MutableLiveData()
+    var searchRefreshState: LiveData<NetworkState> = MutableLiveData()
+
+    var searchPagedList: LiveData<PagedList<MarketRecord>> = Transformations.switchMap(searchString) { name ->
+        listing = repository.getDataByName(name)
+        searchNetworkState = listing.networkState
+        searchRefreshState = listing.refreshState
+        listing.pagedList
     }
 
-    private val itemResult = repository.getData()
-    val pagedList = itemResult.pagedList
-    val networkState = itemResult.networkState
-    val refreshState = itemResult.refreshState
-
     fun refresh() {
-        itemResult.refresh.invoke()
+        listing.refresh.invoke()
     }
 
     fun retry() {
-        itemResult.retry.invoke()
+        listing.retry.invoke()
     }
 
-    fun setSearchData(search: String) {
+    fun getDataByQuery(search: String) {
         searchString.value = search
     }
 
     fun addRecordsToMap(record: List<MarketRecord>) {
         mapManager.addRecords(getAddressRecordFromMarketRecord(record))
+    }
+
+    fun getAllData() {
+        listing = repository.getData()
+        networkState = listing.networkState
+        refreshState = listing.refreshState
+        pagedList = listing.pagedList
     }
 }

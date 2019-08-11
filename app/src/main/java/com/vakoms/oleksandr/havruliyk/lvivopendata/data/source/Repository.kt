@@ -9,7 +9,7 @@ abstract class Repository<T>(
     private val openDataApi: OpenDataApi
 ) : DataStorage<T> {
 
-    override fun getById(id: Int): LiveData<T>? = localDataStorage.getById(id)
-
-    override fun getByName(name: String): LiveData<List<T>>? = localDataStorage.getByName(name)
+//    override fun getById(id: Int): LiveData<T>? = localDataStorage.getById(id)
+//
+//    override fun getByName(name: String): LiveData<List<T>>? = localDataStorage.getByName(name)
 }

@@ -9,7 +9,7 @@ data class BarberResult(
     @SerializedName("resource_id") var resource_id: String,
     @SerializedName("fields") var fields: List<Field>,
     @SerializedName("records_format") var records_format: String,
-    @SerializedName("records") var records: List<BarberRecord>,
+    @SerializedName("pagedList") var records: List<BarberRecord>,
     @SerializedName("_links") var _links: Links,
     @SerializedName("total") var total: Int
 )

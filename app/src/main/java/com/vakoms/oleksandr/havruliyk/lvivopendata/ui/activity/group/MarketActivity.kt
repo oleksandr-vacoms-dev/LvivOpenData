@@ -33,7 +33,6 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
     private lateinit var viewModel: MarketViewModel
 
     private var records = listOf<MarketRecord>()
-    private var cacheRecords = listOf<MarketRecord>()
 
     private lateinit var pagedListAdapter: MarketItemAdapter
 
@@ -43,46 +42,17 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
         setContentView(R.layout.activity_list)
 
         initViewModel()
-
         initAdapter()
         initSwipeToRefresh()
         initView()
         initSearchView()
 
-        initObserver()
+        showAllData()
     }
 
-    private fun initView() {
-        label_view.text = resources.getString(R.string.market_label)
-
-        back_button.setOnClickListener { finish() }
-        map_button.setOnClickListener { showOnMap() }
-    }
-
-    private fun initSearchView() {
-        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.setSearchData(search_view.query.toString())
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                if (newText.isNotEmpty()) {
-                    label_view.visibility = View.GONE
-                } else {
-                    label_view.visibility = View.VISIBLE
-                }
-                return true
-            }
-        })
-
-        search_view.setOnCloseListener {
-            search_view.setQuery("", false)
-            label_view.requestFocus()
-            hideKeyboard(this)
-            upDateView(cacheRecords)
-            true
-        }
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(MarketViewModel::class.java)
     }
 
     private fun initAdapter() {
@@ -99,16 +69,66 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
         }
     }
 
-    private fun initViewModel() {
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(MarketViewModel::class.java)
+    private fun initView() {
+        label_view.text = resources.getString(R.string.market_label)
+
+        back_button.setOnClickListener { finish() }
+        map_button.setOnClickListener { showOnMap() }
     }
 
-    private fun initObserver() {
-//        viewModel.searchData.observe(this, Observer<List<MarketRecord>> { records ->
-//            upDateSearchView(records)
-//        })
+    private fun initSearchView() {
+        search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                showSearchData(search_view.query.toString())
+                return false
+            }
 
+            override fun onQueryTextChange(newText: String): Boolean {
+                if (newText.isNotEmpty()) {
+                    label_view.visibility = View.INVISIBLE
+                } else {
+                    label_view.visibility = View.VISIBLE
+                }
+                return true
+            }
+        })
+
+        search_view.setOnCloseListener {
+            closeSearchView()
+            showAllData()
+            true
+        }
+    }
+
+    private fun showAllData() {
+        resetAdapter()
+        viewModel.getAllData()
+        removeObserversSearchData()
+        addObserverAllData()
+    }
+
+    private fun showSearchData(searchQuery: String) {
+        resetAdapter()
+        viewModel.getDataByQuery(searchQuery)
+        removeObserversAllData()
+        addObserversSearchData()
+    }
+
+    private fun addObserversSearchData() {
+        viewModel.searchPagedList.observe(this, Observer {
+            pagedListAdapter.submitList(it)
+        })
+
+        viewModel.searchRefreshState.observe(this, Observer {
+            swipe_refresh.isRefreshing = it == NetworkState.LOADING
+        })
+
+        viewModel.searchNetworkState.observe(this, Observer {
+            pagedListAdapter.setNetworkState(it)
+        })
+    }
+
+    private fun addObserverAllData() {
         viewModel.pagedList.observe(this, Observer {
             pagedListAdapter.submitList(it)
         })
@@ -122,33 +142,16 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
         })
     }
 
-    private fun upDateView(records: List<MarketRecord>) {
-        if (records.isEmpty()) {
-            showEmptyView()
-        } else {
-            this.records = records
-            cacheRecords = records
-            //recordsAdapter.data = records
-            showRecyclerView()
-        }
+    private fun removeObserversAllData() {
+        viewModel.pagedList.removeObservers(this)
+        viewModel.refreshState.removeObservers(this)
+        viewModel.networkState.removeObservers(this)
     }
 
-    private fun upDateSearchView(records: List<MarketRecord>) {
-        if (records.isEmpty()) {
-            showEmptyView()
-        } else {
-            this.records = records
-            //recordsAdapter.data = records
-            showRecyclerView()
-        }
-    }
-
-    private fun showEmptyView() {
-        recycler_view.visibility = View.GONE
-    }
-
-    private fun showRecyclerView() {
-        recycler_view.visibility = View.VISIBLE
+    private fun removeObserversSearchData() {
+        viewModel.searchPagedList.removeObservers(this)
+        viewModel.searchRefreshState.removeObservers(this)
+        viewModel.searchNetworkState.removeObservers(this)
     }
 
     override fun onItemClick(view: View, position: Int) {
@@ -166,5 +169,16 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
         val intent = Intent(this, MarketDataActivity::class.java)
         intent.putExtra(DATA_ID, data.id)
         startActivity(intent)
+    }
+
+    private fun resetAdapter() {
+        recycler_view.scrollToPosition(0)
+        pagedListAdapter.submitList(null)
+    }
+
+    private fun closeSearchView() {
+        search_view.setQuery("", false)
+        label_view.requestFocus()
+        hideKeyboard(this)
     }
 }

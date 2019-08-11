@@ -13,7 +13,7 @@ import javax.inject.Inject
 class MarketDataViewModel @Inject constructor(var repository: MarketRepository, var mapManager: MapManager) : ViewModel() {
 
     private val recordId = MutableLiveData<Int>()
-    val record: LiveData<MarketRecord> = Transformations.switchMap(recordId) { id -> repository.getById(id) }
+    lateinit var  record: LiveData<MarketRecord> //= Transformations.switchMap(recordId) { id -> repository.getById(id) }
 
     fun setRecordId(resourceId: Int) {
         this.recordId.value = resourceId

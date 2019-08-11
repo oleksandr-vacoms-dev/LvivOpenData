@@ -19,6 +19,7 @@ const val SQL = "sql"
 const val OFFSET = "offset"
 const val SEARCH_SQL = "${SEARCH}_$SQL"
 const val ID = "resource_id"
+const val API = "API"
 
 const val FIRST_ITEM = 0
 const val PAGE_SIZE = 100
@@ -35,10 +36,13 @@ fun atmSql(bankLabel: String) = "SELECT * from \"$ATM_ID\"" +
         " WHERE Банкомат LIKE '$bankLabel%' OR Банкомат LIKE '%$bankLabel'"
 
 private fun getSqlQueryLike(resourceId: String, name: String): String = "SELECT * from \"$resourceId\"" +
-        " WHERE name LIKE '$name%' OR name LIKE '%$name'"
+        " WHERE name LIKE '$name%' OR name LIKE '%$name' ORDER BY _id "
 
-fun getSqlOrderedById(resourceId: String, offset: Int, pageSize: Int): String = "SELECT*from\"$resourceId\"" +
-        " WHERE _id>$offset AND _id<${offset + pageSize} ORDER BY _id"
+fun sqlMarkets(offset: Int): String = "SELECT*from\"$MARKET_ID\"" +
+        " WHERE _id>$offset AND _id<=${offset + PAGE_SIZE} ORDER BY _id"
+
+fun sqlMarketsSearchByName(name: String, offset: Int): String = "SELECT * from \"$MARKET_ID\"" +
+        " WHERE (name LIKE '%$name%' OR name LIKE '%$name') AND _id > $offset ORDER BY _id "
 
 fun coordinatesSql(streetName: String, houseNumber: String) = "SELECT * from \"$COORDINATES_ID\"" +
         " WHERE (" +

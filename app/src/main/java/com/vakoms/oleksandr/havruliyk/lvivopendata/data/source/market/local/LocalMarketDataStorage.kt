@@ -1,6 +1,7 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.LocalDataStorage
 import javax.inject.Inject
@@ -21,5 +22,5 @@ class LocalMarketDataStorage @Inject constructor(var database: MarketRoomDatabas
 
     override fun getById(id: Int): LiveData<MarketRecord> = marketDao.getById(id)
 
-    override fun getByName(name: String): LiveData<List<MarketRecord>>? = marketDao.getByName(name)
+    override fun getByName(name: String): DataSource.Factory<Int, MarketRecord> = marketDao.getByName(name)
 }

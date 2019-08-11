@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *                             {@literal @}Override
  *                             public void onResponse(Call&lt;ApiResponse> call,
  *                                     Response&lt;ApiResponse> response) {
- *                                 // TODO insert new records into database
+ *                                 // TODO insert new pagedList into database
  *                                 helperCallback.recordSuccess();
  *                             }
  *
@@ -54,7 +54,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *                             {@literal @}Override
  *                             public void onResponse(Call&lt;ApiResponse> call,
  *                                     Response&lt;ApiResponse> response) {
- *                                 // TODO insert new records into database
+ *                                 // TODO insert new pagedList into database
  *                                 helperCallback.recordSuccess();
  *                             }
  *

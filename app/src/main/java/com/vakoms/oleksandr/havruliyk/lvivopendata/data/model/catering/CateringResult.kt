@@ -9,7 +9,7 @@ data class CateringResult(
     @SerializedName("resource_id") var resource_id: String,
     @SerializedName("fields") var fields: List<Field>,
     @SerializedName("records_format") var records_format: String,
-    @SerializedName("records") var records: List<CateringRecord>,
+    @SerializedName("pagedList") var records: List<CateringRecord>,
     @SerializedName("_links") var _links: Links,
     @SerializedName("total") var total: Int
 )
