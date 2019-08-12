@@ -12,7 +12,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.MarketDataActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.MarketItemAdapter
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.MarketAdapter
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener.OnItemClickListener
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.group.MarketViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
@@ -34,7 +34,7 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
 
     private var records = listOf<MarketRecord>()
 
-    private lateinit var pagedListAdapter: MarketItemAdapter
+    private lateinit var pagedListAdapter: MarketAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -56,7 +56,7 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
     }
 
     private fun initAdapter() {
-        pagedListAdapter = MarketItemAdapter(
+        pagedListAdapter = MarketAdapter(
             retryCallback = { viewModel.retry() },
             onItemClickListener = { record -> startDataActivityWith(record) })
 

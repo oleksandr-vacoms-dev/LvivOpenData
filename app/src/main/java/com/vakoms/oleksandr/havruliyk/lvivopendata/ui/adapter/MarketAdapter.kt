@@ -11,7 +11,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.viewholder.Network
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.Status
 
-class MarketItemAdapter(
+class MarketAdapter(
     private val retryCallback: () -> Unit,
     private val onItemClickListener: (record: MarketRecord) -> Unit
 ) : PagedListAdapter<MarketRecord, RecyclerView.ViewHolder>(ITEM_COMPARATOR) {
