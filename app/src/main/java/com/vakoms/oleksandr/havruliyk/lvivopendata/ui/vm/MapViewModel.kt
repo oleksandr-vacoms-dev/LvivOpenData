@@ -9,7 +9,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.map.MapRepository
 import javax.inject.Inject
 
 class MapViewModel @Inject constructor(var mapManager: MapManager, var repository: MapRepository) : ViewModel() {
-    private val addressRecords = mapManager.getAll()
+    val addressRecords = mapManager.getAll()
     var mapRecords: LiveData<List<MapRecord>> = Transformations.switchMap(addressRecords) { addresses ->
         repository.getMapRecordsByAddressRecords(addresses)
     }

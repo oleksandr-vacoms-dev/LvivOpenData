@@ -7,6 +7,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringR
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.AddressRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.CoordinatesRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.MapRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 
 const val DEFAULT_ZOOM = 14.0f
@@ -126,3 +127,6 @@ fun List<CoordinatesRecord>.getLatLng(): LatLng {
         getDefaultLatLnt()
     }
 }
+
+fun MapRecord.isValid() =
+    latLng.latitude != DEFAULT_LATITUDE

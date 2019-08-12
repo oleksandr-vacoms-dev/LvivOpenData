@@ -35,6 +35,10 @@
     <string name="sunday_work_time">Неділя: %s</string>
     <string name="weekday_work_time">Пн-Пт: %s</string>
 
+    <string name="map_loading_items">Loading %s items
+        This may take some time
+    </string>
+
     <string name="retry">retry</string>
 
 </resources>
