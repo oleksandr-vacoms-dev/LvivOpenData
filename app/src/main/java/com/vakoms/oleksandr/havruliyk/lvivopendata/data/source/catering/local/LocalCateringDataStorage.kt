@@ -18,7 +18,7 @@ class LocalCateringDataStorage @Inject constructor(database: CateringRoomDatabas
             boundaryCallback = callback
         )
 
-    override fun saveAll(data: List<CateringRecord>) {
+     fun saveAll(data: List<CateringRecord>) {
         cateringDao.insert(data)
     }
 

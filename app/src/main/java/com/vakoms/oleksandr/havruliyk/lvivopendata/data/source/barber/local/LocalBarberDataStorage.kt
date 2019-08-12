@@ -18,7 +18,7 @@ class LocalBarberDataStorage @Inject constructor(database: BarberRoomDatabase) :
             boundaryCallback = callback
         )
 
-    override fun saveAll(data: List<BarberRecord>) {
+     fun saveAll(data: List<BarberRecord>) {
         barberDao.insert(data)
     }
 

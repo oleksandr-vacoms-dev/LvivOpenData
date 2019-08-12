@@ -25,10 +25,10 @@ class FitnessRepository @Inject constructor(
 ) : Repository<FitnessRecord>() {
 
     @MainThread
-    override fun getData(): Listing<FitnessRecord> {
+    override fun getAll(): Listing<FitnessRecord> {
         val boundaryCallback = FitnessBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
+            handleResponse = { data -> saveAll(data) },
             ioExecutor = ioExecutor
         )
 
@@ -39,10 +39,10 @@ class FitnessRepository @Inject constructor(
     }
 
     @MainThread
-    override fun getDataByName(name: String): Listing<FitnessRecord> {
+    override fun getByName(name: String): Listing<FitnessRecord> {
         val boundaryCallback = FitnessByNameBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
+            handleResponse = { data -> saveAll(data) },
             ioExecutor = ioExecutor,
             name = name
         )
@@ -53,7 +53,7 @@ class FitnessRepository @Inject constructor(
         return getListing(boundaryCallback, livePagedList) { refresh(name) }
     }
 
-    override fun saveAllData(newData: List<FitnessRecord>) {
+    override fun saveAll(newData: List<FitnessRecord>) {
         localDataStorage.saveAll(newData)
     }
 
@@ -63,7 +63,7 @@ class FitnessRepository @Inject constructor(
 
         openDataApi.getFitness(sqlFitness(FIRST_ITEM)).enqueue(
             FitnessRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
+                saveAll(response.body().result.records)
             })
 
         return networkState
@@ -75,7 +75,7 @@ class FitnessRepository @Inject constructor(
 
         openDataApi.getFitness(sqlFitnessSearchByName(name, FIRST_ITEM)).enqueue(
             FitnessRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
+                saveAll(response.body().result.records)
             })
 
         return networkState

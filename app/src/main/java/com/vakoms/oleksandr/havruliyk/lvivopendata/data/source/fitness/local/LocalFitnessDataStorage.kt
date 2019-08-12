@@ -18,7 +18,7 @@ class LocalFitnessDataStorage @Inject constructor(database: FitnessRoomDatabase)
             boundaryCallback = callback
         )
 
-    override fun saveAll(data: List<FitnessRecord>) {
+     fun saveAll(data: List<FitnessRecord>) {
         fitnessDao.insert(data)
     }
 

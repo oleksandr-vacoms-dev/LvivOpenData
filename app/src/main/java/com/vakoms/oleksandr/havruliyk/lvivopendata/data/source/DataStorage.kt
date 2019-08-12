@@ -4,9 +4,9 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 
 interface DataStorage<T> {
 
-    fun getData(): Listing<T>
+    fun getAll(): Listing<T>
 
-    fun getDataByName(name: String): Listing<T>
+    fun getByName(name: String): Listing<T>
 
-    fun saveAllData(newData: List<T>)
+    fun saveAll(newData: List<T>)
 }

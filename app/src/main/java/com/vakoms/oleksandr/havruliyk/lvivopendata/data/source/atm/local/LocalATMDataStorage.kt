@@ -18,7 +18,7 @@ class LocalATMDataStorage @Inject constructor(database: ATMRoomDatabase) :
             boundaryCallback = callback
         )
 
-    override fun saveAll(data: List<ATMRecord>) {
+     fun saveAll(data: List<ATMRecord>) {
         atmDao.insert(data)
     }
 

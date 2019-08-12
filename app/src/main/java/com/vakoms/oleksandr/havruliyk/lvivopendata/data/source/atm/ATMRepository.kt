@@ -25,10 +25,10 @@ class ATMRepository @Inject constructor(
 ) : Repository<ATMRecord>() {
 
     @MainThread
-    override fun getData(): Listing<ATMRecord> {
+    override fun getAll(): Listing<ATMRecord> {
         val boundaryCallback = ATMBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
+            handleResponse = { data -> saveAll(data) },
             ioExecutor = ioExecutor
         )
 
@@ -39,10 +39,10 @@ class ATMRepository @Inject constructor(
     }
 
     @MainThread
-    override fun getDataByName(name: String): Listing<ATMRecord> {
+    override fun getByName(name: String): Listing<ATMRecord> {
         val boundaryCallback = ATMByNameBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
+            handleResponse = { data -> saveAll(data) },
             ioExecutor = ioExecutor,
             name = name
         )
@@ -53,7 +53,7 @@ class ATMRepository @Inject constructor(
         return getListing(boundaryCallback, livePagedList) { refresh(name) }
     }
 
-    override fun saveAllData(newData: List<ATMRecord>) {
+    override fun saveAll(newData: List<ATMRecord>) {
         localDataStorage.saveAll(newData)
     }
 
@@ -63,7 +63,7 @@ class ATMRepository @Inject constructor(
 
         openDataApi.getATM(sqlATM(FIRST_ITEM)).enqueue(
             ATMRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
+                saveAll(response.body().result.records)
             })
 
         return networkState
@@ -75,7 +75,7 @@ class ATMRepository @Inject constructor(
 
         openDataApi.getATM(sqlATMSearchByName(name, FIRST_ITEM)).enqueue(
             ATMRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
+                saveAll(response.body().result.records)
             })
 
         return networkState

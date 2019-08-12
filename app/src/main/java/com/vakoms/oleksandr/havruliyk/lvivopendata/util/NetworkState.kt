@@ -3,7 +3,8 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.util
 enum class Status {
     RUNNING,
     SUCCESS,
-    FAILED
+    FAILED,
+    UNKNOWN,
 }
 
 @Suppress("DataClassPrivateConstructor")
@@ -14,6 +15,7 @@ data class NetworkState private constructor(
     companion object {
         val LOADED = NetworkState(Status.SUCCESS)
         val LOADING = NetworkState(Status.RUNNING)
+        val LOCAL = NetworkState(Status.UNKNOWN)
         fun error(msg: String?) = NetworkState(Status.FAILED, msg)
     }
 }

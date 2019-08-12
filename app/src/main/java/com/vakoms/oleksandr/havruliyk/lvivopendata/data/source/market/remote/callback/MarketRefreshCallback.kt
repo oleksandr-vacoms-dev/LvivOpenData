@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.callback
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote.callback
 
 import androidx.lifecycle.MutableLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResponse

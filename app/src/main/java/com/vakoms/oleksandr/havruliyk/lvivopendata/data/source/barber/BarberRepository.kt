@@ -25,10 +25,10 @@ class BarberRepository @Inject constructor(
 ) : Repository<BarberRecord>() {
 
     @MainThread
-    override fun getData(): Listing<BarberRecord> {
+    override fun getAll(): Listing<BarberRecord> {
         val boundaryCallback = BarberBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
+            handleResponse = { data -> saveAll(data) },
             ioExecutor = ioExecutor
         )
 
@@ -39,10 +39,10 @@ class BarberRepository @Inject constructor(
     }
 
     @MainThread
-    override fun getDataByName(name: String): Listing<BarberRecord> {
+    override fun getByName(name: String): Listing<BarberRecord> {
         val boundaryCallback = BarberByNameBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
+            handleResponse = { data -> saveAll(data) },
             ioExecutor = ioExecutor,
             name = name
         )
@@ -53,7 +53,7 @@ class BarberRepository @Inject constructor(
         return getListing(boundaryCallback, livePagedList) { refresh(name) }
     }
 
-    override fun saveAllData(newData: List<BarberRecord>) {
+    override fun saveAll(newData: List<BarberRecord>) {
         localDataStorage.saveAll(newData)
     }
 
@@ -63,7 +63,7 @@ class BarberRepository @Inject constructor(
 
         openDataApi.getBarber(sqlBarber(FIRST_ITEM)).enqueue(
             BarberRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
+                saveAll(response.body().result.records)
             })
 
         return networkState
@@ -75,7 +75,7 @@ class BarberRepository @Inject constructor(
 
         openDataApi.getBarber(sqlBarberSearchByName(name, FIRST_ITEM)).enqueue(
             BarberRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
+                saveAll(response.body().result.records)
             })
 
         return networkState

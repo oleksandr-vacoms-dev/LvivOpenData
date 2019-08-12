@@ -25,10 +25,10 @@ class CateringRepository @Inject constructor(
 ) : Repository<CateringRecord>() {
 
     @MainThread
-    override fun getData(): Listing<CateringRecord> {
+    override fun getAll(): Listing<CateringRecord> {
         val boundaryCallback = CateringBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
+            handleResponse = { data -> saveAll(data) },
             ioExecutor = ioExecutor
         )
 
@@ -39,10 +39,10 @@ class CateringRepository @Inject constructor(
     }
 
     @MainThread
-    override fun getDataByName(name: String): Listing<CateringRecord> {
+    override fun getByName(name: String): Listing<CateringRecord> {
         val boundaryCallback = CateringByNameBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
+            handleResponse = { data -> saveAll(data) },
             ioExecutor = ioExecutor,
             name = name
         )
@@ -53,7 +53,7 @@ class CateringRepository @Inject constructor(
         return getListing(boundaryCallback, livePagedList) { refreshByName(name) }
     }
 
-    override fun saveAllData(newData: List<CateringRecord>) {
+    override fun saveAll(newData: List<CateringRecord>) {
         localDataStorage.saveAll(newData)
     }
 
@@ -63,7 +63,7 @@ class CateringRepository @Inject constructor(
 
         openDataApi.getCatering(sqlCatering(FIRST_ITEM)).enqueue(
             CateringRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
+                saveAll(response.body().result.records)
             })
 
         return networkState
@@ -75,7 +75,7 @@ class CateringRepository @Inject constructor(
 
         openDataApi.getCatering(sqlCateringSearchByName(name, FIRST_ITEM)).enqueue(
             CateringRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
+                saveAll(response.body().result.records)
             })
 
         return networkState
