@@ -41,6 +41,12 @@
             app:cardBackgroundColor="@color/light_grey"
             app:cardCornerRadius="@dimen/small_dimen">
 
+        <ImageView
+                android:layout_marginStart="@dimen/very_large_dimen"
+                android:src="@drawable/ic_market"
+                android:layout_width="wrap_content"
+                   android:layout_height="match_parent"/>
+
         <TextView
                 style="@style/Simple_Text"
                 android:id="@+id/market"
@@ -61,6 +67,12 @@
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/light_grey"
             app:cardCornerRadius="@dimen/small_dimen">
+
+        <ImageView
+                android:layout_marginStart="@dimen/very_large_dimen"
+                android:src="@drawable/ic_atm"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
 
         <TextView
                 style="@style/Simple_Text"
@@ -83,6 +95,12 @@
             app:cardBackgroundColor="@color/light_grey"
             app:cardCornerRadius="@dimen/small_dimen">
 
+        <ImageView
+                android:layout_marginStart="@dimen/very_large_dimen"
+                android:src="@drawable/ic_barber"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+
         <TextView
                 style="@style/Simple_Text"
                 android:id="@+id/barber"
@@ -104,6 +122,12 @@
             app:cardBackgroundColor="@color/light_grey"
             app:cardCornerRadius="@dimen/small_dimen">
 
+        <ImageView
+                android:layout_marginStart="@dimen/very_large_dimen"
+                android:src="@drawable/ic_fitness"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+
         <TextView
                 style="@style/Simple_Text"
                 android:id="@+id/fitness"
@@ -124,6 +148,12 @@
             android:layout_height="wrap_content"
             app:cardBackgroundColor="@color/light_grey"
             app:cardCornerRadius="@dimen/small_dimen">
+
+        <ImageView
+                android:layout_marginStart="@dimen/very_large_dimen"
+                android:src="@drawable/ic_catering"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
 
         <TextView
                 style="@style/Simple_Text"
