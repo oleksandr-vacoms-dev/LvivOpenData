@@ -8,6 +8,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecor
 
 @Database(entities = [MarketRecord::class], version = 1, exportSchema = false)
 abstract class MarketRoomDatabase : RoomDatabase() {
+
     abstract fun marketDao(): MarketDao
 
     companion object {

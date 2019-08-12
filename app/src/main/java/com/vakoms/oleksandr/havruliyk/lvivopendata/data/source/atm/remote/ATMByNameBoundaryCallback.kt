@@ -24,7 +24,9 @@ class ATMByNameBoundaryCallback(
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
             webservice.getATM(sqlATMSearchByName(name, FIRST_ITEM))
-                .enqueue(createWebserviceCallback(it))
+                .enqueue(ATMWebServiceCallback(it) { response, _ ->
+                    insertItemsIntoDb(response, it)
+                })
         }
     }
 
@@ -32,7 +34,9 @@ class ATMByNameBoundaryCallback(
     override fun onItemAtEndLoaded(itemAtEnd: ATMRecord) {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
             webservice.getATM(sqlATMSearchByName(name, itemAtEnd._id))
-                .enqueue(createWebserviceCallback(it))
+                .enqueue(ATMWebServiceCallback(it) { response, _ ->
+                    insertItemsIntoDb(response, it)
+                })
         }
     }
 
@@ -43,25 +47,6 @@ class ATMByNameBoundaryCallback(
         ioExecutor.execute {
             handleResponse(response.body().result.records)
             it.recordSuccess()
-        }
-    }
-
-    private fun createWebserviceCallback(it: PagingRequestHelper.Request.Callback)
-            : Callback<ATMResponse> {
-        return object : Callback<ATMResponse> {
-            override fun onFailure(
-                call: Call<ATMResponse>,
-                t: Throwable
-            ) {
-                it.recordFailure(t)
-            }
-
-            override fun onResponse(
-                call: Call<ATMResponse>,
-                response: Response<ATMResponse>
-            ) {
-                insertItemsIntoDb(response, it)
-            }
         }
     }
 }

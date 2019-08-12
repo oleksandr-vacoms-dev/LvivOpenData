@@ -8,8 +8,6 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataBoundaryCallback
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.FIRST_ITEM
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlATM
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executor
 
@@ -23,7 +21,9 @@ class ATMBoundaryCallback(
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
             webservice.getATM(sqlATM(FIRST_ITEM))
-                .enqueue(createWebserviceCallback(it))
+                .enqueue(ATMWebServiceCallback(it) { response, _ ->
+                    insertItemsIntoDb(response, it)
+                })
         }
     }
 
@@ -31,7 +31,9 @@ class ATMBoundaryCallback(
     override fun onItemAtEndLoaded(itemAtEnd: ATMRecord) {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
             webservice.getATM(sqlATM(itemAtEnd._id))
-                .enqueue(createWebserviceCallback(it))
+                .enqueue(ATMWebServiceCallback(it) { response, _ ->
+                    insertItemsIntoDb(response, it)
+                })
         }
     }
 
@@ -42,25 +44,6 @@ class ATMBoundaryCallback(
         ioExecutor.execute {
             handleResponse(response.body().result.records)
             it.recordSuccess()
-        }
-    }
-
-    private fun createWebserviceCallback(it: PagingRequestHelper.Request.Callback)
-            : Callback<ATMResponse> {
-        return object : Callback<ATMResponse> {
-            override fun onFailure(
-                call: Call<ATMResponse>,
-                t: Throwable
-            ) {
-                it.recordFailure(t)
-            }
-
-            override fun onResponse(
-                call: Call<ATMResponse>,
-                response: Response<ATMResponse>
-            ) {
-                insertItemsIntoDb(response, it)
-            }
         }
     }
 }
