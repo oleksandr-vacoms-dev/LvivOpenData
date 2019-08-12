@@ -1,10 +1,7 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.util
 
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.view.View
 import androidx.paging.PagedList
-import java.lang.StringBuilder
 
 const val BASE_URL = "https://opendata.city-adm.lviv.ua/api/3/action/"
 
@@ -23,88 +20,74 @@ const val FIRST_ITEM = 0
 const val PAGE_SIZE = 100
 
 fun sqlMarkets(offset: Int): String =
-    "SELECT*from\"$MARKET_ID\"" +
+    "SELECT * from\"$MARKET_ID\"" +
             "WHERE _id>$offset " +
             "AND _id<=${offset + PAGE_SIZE} " +
             "ORDER BY _id"
 
 fun sqlMarketsSearchByName(name: String, offset: Int): String =
     "SELECT * from \"$MARKET_ID\"" +
-        " WHERE (name LIKE '%$name%' " +
+            "WHERE (name LIKE '%$name%' " +
             "OR name LIKE '%$name') " +
             "AND _id > $offset " +
             "ORDER BY _id "
 
 fun sqlFitness(offset: Int): String =
-    "SELECT*from\"$FITNESS_ID\"" +
-        " WHERE _id>$offset " +
+    "SELECT * from\"$FITNESS_ID\"" +
+            "WHERE _id>$offset " +
             "AND _id<=${offset + PAGE_SIZE} " +
             "ORDER BY _id"
 
 fun sqlFitnessSearchByName(name: String, offset: Int): String =
     "SELECT * from \"$FITNESS_ID\"" +
-        " WHERE (name LIKE '%$name%' " +
+            "WHERE (name LIKE '%$name%' " +
             "OR name LIKE '%$name') " +
             "AND _id > $offset ORDER BY _id "
 
 fun sqlCatering(offset: Int): String =
-    "SELECT*from\"$CATERING_ID\"" +
-        " WHERE _id>$offset " +
+    "SELECT * from\"$CATERING_ID\"" +
+            "WHERE _id>$offset " +
             "AND _id<=${offset + PAGE_SIZE} " +
             "ORDER BY _id"
 
 fun sqlCateringSearchByName(name: String, offset: Int): String =
     "SELECT * from \"$CATERING_ID\"" +
-        " WHERE (name LIKE '%$name%' " +
+            "WHERE (name LIKE '%$name%' " +
             "OR name LIKE '%$name') " +
             "AND _id > $offset " +
             "ORDER BY _id "
 
 fun sqlBarber(offset: Int): String =
-    "SELECT*from\"$BARBER_ID\"" +
-        " WHERE _id>$offset " +
+    "SELECT * from\"$BARBER_ID\"" +
+            "WHERE _id>$offset " +
             "AND _id<=${offset + PAGE_SIZE} " +
             "ORDER BY _id"
 
 fun sqlBarberSearchByName(name: String, offset: Int): String =
     "SELECT * from \"$BARBER_ID\"" +
-        " WHERE (name LIKE '%$name%'" +
-            " OR name LIKE '%$name')" +
-            " AND _id > $offset " +
+            "WHERE (name LIKE '%$name%'" +
+            "OR name LIKE '%$name')" +
+            "AND _id > $offset " +
             "ORDER BY _id "
 
 fun sqlATM(offset: Int): String =
-    "SELECT*from\"$ATM_ID\"" +
-        " WHERE _id>$offset " +
+    "SELECT * from\"$ATM_ID\"" +
+            "WHERE _id>$offset " +
             "AND _id<=${offset + PAGE_SIZE}" +
-            " ORDER BY _id"
+            "ORDER BY _id"
 
 fun sqlATMSearchByName(name: String, offset: Int): String =
     "SELECT * from \"$ATM_ID\"" +
-        " WHERE (Банкомат LIKE '%$name%' " +
+            "WHERE (Банкомат LIKE '%$name%' " +
             "OR Банкомат LIKE '%$name') " +
             "AND _id > $offset" +
-            " ORDER BY _id "
+            "ORDER BY _id "
 
 fun coordinatesSql(streetName: String, houseNumber: String) =
     "SELECT * from \"$COORDINATES_ID\"" +
-        " WHERE (((street_s_name LIKE '%$streetName') " +
+            "WHERE (((street_s_name LIKE '%$streetName') " +
             "OR (street_d_name LIKE '%$streetName')) " +
             "AND housenumber LIKE '$houseNumber')"
-
-fun isConnected(networkCapabilities: NetworkCapabilities?): Boolean {
-    return when (networkCapabilities) {
-        null -> false
-        else -> with(networkCapabilities) {
-            hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || hasTransport(
-                NetworkCapabilities.TRANSPORT_WIFI
-            )
-        }
-    }
-}
-
-fun ConnectivityManager.isConnected() =
-    isConnected(getNetworkCapabilities(activeNetwork))
 
 fun pagedListConfig(): PagedList.Config {
     return PagedList.Config.Builder()

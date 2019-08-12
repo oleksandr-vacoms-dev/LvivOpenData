@@ -13,7 +13,6 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringR
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.CateringDataActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.CateringAdapter
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener.OnItemClickListener
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.group.CateringViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
@@ -26,7 +25,7 @@ import kotlinx.android.synthetic.main.map_button.*
 import kotlinx.android.synthetic.main.search_layout.*
 import javax.inject.Inject
 
-class CateringActivity : AppCompatActivity(), OnItemClickListener {
+class CateringActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -154,10 +153,6 @@ class CateringActivity : AppCompatActivity(), OnItemClickListener {
         viewModel.searchPagedList.removeObservers(this)
         viewModel.searchRefreshState.removeObservers(this)
         viewModel.searchNetworkState.removeObservers(this)
-    }
-
-    override fun onItemClick(view: View, position: Int) {
-        startDataActivityWith(records[position])
     }
 
     private fun showOnMap() {

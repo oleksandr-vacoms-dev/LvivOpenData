@@ -9,6 +9,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.AddressRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.CoordinatesRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 
+const val DEFAULT_ZOOM = 14.0f
 const val DEFAULT_LATITUDE = 0.0
 const val DEFAULT_LONGITUDE = 0.0
 

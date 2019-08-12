@@ -13,7 +13,6 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecor
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.MarketDataActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.MarketAdapter
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener.OnItemClickListener
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.group.MarketViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
@@ -26,7 +25,7 @@ import kotlinx.android.synthetic.main.map_button.*
 import kotlinx.android.synthetic.main.search_layout.*
 import javax.inject.Inject
 
-class MarketActivity : AppCompatActivity(), OnItemClickListener {
+class MarketActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -154,10 +153,6 @@ class MarketActivity : AppCompatActivity(), OnItemClickListener {
         viewModel.searchPagedList.removeObservers(this)
         viewModel.searchRefreshState.removeObservers(this)
         viewModel.searchNetworkState.removeObservers(this)
-    }
-
-    override fun onItemClick(view: View, position: Int) {
-        startDataActivityWith(records[position])
     }
 
     private fun showOnMap() {
