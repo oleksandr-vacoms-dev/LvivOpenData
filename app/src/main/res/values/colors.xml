@@ -4,4 +4,5 @@
     <color name="green_light_grey">#99b19c</color>
     <color name="light_grey">#d7d1c9</color>
     <color name="light">#faf5ef</color>
+    <color name="transparent">#00000000</color>
 </resources>

@@ -2,8 +2,8 @@
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_height="match_parent" android:layout_width="match_parent">
 
     <include layout="@layout/simple_label"></include>
 
@@ -14,5 +14,55 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:context=".MapsActivity"/>
+
+    <RelativeLayout
+            android:id="@+id/loading_layout"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_marginTop="200dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_gravity="center"/>
+
+        <androidx.cardview.widget.CardView
+                android:id="@+id/Loadint_view"
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="10dp"
+                android:layout_marginStart="@dimen/very_large_dimen"
+                android:layout_marginEnd="@dimen/very_large_dimen"
+                app:cardBackgroundColor="@color/transparent"
+                android:elevation="3dp">
+
+            <LinearLayout
+                    android:id="@+id/label_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:gravity="center"
+                        android:padding="@dimen/default_dimen"
+                        android:textSize="@dimen/default_text_size"
+                        android:text="@string/common_open_on_phone"
+                        android:id="@+id/loading_msg"
+                        android:textColor="@android:color/black"
+                        android:background="@color/light_grey"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/default_height_label"
+                        android:layout_gravity="center_horizontal"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </RelativeLayout>
 
 </RelativeLayout>
