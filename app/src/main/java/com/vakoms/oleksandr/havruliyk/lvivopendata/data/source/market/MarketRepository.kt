@@ -32,7 +32,7 @@ class MarketRepository @Inject constructor(
     override fun getData(): Listing<MarketRecord> {
         val boundaryCallback = MarketBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> localDataStorage.saveAll(data) },
+            handleResponse = { data -> saveAllData(data) },
             ioExecutor = ioExecutor
         )
 
@@ -48,7 +48,7 @@ class MarketRepository @Inject constructor(
     override fun getDataByName(name: String): Listing<MarketRecord> {
         val boundaryCallback = MarketByNameBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> localDataStorage.saveAll(data) },
+            handleResponse = { data -> saveAllData(data) },
             ioExecutor = ioExecutor,
             name = name
         )
@@ -58,6 +58,10 @@ class MarketRepository @Inject constructor(
         )
 
         return getListing(boundaryCallback, livePagedList) { refresh(name) }
+    }
+
+    override fun saveAllData(newData: List<MarketRecord>) {
+        localDataStorage.saveAll(newData)
     }
 
     private fun getListing(
@@ -103,7 +107,7 @@ class MarketRepository @Inject constructor(
                     response: Response<MarketsResponse>
                 ) {
                     ioExecutor.execute {
-                        localDataStorage.saveAll(response.body().result.records)
+                        saveAllData(response.body().result.records)
                         networkState.postValue(NetworkState.LOADED)
                     }
                 }
@@ -127,7 +131,7 @@ class MarketRepository @Inject constructor(
                     response: Response<MarketsResponse>
                 ) {
                     ioExecutor.execute {
-                        localDataStorage.saveAll(response.body().result.records)
+                        saveAllData(response.body().result.records)
                         networkState.postValue(NetworkState.LOADED)
                     }
                 }

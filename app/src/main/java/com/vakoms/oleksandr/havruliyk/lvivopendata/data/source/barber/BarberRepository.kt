@@ -22,7 +22,6 @@ import retrofit2.Response
 import java.util.concurrent.Executor
 import javax.inject.Inject
 
-
 class BarberRepository @Inject constructor(
     var localDataStorage: LocalBarberDataStorage,
     var openDataApi: OpenDataApi,
@@ -33,7 +32,7 @@ class BarberRepository @Inject constructor(
     override fun getData(): Listing<BarberRecord> {
         val boundaryCallback = BarberBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> localDataStorage.saveAll(data) },
+            handleResponse = { data -> saveAllData(data) },
             ioExecutor = ioExecutor
         )
 
@@ -49,7 +48,7 @@ class BarberRepository @Inject constructor(
     override fun getDataByName(name: String): Listing<BarberRecord> {
         val boundaryCallback = BarberByNameBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> localDataStorage.saveAll(data) },
+            handleResponse = { data -> saveAllData(data) },
             ioExecutor = ioExecutor,
             name = name
         )
@@ -59,6 +58,10 @@ class BarberRepository @Inject constructor(
         )
 
         return getListing(boundaryCallback, livePagedList) { refresh(name) }
+    }
+
+    override fun saveAllData(newData: List<BarberRecord>) {
+        localDataStorage.saveAll(newData)
     }
 
     private fun getListing(
@@ -104,7 +107,7 @@ class BarberRepository @Inject constructor(
                     response: Response<BarberResponse>
                 ) {
                     ioExecutor.execute {
-                        localDataStorage.saveAll(response.body().result.records)
+                        saveAllData(response.body().result.records)
                         networkState.postValue(NetworkState.LOADED)
                     }
                 }
@@ -128,7 +131,7 @@ class BarberRepository @Inject constructor(
                     response: Response<BarberResponse>
                 ) {
                     ioExecutor.execute {
-                        localDataStorage.saveAll(response.body().result.records)
+                        saveAllData(response.body().result.records)
                         networkState.postValue(NetworkState.LOADED)
                     }
                 }

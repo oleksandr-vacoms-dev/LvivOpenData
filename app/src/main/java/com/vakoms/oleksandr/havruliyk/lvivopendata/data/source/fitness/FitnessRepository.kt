@@ -22,7 +22,6 @@ import retrofit2.Response
 import java.util.concurrent.Executor
 import javax.inject.Inject
 
-
 class FitnessRepository @Inject constructor(
     var localDataStorage: LocalFitnessDataStorage,
     var openDataApi: OpenDataApi,
@@ -33,7 +32,7 @@ class FitnessRepository @Inject constructor(
     override fun getData(): Listing<FitnessRecord> {
         val boundaryCallback = FitnessBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> localDataStorage.saveAll(data) },
+            handleResponse = { data -> saveAllData(data) },
             ioExecutor = ioExecutor
         )
 
@@ -49,7 +48,7 @@ class FitnessRepository @Inject constructor(
     override fun getDataByName(name: String): Listing<FitnessRecord> {
         val boundaryCallback = FitnessByNameBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> localDataStorage.saveAll(data) },
+            handleResponse = { data -> saveAllData(data) },
             ioExecutor = ioExecutor,
             name = name
         )
@@ -59,6 +58,10 @@ class FitnessRepository @Inject constructor(
         )
 
         return getListing(boundaryCallback, livePagedList) { refresh(name) }
+    }
+
+    override fun saveAllData(newData: List<FitnessRecord>) {
+        localDataStorage.saveAll(newData)
     }
 
     private fun getListing(
@@ -104,7 +107,7 @@ class FitnessRepository @Inject constructor(
                     response: Response<FitnessResponse>
                 ) {
                     ioExecutor.execute {
-                        localDataStorage.saveAll(response.body().result.records)
+                        saveAllData(response.body().result.records)
                         networkState.postValue(NetworkState.LOADED)
                     }
                 }
@@ -128,7 +131,7 @@ class FitnessRepository @Inject constructor(
                     response: Response<FitnessResponse>
                 ) {
                     ioExecutor.execute {
-                        localDataStorage.saveAll(response.body().result.records)
+                        saveAllData(response.body().result.records)
                         networkState.postValue(NetworkState.LOADED)
                     }
                 }

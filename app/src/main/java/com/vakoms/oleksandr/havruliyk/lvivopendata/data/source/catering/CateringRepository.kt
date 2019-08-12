@@ -22,7 +22,6 @@ import retrofit2.Response
 import java.util.concurrent.Executor
 import javax.inject.Inject
 
-
 class CateringRepository @Inject constructor(
     var localDataStorage: LocalCateringDataStorage,
     var openDataApi: OpenDataApi,
@@ -33,7 +32,7 @@ class CateringRepository @Inject constructor(
     override fun getData(): Listing<CateringRecord> {
         val boundaryCallback = CateringBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> localDataStorage.saveAll(data) },
+            handleResponse = { data -> saveAllData(data) },
             ioExecutor = ioExecutor
         )
 
@@ -49,7 +48,7 @@ class CateringRepository @Inject constructor(
     override fun getDataByName(name: String): Listing<CateringRecord> {
         val boundaryCallback = CateringByNameBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> localDataStorage.saveAll(data) },
+            handleResponse = { data -> saveAllData(data) },
             ioExecutor = ioExecutor,
             name = name
         )
@@ -58,7 +57,11 @@ class CateringRepository @Inject constructor(
             boundaryCallback = boundaryCallback
         )
 
-        return getListing(boundaryCallback, livePagedList) { refresh(name) }
+        return getListing(boundaryCallback, livePagedList) { refreshByName(name) }
+    }
+
+    override fun saveAllData(newData: List<CateringRecord>) {
+        localDataStorage.saveAll(newData)
     }
 
     private fun getListing(
@@ -67,8 +70,8 @@ class CateringRepository @Inject constructor(
         refreshStateLiveData: () -> LiveData<NetworkState>
     ): Listing<CateringRecord> {
 
-        // we are using a mutable live data to trigger refresh requests which eventually calls
-        // refresh method and gets a new live data. Each refresh request by the user becomes a newly
+        // we are using a mutable live data to trigger refreshByName requests which eventually calls
+        // refreshByName method and gets a new live data. Each refreshByName request by the user becomes a newly
         // dispatched data in refreshTrigger
         val refreshTrigger = MutableLiveData<Unit>()
         val refreshState = Transformations.switchMap(refreshTrigger) {
@@ -104,7 +107,7 @@ class CateringRepository @Inject constructor(
                     response: Response<CateringResponse>
                 ) {
                     ioExecutor.execute {
-                        localDataStorage.saveAll(response.body().result.records)
+                        saveAllData(response.body().result.records)
                         networkState.postValue(NetworkState.LOADED)
                     }
                 }
@@ -114,7 +117,7 @@ class CateringRepository @Inject constructor(
     }
 
     @MainThread
-    private fun refresh(name: String): LiveData<NetworkState> {
+    private fun refreshByName(name: String): LiveData<NetworkState> {
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = networkState.value
         openDataApi.getCatering(sqlCateringSearchByName(name, FIRST_ITEM)).enqueue(
@@ -128,7 +131,7 @@ class CateringRepository @Inject constructor(
                     response: Response<CateringResponse>
                 ) {
                     ioExecutor.execute {
-                        localDataStorage.saveAll(response.body().result.records)
+                        saveAllData(response.body().result.records)
                         networkState.postValue(NetworkState.LOADED)
                     }
                 }

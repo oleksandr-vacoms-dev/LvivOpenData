@@ -22,7 +22,6 @@ import retrofit2.Response
 import java.util.concurrent.Executor
 import javax.inject.Inject
 
-
 class ATMRepository @Inject constructor(
     var localDataStorage: LocalATMDataStorage,
     var openDataApi: OpenDataApi,
@@ -33,7 +32,7 @@ class ATMRepository @Inject constructor(
     override fun getData(): Listing<ATMRecord> {
         val boundaryCallback = ATMBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> localDataStorage.saveAll(data) },
+            handleResponse = { data -> saveAllData(data) },
             ioExecutor = ioExecutor
         )
 
@@ -49,7 +48,7 @@ class ATMRepository @Inject constructor(
     override fun getDataByName(name: String): Listing<ATMRecord> {
         val boundaryCallback = ATMByNameBoundaryCallback(
             webservice = openDataApi,
-            handleResponse = { data -> localDataStorage.saveAll(data) },
+            handleResponse = { data -> saveAllData(data) },
             ioExecutor = ioExecutor,
             name = name
         )
@@ -59,6 +58,10 @@ class ATMRepository @Inject constructor(
         )
 
         return getListing(boundaryCallback, livePagedList) { refresh(name) }
+    }
+
+    override fun saveAllData(newData: List<ATMRecord>) {
+        localDataStorage.saveAll(newData)
     }
 
     private fun getListing(
@@ -104,7 +107,7 @@ class ATMRepository @Inject constructor(
                     response: Response<ATMResponse>
                 ) {
                     ioExecutor.execute {
-                        localDataStorage.saveAll(response.body().result.records)
+                        saveAllData(response.body().result.records)
                         networkState.postValue(NetworkState.LOADED)
                     }
                 }
@@ -128,7 +131,7 @@ class ATMRepository @Inject constructor(
                     response: Response<ATMResponse>
                 ) {
                     ioExecutor.execute {
-                        localDataStorage.saveAll(response.body().result.records)
+                        saveAllData(response.body().result.records)
                         networkState.postValue(NetworkState.LOADED)
                     }
                 }
