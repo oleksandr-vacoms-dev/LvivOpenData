@@ -4,17 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.CateringRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.MapManager
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.local.LocalCateringDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromCateringRecord
 import javax.inject.Inject
 
-class CateringDataViewModel @Inject constructor(var repository: CateringRepository, var mapManager: MapManager) :
+class CateringDataViewModel @Inject constructor(var repository: LocalCateringDataStorage, var mapManager: MapManager) :
     ViewModel() {
 
     private val recordId = MutableLiveData<Int>()
-    lateinit var record: LiveData<CateringRecord>// = Transformations.switchMap(recordId) { id -> repository.getById(id) }
+    var record: LiveData<CateringRecord> = Transformations.switchMap(recordId) { id -> repository.getById(id) }
 
     fun setRecordId(resourceId: Int) {
         this.recordId.value = resourceId

@@ -1,5 +1,6 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.remote
 
+import android.util.Log
 import androidx.annotation.MainThread
 import androidx.paging.PagingRequestHelper
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi

@@ -117,6 +117,7 @@ class ATMActivity : AppCompatActivity(), OnItemClickListener {
     private fun addObserversSearchData() {
         viewModel.searchPagedList.observe(this, Observer {
             pagedListAdapter.submitList(it)
+            records = it
         })
 
         viewModel.searchRefreshState.observe(this, Observer {
@@ -131,6 +132,7 @@ class ATMActivity : AppCompatActivity(), OnItemClickListener {
     private fun addObserverAllData() {
         viewModel.pagedList.observe(this, Observer {
             pagedListAdapter.submitList(it)
+            records = it
         })
 
         viewModel.refreshState.observe(this, Observer {

@@ -4,17 +4,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.BarberRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.MapManager
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.local.LocalBarberDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromBarberRecord
 import javax.inject.Inject
 
-class BarberDataViewModel @Inject constructor(var repository: BarberRepository, var mapManager: MapManager) :
+class BarberDataViewModel @Inject constructor(var repository: LocalBarberDataStorage, var mapManager: MapManager) :
     ViewModel() {
 
     private val recordId = MutableLiveData<Int>()
-    lateinit var record: LiveData<BarberRecord>// = Transformations.switchMap(recordId) { id -> repository.getById(id) }
+    var record: LiveData<BarberRecord> = Transformations.switchMap(recordId) { id -> repository.getById(id) }
 
     fun setRecordId(resourceId: Int) {
         this.recordId.value = resourceId
