@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.PagedList
-import androidx.paging.toLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
@@ -15,7 +14,10 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.local.LocalATMDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.remote.ATMBoundaryCallback
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.remote.ATMByNameBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.*
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.FIRST_ITEM
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlATM
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlATMSearchByName
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,10 +38,8 @@ class ATMRepository @Inject constructor(
             ioExecutor = ioExecutor
         )
 
-        val livePagedList = localDataStorage.getAll().toLiveData(
-            config = pagedListConfig(),
-            boundaryCallback = boundaryCallback
-        )
+        val livePagedList =
+            localDataStorage.getAll(boundaryCallback)
 
         return getListing(boundaryCallback, livePagedList) { refresh() }
     }
@@ -52,10 +52,9 @@ class ATMRepository @Inject constructor(
             ioExecutor = ioExecutor,
             name = name
         )
-        val livePagedList = localDataStorage.getByName("%$name%").toLiveData(
-            config = pagedListConfig(),
-            boundaryCallback = boundaryCallback
-        )
+
+        val livePagedList =
+            localDataStorage.getByName(boundaryCallback, name)
 
         return getListing(boundaryCallback, livePagedList) { refresh(name) }
     }

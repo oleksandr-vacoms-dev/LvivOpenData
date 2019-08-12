@@ -1,7 +1,10 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.local
 
+import androidx.paging.toLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataBoundaryCallback
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.LocalDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.pagedListConfig
 import javax.inject.Inject
 
 class LocalBarberDataStorage @Inject constructor(database: BarberRoomDatabase) :
@@ -9,7 +12,11 @@ class LocalBarberDataStorage @Inject constructor(database: BarberRoomDatabase) :
 
     private var barberDao = database.barberDao()
 
-    override fun getAll() = barberDao.getAll()
+    override fun getAll(callback: DataBoundaryCallback<BarberRecord>) =
+        barberDao.getAll().toLiveData(
+            config = pagedListConfig(),
+            boundaryCallback = callback
+        )
 
     override fun saveAll(data: List<BarberRecord>) {
         barberDao.insert(data)
@@ -21,5 +28,9 @@ class LocalBarberDataStorage @Inject constructor(database: BarberRoomDatabase) :
 
     override fun getById(id: Int) = barberDao.getById(id)
 
-    override fun getByName(name: String) = barberDao.getByName(name)
+    override fun getByName(callback: DataBoundaryCallback<BarberRecord>, name: String) =
+        barberDao.getByName("%$name%").toLiveData(
+            config = pagedListConfig(),
+            boundaryCallback = callback
+        )
 }
