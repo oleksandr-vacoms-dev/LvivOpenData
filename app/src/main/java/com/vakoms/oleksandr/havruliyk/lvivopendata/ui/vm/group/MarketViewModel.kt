@@ -14,8 +14,8 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromMark
 import javax.inject.Inject
 
 class MarketViewModel @Inject constructor(
-    var repository: MarketRepository,
-    var mapManager: MapManager
+    private var repository: MarketRepository,
+    private var mapManager: MapManager
 ) : ViewModel() {
 
     private lateinit var listing: Listing<MarketRecord>
