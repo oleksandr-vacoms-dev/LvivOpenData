@@ -1,6 +1,5 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.util
 
-import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
@@ -8,9 +7,9 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringR
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.AddressRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.CoordinatesRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.MapRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 
+const val DEFAULT_ZOOM = 14.0f
 const val DEFAULT_LATITUDE = 0.0
 const val DEFAULT_LONGITUDE = 0.0
 
@@ -122,7 +121,7 @@ fun getBuildingNumber(buildingNumber: String): String {
 
 fun List<CoordinatesRecord>.getLatLng(): LatLng {
     return if (isNotEmpty()) {
-        with(this[0]){ LatLng(y, x) }
+        with(this[0]) { LatLng(y, x) }
     } else {
         getDefaultLatLnt()
     }

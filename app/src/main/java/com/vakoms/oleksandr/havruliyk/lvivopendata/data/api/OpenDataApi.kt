@@ -6,42 +6,39 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringR
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.CoordinatesResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResponse
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.*
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.BASE_URL
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.SEARCH_SQL
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.SQL
 import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface OpenDataApi {
-    @GET("$SEARCH?$ID=$MARKET_ID")
-    fun getMarkets(): Call<MarketsResponse>
-
-    @GET("$SEARCH?$ID=$FITNESS_ID")
-    fun getFitness(): Call<FitnessResponse>
-
-    @GET("$SEARCH?$ID=$CATERING_ID")
-    fun getCatering(): Call<CateringResponse>
-
-    @GET("$SEARCH?$ID=$ATM_ID")
-    fun getATM(): Call<ATMResponse>
-
-    @GET("$SEARCH?$ID=$BARBER_ID")
-    fun getBarber(): Call<BarberResponse>
-
     @GET(SEARCH_SQL)
     fun getCoordinatesByAddress(@Query(SQL) sql: String): Call<CoordinatesResponse>
 
     @GET(SEARCH_SQL)
-    fun getMarketByName(@Query(SQL) sql: String): Call<MarketsResponse>
+    fun getFitness(@Query(SQL) sql: String): Call<FitnessResponse>
 
     @GET(SEARCH_SQL)
-    fun getFitnessByName(@Query(SQL) sql: String): Call<FitnessResponse>
+    fun getBarber(@Query(SQL) sql: String): Call<BarberResponse>
 
     @GET(SEARCH_SQL)
-    fun getBarberByName(@Query(SQL) sql: String): Call<BarberResponse>
+    fun getATM(@Query(SQL) sql: String): Call<ATMResponse>
 
     @GET(SEARCH_SQL)
-    fun getATMByName(@Query(SQL) sql: String): Call<ATMResponse>
+    fun getCatering(@Query(SQL) sql: String): Call<CateringResponse>
 
     @GET(SEARCH_SQL)
-    fun getCateringByName(@Query(SQL) sql: String): Call<CateringResponse>
+    fun getMarkets(@Query(SQL) sql: String): Call<MarketsResponse>
+
+    companion object {
+        fun create(): OpenDataApi = Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(OpenDataApi::class.java)
+    }
 }

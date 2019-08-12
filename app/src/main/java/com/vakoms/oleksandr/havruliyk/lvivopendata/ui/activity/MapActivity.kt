@@ -14,16 +14,13 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.map.MapRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.MapViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DEFAULT_ZOOM
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.back_button.*
 import kotlinx.android.synthetic.main.item_list.*
 import javax.inject.Inject
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
-
-    companion object {
-        const val DEFAULT_ZOOM = 14.0f
-    }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -43,6 +40,10 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         initMapFragment()
         initViewModel()
         initObserver()
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        this.googleMap = googleMap
     }
 
     private fun initView() {
@@ -77,10 +78,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         for (r: MapRecord in records) {
             addMarker(r.latLng, r.address.title)
         }
-    }
-
-    override fun onMapReady(googleMap: GoogleMap) {
-        this.googleMap = googleMap
     }
 
     private fun addMarker(latLng: LatLng, title: String) {

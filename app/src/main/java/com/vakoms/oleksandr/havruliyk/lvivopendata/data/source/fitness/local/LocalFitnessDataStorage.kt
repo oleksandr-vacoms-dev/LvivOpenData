@@ -1,17 +1,15 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local
 
-import androidx.lifecycle.LiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.LocalDataStorage
 import javax.inject.Inject
 
-class LocalFitnessDataStorage @Inject constructor(database: FitnessRoomDatabase) : DataStorage<FitnessRecord> {
+class LocalFitnessDataStorage @Inject constructor(database: FitnessRoomDatabase):
+    LocalDataStorage<FitnessRecord> {
 
-    private var fitnessDao: FitnessDao = database.fitnessDao()
+    private var fitnessDao = database.fitnessDao()
 
-    override fun getAll(): LiveData<List<FitnessRecord>> {
-        return fitnessDao.getAll()
-    }
+    override fun getAll() = fitnessDao.getAll()
 
     override fun saveAll(data: List<FitnessRecord>) {
         fitnessDao.insert(data)
@@ -21,8 +19,7 @@ class LocalFitnessDataStorage @Inject constructor(database: FitnessRoomDatabase)
         fitnessDao.deleteAll()
     }
 
-    override fun getById(id: Int): LiveData<FitnessRecord> = fitnessDao.getById(id)
+    override fun getById(id: Int) = fitnessDao.getById(id)
 
-    override fun getByName(name: String): LiveData<List<FitnessRecord>>? = fitnessDao.getByName(name)
-
+    override fun getByName(name: String) = fitnessDao.getByName(name)
 }

@@ -1,17 +1,15 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local
 
-import androidx.lifecycle.LiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.LocalDataStorage
 import javax.inject.Inject
 
-class LocalMarketDataStorage @Inject constructor(database: MarketRoomDatabase) : DataStorage<MarketRecord> {
+class LocalMarketDataStorage @Inject constructor(var database: MarketRoomDatabase) :
+    LocalDataStorage<MarketRecord> {
 
-    var marketDao: MarketDao = database.marketDao()
+    private var marketDao = database.marketDao()
 
-    override fun getAll(): LiveData<List<MarketRecord>>? {
-        return marketDao.getAll()
-    }
+    override fun getAll() = marketDao.getAll()
 
     override fun saveAll(data: List<MarketRecord>) {
         marketDao.insert(data)
@@ -21,7 +19,7 @@ class LocalMarketDataStorage @Inject constructor(database: MarketRoomDatabase) :
         marketDao.deleteAll()
     }
 
-    override fun getById(id: Int): LiveData<MarketRecord> = marketDao.getById(id)
+    override fun getById(id: Int) = marketDao.getById(id)
 
-    override fun getByName(name: String): LiveData<List<MarketRecord>>? = marketDao.getByName(name)
+    override fun getByName(name: String) = marketDao.getByName(name)
 }

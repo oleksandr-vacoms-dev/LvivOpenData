@@ -1,17 +1,15 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.local
 
-import androidx.lifecycle.LiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.LocalDataStorage
 import javax.inject.Inject
 
-class LocalCateringDataStorage @Inject constructor(database: CateringRoomDatabase) : DataStorage<CateringRecord> {
+class LocalCateringDataStorage @Inject constructor(database: CateringRoomDatabase) :
+    LocalDataStorage<CateringRecord> {
 
-    private var cateringDao: CateringDao = database.cateringDao()
+    private var cateringDao = database.cateringDao()
 
-    override fun getAll(): LiveData<List<CateringRecord>> {
-        return cateringDao.getAll()
-    }
+    override fun getAll() = cateringDao.getAll()
 
     override fun saveAll(data: List<CateringRecord>) {
         cateringDao.insert(data)
@@ -21,7 +19,7 @@ class LocalCateringDataStorage @Inject constructor(database: CateringRoomDatabas
         cateringDao.deleteAll()
     }
 
-    override fun getById(id: Int): LiveData<CateringRecord> = cateringDao.getById(id)
+    override fun getById(id: Int) = cateringDao.getById(id)
 
-    override fun getByName(name: String): LiveData<List<CateringRecord>>? = cateringDao.getByName(name)
+    override fun getByName(name: String) = cateringDao.getByName(name)
 }

@@ -1,8 +1,7 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.util
 
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-
+import android.view.View
+import androidx.paging.PagedList
 
 const val BASE_URL = "https://opendata.city-adm.lviv.ua/api/3/action/"
 
@@ -16,39 +15,91 @@ const val COORDINATES_ID = "8d10826b-c00d-4fbd-b196-e8a231b0f4c0"
 const val SEARCH = "datastore_search"
 const val SQL = "sql"
 const val SEARCH_SQL = "${SEARCH}_$SQL"
-const val ID = "resource_id"
 
-fun marketSql(name: String) = getSqlQueryLike(MARKET_ID, name)
+const val FIRST_ITEM = 0
+const val PAGE_SIZE = 100
 
-fun fitnessSql(name: String) = getSqlQueryLike(FITNESS_ID, name)
+fun sqlMarkets(offset: Int): String =
+    "SELECT * from\"$MARKET_ID\"" +
+            "WHERE _id>$offset " +
+            "AND _id<=${offset + PAGE_SIZE} " +
+            "ORDER BY _id"
 
-fun cateringSql(name: String) = getSqlQueryLike(CATERING_ID, name)
+fun sqlMarketsSearchByName(name: String, offset: Int): String =
+    "SELECT * from \"$MARKET_ID\"" +
+            "WHERE (name LIKE '%$name%' " +
+            "OR name LIKE '%$name') " +
+            "AND _id > $offset " +
+            "ORDER BY _id "
 
-fun barberSql(name: String) = getSqlQueryLike(BARBER_ID, name)
+fun sqlFitness(offset: Int): String =
+    "SELECT * from\"$FITNESS_ID\"" +
+            "WHERE _id>$offset " +
+            "AND _id<=${offset + PAGE_SIZE} " +
+            "ORDER BY _id"
 
-fun atmSql(bankLabel: String) = "SELECT * from \"$ATM_ID\"" +
-        " WHERE Банкомат LIKE '$bankLabel%' OR Банкомат LIKE '%$bankLabel'"
+fun sqlFitnessSearchByName(name: String, offset: Int): String =
+    "SELECT * from \"$FITNESS_ID\"" +
+            "WHERE (name LIKE '%$name%' " +
+            "OR name LIKE '%$name') " +
+            "AND _id > $offset ORDER BY _id "
 
-private fun getSqlQueryLike(resourceId: String, name: String): String = "SELECT * from \"$resourceId\"" +
-        " WHERE name LIKE '$name%' OR name LIKE '%$name'"
+fun sqlCatering(offset: Int): String =
+    "SELECT * from\"$CATERING_ID\"" +
+            "WHERE _id>$offset " +
+            "AND _id<=${offset + PAGE_SIZE} " +
+            "ORDER BY _id"
 
-fun coordinatesSql(streetName: String, houseNumber: String) = "SELECT * from \"$COORDINATES_ID\"" +
-        " WHERE (" +
-        "(" +
-        "(street_s_name LIKE '%$streetName') OR (street_d_name LIKE '%$streetName'))" +
-        " AND housenumber LIKE '$houseNumber'" +
-        ")"
+fun sqlCateringSearchByName(name: String, offset: Int): String =
+    "SELECT * from \"$CATERING_ID\"" +
+            "WHERE (name LIKE '%$name%' " +
+            "OR name LIKE '%$name') " +
+            "AND _id > $offset " +
+            "ORDER BY _id "
 
-fun isConnected(networkCapabilities: NetworkCapabilities?): Boolean {
-    return when (networkCapabilities) {
-        null -> false
-        else -> with(networkCapabilities) {
-            hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || hasTransport(
-                NetworkCapabilities.TRANSPORT_WIFI
-            )
-        }
-    }
+fun sqlBarber(offset: Int): String =
+    "SELECT * from\"$BARBER_ID\"" +
+            "WHERE _id>$offset " +
+            "AND _id<=${offset + PAGE_SIZE} " +
+            "ORDER BY _id"
+
+fun sqlBarberSearchByName(name: String, offset: Int): String =
+    "SELECT * from \"$BARBER_ID\"" +
+            "WHERE (name LIKE '%$name%'" +
+            "OR name LIKE '%$name')" +
+            "AND _id > $offset " +
+            "ORDER BY _id "
+
+fun sqlATM(offset: Int): String =
+    "SELECT * from\"$ATM_ID\"" +
+            "WHERE _id>$offset " +
+            "AND _id<=${offset + PAGE_SIZE}" +
+            "ORDER BY _id"
+
+fun sqlATMSearchByName(name: String, offset: Int): String =
+    "SELECT * from \"$ATM_ID\"" +
+            "WHERE (Банкомат LIKE '%$name%' " +
+            "OR Банкомат LIKE '%$name') " +
+            "AND _id > $offset" +
+            "ORDER BY _id "
+
+fun coordinatesSql(streetName: String, houseNumber: String) =
+    "SELECT * from \"$COORDINATES_ID\"" +
+            "WHERE (((street_s_name LIKE '%$streetName') " +
+            "OR (street_d_name LIKE '%$streetName')) " +
+            "AND housenumber LIKE '$houseNumber')"
+
+fun pagedListConfig(): PagedList.Config {
+    return PagedList.Config.Builder()
+        .setEnablePlaceholders(false)
+        .setPageSize(PAGE_SIZE)
+        .build()
 }
 
-fun ConnectivityManager.isConnected() =
-    isConnected(getNetworkCapabilities(activeNetwork))
+fun toVisibility(constraint: Boolean): Int {
+    return if (constraint) {
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
+}

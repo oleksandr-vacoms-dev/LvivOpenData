@@ -8,16 +8,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.ATMDataActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.ATMAdapter
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener.OnItemClickListener
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.group.ATMViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.hideKeyboard
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_list.*
@@ -27,46 +25,66 @@ import kotlinx.android.synthetic.main.map_button.*
 import kotlinx.android.synthetic.main.search_layout.*
 import javax.inject.Inject
 
-class ATMActivity : AppCompatActivity(), OnItemClickListener {
+class ATMActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
     private lateinit var viewModel: ATMViewModel
 
     private var records = listOf<ATMRecord>()
-    private var cacheRecords = listOf<ATMRecord>()
-    private lateinit var recordsAdapter: ATMAdapter
+
+    private lateinit var pagedListAdapter: ATMAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_list)
 
+        initViewModel()
         initAdapter()
+        initSwipeToRefresh()
         initView()
         initSearchView()
-        initRecyclerView()
-        initViewModel()
-        initObserver()
+
+        showAllData()
+    }
+
+    private fun initViewModel() {
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(ATMViewModel::class.java)
+    }
+
+    private fun initAdapter() {
+        pagedListAdapter = ATMAdapter(
+            retryCallback = { viewModel.retry() },
+            onItemClickListener = { record -> startDataActivityWith(record) })
+
+        recycler_view.adapter = pagedListAdapter
+    }
+
+    private fun initSwipeToRefresh() {
+        swipe_refresh.setOnRefreshListener {
+            viewModel.refresh()
+        }
     }
 
     private fun initView() {
         label_view.text = resources.getString(R.string.atm_label)
 
         back_button.setOnClickListener { finish() }
-        map_button.setOnClickListener{ showOnMap() }
+        map_button.setOnClickListener { showOnMap() }
     }
 
     private fun initSearchView() {
         search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.setSearchData(search_view.query.toString())
+                showSearchData(search_view.query.toString())
                 return false
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
                 if (newText.isNotEmpty()) {
-                    label_view.visibility = View.GONE
+                    label_view.visibility = View.INVISIBLE
                 } else {
                     label_view.visibility = View.VISIBLE
                 }
@@ -75,73 +93,66 @@ class ATMActivity : AppCompatActivity(), OnItemClickListener {
         })
 
         search_view.setOnCloseListener {
-            search_view.setQuery("", false)
-            label_view.requestFocus()
-            hideKeyboard(this)
-            upDateView(cacheRecords)
+            closeSearchView()
+            showAllData()
             true
         }
     }
 
-    private fun initAdapter() {
-        recordsAdapter = ATMAdapter(this)
+    private fun showAllData() {
+        resetAdapter()
+        viewModel.getAllData()
+        removeObserversSearchData()
+        addObserverAllData()
     }
 
-    private fun initRecyclerView() {
-        with(recycler_view) {
-            layoutManager = LinearLayoutManager(context?.applicationContext)
-            adapter = recordsAdapter
-            itemAnimator = DefaultItemAnimator()
-            isNestedScrollingEnabled = true
-        }
+    private fun showSearchData(searchQuery: String) {
+        resetAdapter()
+        viewModel.getDataByQuery(searchQuery)
+        removeObserversAllData()
+        addObserversSearchData()
     }
 
-    private fun initViewModel() {
-        viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(ATMViewModel::class.java)
-    }
-
-    private fun initObserver() {
-        viewModel.data.observe(this, Observer<List<ATMRecord>> { records ->
-            upDateView(records)
+    private fun addObserversSearchData() {
+        viewModel.searchPagedList.observe(this, Observer {
+            pagedListAdapter.submitList(it)
+            records = it
         })
 
-        viewModel.searchData.observe(this, Observer<List<ATMRecord>> { records ->
-            upDateSearchView(records)
+        viewModel.searchRefreshState.observe(this, Observer {
+            swipe_refresh.isRefreshing = it == NetworkState.LOADING
+        })
+
+        viewModel.searchNetworkState.observe(this, Observer {
+            pagedListAdapter.setNetworkState(it)
         })
     }
 
-    private fun upDateView(records: List<ATMRecord>) {
-        if (records.isEmpty()) {
-            showEmptyView()
-        } else {
-            this.records = records
-            cacheRecords = records
-            recordsAdapter.data = records
-            showRecyclerView()
-        }
+    private fun addObserverAllData() {
+        viewModel.pagedList.observe(this, Observer {
+            pagedListAdapter.submitList(it)
+            records = it
+        })
+
+        viewModel.refreshState.observe(this, Observer {
+            swipe_refresh.isRefreshing = it == NetworkState.LOADING
+        })
+
+        viewModel.networkState.observe(this, Observer {
+            pagedListAdapter.setNetworkState(it)
+        })
     }
 
-    private fun upDateSearchView(records: List<ATMRecord>) {
-        if (records.isEmpty()) {
-            showEmptyView()
-        } else {
-            this.records = records
-            recordsAdapter.data = records
-            showRecyclerView()
-        }
+    private fun removeObserversAllData() {
+        viewModel.pagedList.removeObservers(this)
+        viewModel.refreshState.removeObservers(this)
+        viewModel.networkState.removeObservers(this)
     }
 
-    private fun showEmptyView() {
-        recycler_view.visibility = View.GONE
-    }
-
-    private fun showRecyclerView() {
-        recycler_view.visibility = View.VISIBLE
-    }
-
-    override fun onItemClick(view: View, position: Int) {
-        startDataActivityWith(records[position])
+    private fun removeObserversSearchData() {
+        viewModel.searchPagedList.removeObservers(this)
+        viewModel.searchRefreshState.removeObservers(this)
+        viewModel.searchNetworkState.removeObservers(this)
     }
 
     private fun showOnMap() {
@@ -155,5 +166,16 @@ class ATMActivity : AppCompatActivity(), OnItemClickListener {
         val intent = Intent(this, ATMDataActivity::class.java)
         intent.putExtra(DATA_ID, data._id)
         startActivity(intent)
+    }
+
+    private fun resetAdapter() {
+        recycler_view.scrollToPosition(0)
+        pagedListAdapter.submitList(null)
+    }
+
+    private fun closeSearchView() {
+        search_view.setQuery("", false)
+        label_view.requestFocus()
+        hideKeyboard(this)
     }
 }
