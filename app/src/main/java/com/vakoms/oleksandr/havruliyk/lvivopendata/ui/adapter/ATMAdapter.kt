@@ -1,40 +1,91 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.listener.OnItemClickListener
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_list.*
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.viewholder.ATMItemViewHolder
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.viewholder.NetworkStateViewHolder
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.Status
 
-class ATMAdapter(var onClickListener: OnItemClickListener) : RecyclerView.Adapter<ATMAdapter.ViewHolder>() {
+class ATMAdapter(
+    private val retryCallback: () -> Unit,
+    private val onItemClickListener: (record: ATMRecord) -> Unit
+) : PagedListAdapter<ATMRecord, RecyclerView.ViewHolder>(ITEM_COMPARATOR) {
 
-    var data: List<ATMRecord> = listOf()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
+    private var networkState: NetworkState? = null
+    private var networkItemCount = 0
+    private val hasNetworkItem
+        get() = networkItemCount == 1
+    private val lastItemPosition
+        get() = itemCount - 1
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (getItemViewType(position)) {
+            R.layout.item_list -> getItem(position)?.let { (holder as ATMItemViewHolder).bind(it) }
+            R.layout.network_state_item -> (holder as NetworkStateViewHolder).bind(networkState)
         }
+    }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
-        ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            R.layout.item_list -> ATMItemViewHolder.create(parent, onItemClickListener)
+            R.layout.network_state_item -> NetworkStateViewHolder.create(parent, retryCallback)
+            else -> throw IllegalArgumentException("unknown view type $viewType")
+        }
+    }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(data[position], onClickListener)
+    override fun getItemViewType(position: Int): Int {
+        return if (hasNetworkItem && position == lastItemPosition) {
+            R.layout.network_state_item
+        } else {
+            R.layout.item_list
+        }
+    }
 
-    override fun getItemCount() = data.size
+    override fun getItemCount(): Int {
+        return super.getItemCount() + networkItemCount
+    }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), LayoutContainer {
+    fun setNetworkState(newNetworkState: NetworkState?) {
+        networkState = newNetworkState
 
-        override val containerView: View?
-            get() = itemView
+        when (newNetworkState) {
+            null -> removeNetworkItem()
+            else -> when (newNetworkState.status) {
+                Status.SUCCESS -> removeNetworkItem()
+                Status.RUNNING -> insertNetworkItem()
+                Status.FAILED -> insertNetworkItem()
+            }
+        }
+    }
 
-        fun bind(item: ATMRecord, onClickListener: OnItemClickListener) {
-            itemView.setOnClickListener { onClickListener.onItemClick(itemView, position) }
+    private fun removeNetworkItem() {
+        if (hasNetworkItem) {
+            networkItemCount--
+            notifyItemRemoved(super.getItemCount())
+        }
+    }
 
-            label_view.text = with(item) { bankLabel }
-            address_view.text = with(item) { address }
+    private fun insertNetworkItem() {
+        if (!hasNetworkItem) {
+            networkItemCount++
+            notifyItemInserted(super.getItemCount())
+        } else {
+            notifyItemChanged(lastItemPosition)
+        }
+    }
+
+    companion object {
+        private val ITEM_COMPARATOR = object : DiffUtil.ItemCallback<ATMRecord>() {
+            override fun areItemsTheSame(oldItem: ATMRecord, newItem: ATMRecord) =
+                (oldItem._id == newItem._id)
+
+            override fun areContentsTheSame(oldItem: ATMRecord, newItem: ATMRecord) =
+                (oldItem == newItem)
         }
     }
 }
