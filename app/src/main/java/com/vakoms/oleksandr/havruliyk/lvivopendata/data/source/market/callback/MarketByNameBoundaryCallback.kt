@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.callback
 
 import androidx.annotation.MainThread
 import androidx.paging.PagingRequestHelper
@@ -8,8 +8,6 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResp
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataBoundaryCallback
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.FIRST_ITEM
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlMarketsSearchByName
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executor
 
@@ -24,7 +22,9 @@ class MarketByNameBoundaryCallback(
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
             webservice.getMarkets(sqlMarketsSearchByName(name, FIRST_ITEM))
-                .enqueue(createWebserviceCallback(it))
+                .enqueue(MarketWebServiceCallback(it) { response, _ ->
+                    insertItemsIntoDb(response, it)
+                })
         }
     }
 
@@ -32,7 +32,9 @@ class MarketByNameBoundaryCallback(
     override fun onItemAtEndLoaded(itemAtEnd: MarketRecord) {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
             webservice.getMarkets(sqlMarketsSearchByName(name, itemAtEnd.id))
-                .enqueue(createWebserviceCallback(it))
+                .enqueue(MarketWebServiceCallback(it) { response, _ ->
+                    insertItemsIntoDb(response, it)
+                })
         }
     }
 
@@ -43,25 +45,6 @@ class MarketByNameBoundaryCallback(
         ioExecutor.execute {
             handleResponse(response.body().result.records)
             it.recordSuccess()
-        }
-    }
-
-    private fun createWebserviceCallback(it: PagingRequestHelper.Request.Callback)
-            : Callback<MarketsResponse> {
-        return object : Callback<MarketsResponse> {
-            override fun onFailure(
-                call: Call<MarketsResponse>,
-                t: Throwable
-            ) {
-                it.recordFailure(t)
-            }
-
-            override fun onResponse(
-                call: Call<MarketsResponse>,
-                response: Response<MarketsResponse>
-            ) {
-                insertItemsIntoDb(response, it)
-            }
         }
     }
 }
