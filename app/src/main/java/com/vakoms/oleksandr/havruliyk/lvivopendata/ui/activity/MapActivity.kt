@@ -108,7 +108,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun addMarker(latLng: LatLng, title: String) {
         googleMap?.addMarker(MarkerOptions().position(latLng).title(title))
-        googleMap?.moveCamera(
+        googleMap?.animateCamera(
             CameraUpdateFactory.newLatLngZoom(latLng, DEFAULT_ZOOM)
         )
     }
