@@ -8,8 +8,6 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringR
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataBoundaryCallback
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.FIRST_ITEM
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlCateringSearchByName
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 import java.util.concurrent.Executor
 
@@ -24,7 +22,9 @@ class CateringByNameBoundaryCallback(
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
             webservice.getCatering(sqlCateringSearchByName(name, FIRST_ITEM))
-                .enqueue(createWebserviceCallback(it))
+                .enqueue(CateringWebServiceCallback(it) { response, _ ->
+                    insertItemsIntoDb(response, it)
+                })
         }
     }
 
@@ -32,7 +32,9 @@ class CateringByNameBoundaryCallback(
     override fun onItemAtEndLoaded(itemAtEnd: CateringRecord) {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
             webservice.getCatering(sqlCateringSearchByName(name, itemAtEnd._id))
-                .enqueue(createWebserviceCallback(it))
+                .enqueue(CateringWebServiceCallback(it) { response, _ ->
+                    insertItemsIntoDb(response, it)
+                })
         }
     }
 
@@ -43,25 +45,6 @@ class CateringByNameBoundaryCallback(
         ioExecutor.execute {
             handleResponse(response.body().result.records)
             it.recordSuccess()
-        }
-    }
-
-    private fun createWebserviceCallback(it: PagingRequestHelper.Request.Callback)
-            : Callback<CateringResponse> {
-        return object : Callback<CateringResponse> {
-            override fun onFailure(
-                call: Call<CateringResponse>,
-                t: Throwable
-            ) {
-                it.recordFailure(t)
-            }
-
-            override fun onResponse(
-                call: Call<CateringResponse>,
-                response: Response<CateringResponse>
-            ) {
-                insertItemsIntoDb(response, it)
-            }
         }
     }
 }

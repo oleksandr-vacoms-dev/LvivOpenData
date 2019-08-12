@@ -24,7 +24,9 @@ class FitnessByNameBoundaryCallback(
     override fun onZeroItemsLoaded() {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.INITIAL) {
             webservice.getFitness(sqlFitnessSearchByName(name, FIRST_ITEM))
-                .enqueue(createWebserviceCallback(it))
+                .enqueue(FitnessWebServiceCallback(it) { response, _ ->
+                    insertItemsIntoDb(response, it)
+                })
         }
     }
 
@@ -32,7 +34,9 @@ class FitnessByNameBoundaryCallback(
     override fun onItemAtEndLoaded(itemAtEnd: FitnessRecord) {
         helper.runIfNotRunning(PagingRequestHelper.RequestType.AFTER) {
             webservice.getFitness(sqlFitnessSearchByName(name, itemAtEnd.id))
-                .enqueue(createWebserviceCallback(it))
+                .enqueue(FitnessWebServiceCallback(it) { response, _ ->
+                    insertItemsIntoDb(response, it)
+                })
         }
     }
 
@@ -43,25 +47,6 @@ class FitnessByNameBoundaryCallback(
         ioExecutor.execute {
             handleResponse(response.body().result.records)
             it.recordSuccess()
-        }
-    }
-
-    private fun createWebserviceCallback(it: PagingRequestHelper.Request.Callback)
-            : Callback<FitnessResponse> {
-        return object : Callback<FitnessResponse> {
-            override fun onFailure(
-                call: Call<FitnessResponse>,
-                t: Throwable
-            ) {
-                it.recordFailure(t)
-            }
-
-            override fun onResponse(
-                call: Call<FitnessResponse>,
-                response: Response<FitnessResponse>
-            ) {
-                insertItemsIntoDb(response, it)
-            }
         }
     }
 }
