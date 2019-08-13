@@ -53,7 +53,7 @@ class RemoteATMDataStorage @Inject constructor(
         val data = MutableLiveData<List<ATMRecord>>()
 
         ApiRequestHelper.asyncRequest(
-            request = openDataApi.getATM(sqlATMsByName(name, offset, amount)),
+            request = openDataApi.getATM(sqlATMsByName(name, offset)),
             onSuccess = { response ->
                 data.value = response?.result?.records!!
             },

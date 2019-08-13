@@ -53,7 +53,7 @@ class RemoteBarberDataStorage @Inject constructor(
         val data = MutableLiveData<List<BarberRecord>>()
 
         ApiRequestHelper.asyncRequest(
-            request = openDataApi.getBarber(sqlBarbersByName(name, offset, amount)),
+            request = openDataApi.getBarber(sqlBarbersByName(name, offset)),
             onSuccess = { response ->
                 data.value = response?.result?.records!!
             },

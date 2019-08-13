@@ -53,7 +53,7 @@ class RemoteCateringDataStorage @Inject constructor(
         val data = MutableLiveData<List<CateringRecord>>()
 
         ApiRequestHelper.asyncRequest(
-            request = openDataApi.getCatering(sqlCateringsByName(name, offset, amount)),
+            request = openDataApi.getCatering(sqlCateringsByName(name, offset)),
             onSuccess = { response ->
                 data.value = response?.result?.records!!
             },

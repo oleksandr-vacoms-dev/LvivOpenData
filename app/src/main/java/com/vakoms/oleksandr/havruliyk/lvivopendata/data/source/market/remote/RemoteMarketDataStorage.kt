@@ -53,7 +53,7 @@ class RemoteMarketDataStorage @Inject constructor(
         val data = MutableLiveData<List<MarketRecord>>()
 
         ApiRequestHelper.asyncRequest(
-            request = openDataApi.getMarkets(sqlMarketsByName(name, offset, amount)),
+            request = openDataApi.getMarkets(sqlMarketsByName(name, offset)),
             onSuccess = { response ->
                 data.value = response?.result?.records!!
             },

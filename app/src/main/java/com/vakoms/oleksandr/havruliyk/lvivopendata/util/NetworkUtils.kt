@@ -25,7 +25,7 @@ fun sqlMarkets(offset: Int, amount: Int): String =
             "AND _id<=${offset + amount} " +
             "ORDER BY _id"
 
-fun sqlMarketsByName(name: String, offset: Int, amount: Int): String =
+fun sqlMarketsByName(name: String, offset: Int): String =
     "SELECT * from \"$MARKET_ID\"" +
             "WHERE (name LIKE '%$name%' " +
             "OR name LIKE '%$name') " +
@@ -42,7 +42,7 @@ fun sqlFitnesses(offset: Int, amount: Int): String =
             "AND _id<=${offset + amount} " +
             "ORDER BY _id"
 
-fun sqlFitnessesByName(name: String, offset: Int, amount: Int): String =
+fun sqlFitnessesByName(name: String, offset: Int): String =
     "SELECT * from \"$FITNESS_ID\"" +
             "WHERE (name LIKE '%$name%' " +
             "OR name LIKE '%$name') " +
@@ -59,7 +59,7 @@ fun sqlCaterings(offset: Int, amount: Int): String =
             "AND _id<=${offset + amount} " +
             "ORDER BY _id"
 
-fun sqlCateringsByName(name: String, offset: Int, amount: Int): String =
+fun sqlCateringsByName(name: String, offset: Int): String =
     "SELECT * from \"$CATERING_ID\"" +
             "WHERE (name LIKE '%$name%' " +
             "OR name LIKE '%$name') " +
@@ -76,7 +76,7 @@ fun sqlBarbers(offset: Int, amount: Int): String =
             "AND _id<=${offset + amount} " +
             "ORDER BY _id"
 
-fun sqlBarbersByName(name: String, offset: Int, amount: Int): String =
+fun sqlBarbersByName(name: String, offset: Int): String =
     "SELECT * from \"$BARBER_ID\"" +
             "WHERE (name LIKE '%$name%' " +
             "OR name LIKE '%$name') " +
@@ -93,7 +93,7 @@ fun sqlATMs(offset: Int, amount: Int): String =
             "AND _id<=${offset + amount} " +
             "ORDER BY _id"
 
-fun sqlATMsByName(name: String, offset: Int, amount: Int): String =
+fun sqlATMsByName(name: String, offset: Int): String =
     "SELECT * from \"$ATM_ID\"" +
             "WHERE (Банкомат LIKE '%$name%' " +
             "OR Банкомат LIKE '%$name') " +

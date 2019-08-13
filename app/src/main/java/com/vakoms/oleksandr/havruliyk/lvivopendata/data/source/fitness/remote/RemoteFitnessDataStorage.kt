@@ -53,7 +53,7 @@ class RemoteFitnessDataStorage @Inject constructor(
         val data = MutableLiveData<List<FitnessRecord>>()
 
         ApiRequestHelper.asyncRequest(
-            request = openDataApi.getFitness(sqlFitnessesByName(name, offset, amount)),
+            request = openDataApi.getFitness(sqlFitnessesByName(name, offset)),
             onSuccess = { response ->
                 data.value = response?.result?.records!!
             },
