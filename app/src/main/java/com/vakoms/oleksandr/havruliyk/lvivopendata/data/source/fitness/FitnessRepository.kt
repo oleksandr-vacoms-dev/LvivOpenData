@@ -1,43 +1,89 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness
 
 import androidx.lifecycle.LiveData
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local.LocalFitnessDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.remote.RemoteFitnessDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.paging.PagingCallback
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.FIRST_ITEM
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.PAGE_SIZE
+import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
 class FitnessRepository @Inject constructor(
-    var localDataStorage: LocalFitnessDataStorage,
-    var openDataApi: OpenDataApi
+    private val localDataStorage: LocalFitnessDataStorage,
+    private val remoteDataSource: RemoteFitnessDataStorage
 ) : DataStorage<FitnessRecord> {
 
     override fun getListing(): Listing<FitnessRecord> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val callback = object : PagingCallback<FitnessRecord>(
+            onZeroItems = {
+                remoteDataSource.get(FIRST_ITEM, PAGE_SIZE)
+            },
+            onItemAtEnd = { itemAtEnd ->
+                remoteDataSource.get(itemAtEnd.id, PAGE_SIZE)
+            },
+            onNewItemsLoaded = { items ->
+                save(items)
+            }
+        ) {}
+
+        return callback.getListing(localDataStorage.getListing().factory)
     }
 
     override fun getListingByName(name: String): Listing<FitnessRecord> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val callback = object : PagingCallback<FitnessRecord>(
+            onZeroItems = {
+                remoteDataSource.getByName(name, FIRST_ITEM, PAGE_SIZE)
+            },
+            onItemAtEnd = { itemAtEnd ->
+                remoteDataSource.getByName(name, itemAtEnd.id, PAGE_SIZE)
+            },
+            onNewItemsLoaded = { items ->
+                save(items)
+            }
+        ) {}
+
+        return callback.getListing(localDataStorage.getListingByName(name).factory)
     }
 
     override fun get(offset: Int, amount: Int): LiveData<List<FitnessRecord>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        remoteDataSource.get(offset, amount).observeForever { data ->
+            if (data != null) {
+                save(data)
+            }
+        }
+
+        return localDataStorage.get(offset, amount)
     }
 
     override fun getByName(name: String, offset: Int, amount: Int): LiveData<List<FitnessRecord>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        remoteDataSource.getByName(name, offset, amount).observeForever { data ->
+            if (data != null) {
+                save(data)
+            }
+        }
+
+        return localDataStorage.getByName(name, offset, amount)
     }
 
     override fun getById(id: Int): LiveData<FitnessRecord> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        remoteDataSource.getById(id).observeForever { data ->
+            if (data != null) {
+                save(listOf(data))
+            }
+        }
+
+        return localDataStorage.getById(id)
     }
 
     override fun save(data: List<FitnessRecord>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        doAsync { localDataStorage.save(data) }
     }
 
     override fun deleteAll() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        doAsync { localDataStorage.deleteAll() }
     }
 }
