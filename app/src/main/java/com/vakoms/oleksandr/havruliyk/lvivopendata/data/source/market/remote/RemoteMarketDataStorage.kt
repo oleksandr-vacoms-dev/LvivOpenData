@@ -8,7 +8,6 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketsResp
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.paging.keyed.KeyedDataSourceFactory
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.*
-import java.util.concurrent.Executor
 import javax.inject.Inject
 
 class RemoteMarketDataStorage @Inject constructor(
@@ -69,7 +68,7 @@ class RemoteMarketDataStorage @Inject constructor(
         val data = MutableLiveData<MarketRecord>()
 
         ApiRequestHelper.asyncRequest(
-            request = openDataApi.getMarkets(sqlMarketsById(id)),
+            request = openDataApi.getMarkets(sqlMarketById(id)),
             onSuccess = { response ->
                 with(response?.result?.records!!) {
                     if (this.isNotEmpty()) {
