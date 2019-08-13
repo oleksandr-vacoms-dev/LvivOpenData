@@ -1,39 +1,37 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.remote
 
 import androidx.lifecycle.LiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.local.LocalCateringDataStorage
 import javax.inject.Inject
 
-class CateringRepository @Inject constructor(
-    var localDataStorage: LocalCateringDataStorage,
-    var openDataApi: OpenDataApi
-) : DataStorage<CateringRecord> {
+class RemoteFitnessDataStorage @Inject constructor(
+    private val openDataApi: OpenDataApi
+) : DataStorage<FitnessRecord> {
 
-    override fun getListing(): Listing<CateringRecord> {
+    override fun getListing(): Listing<FitnessRecord> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getListingByName(name: String): Listing<CateringRecord> {
+    override fun getListingByName(name: String): Listing<FitnessRecord> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun get(offset: Int, amount: Int): LiveData<List<CateringRecord>> {
+    override fun get(offset: Int, amount: Int): LiveData<List<FitnessRecord>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getByName(name: String, offset: Int, amount: Int): LiveData<List<CateringRecord>> {
+    override fun getByName(name: String, offset: Int, amount: Int): LiveData<List<FitnessRecord>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun getById(id: Int): LiveData<CateringRecord> {
+    override fun getById(id: Int): LiveData<FitnessRecord> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun save(data: List<CateringRecord>) {
+    override fun save(data: List<FitnessRecord>) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

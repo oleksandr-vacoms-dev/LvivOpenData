@@ -9,11 +9,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.FitnessDataActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.FitnessAdapter
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.group.FitnessViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.description.CateringDescriptionActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.CateringAdapter
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.group.CateringsViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.hideKeyboard
@@ -25,15 +25,15 @@ import kotlinx.android.synthetic.main.map_button.*
 import kotlinx.android.synthetic.main.search_layout.*
 import javax.inject.Inject
 
-class FitnessActivity : AppCompatActivity() {
+class CateringsActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: FitnessViewModel
+    private lateinit var viewModel: CateringsViewModel
 
-    private var records = listOf<FitnessRecord>()
+    private var records = listOf<CateringRecord>()
 
-    private lateinit var pagedListAdapter: FitnessAdapter
+    private lateinit var pagedListAdapter: CateringAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -51,11 +51,11 @@ class FitnessActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(FitnessViewModel::class.java)
+            .get(CateringsViewModel::class.java)
     }
 
     private fun initAdapter() {
-        pagedListAdapter = FitnessAdapter(
+        pagedListAdapter = CateringAdapter(
             retryCallback = { viewModel.retry() },
             onItemClickListener = { record -> startDataActivityWith(record) })
 
@@ -69,7 +69,7 @@ class FitnessActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        label_view.text = resources.getString(R.string.fitness_label)
+        label_view.text = resources.getString(R.string.catering_label)
 
         back_button.setOnClickListener { finish() }
         map_button.setOnClickListener { showOnMap() }
@@ -162,9 +162,9 @@ class FitnessActivity : AppCompatActivity() {
         }
     }
 
-    private fun startDataActivityWith(data: FitnessRecord) {
-        val intent = Intent(this, FitnessDataActivity::class.java)
-        intent.putExtra(DATA_ID, data.id)
+    private fun startDataActivityWith(data: CateringRecord) {
+        val intent = Intent(this, CateringDescriptionActivity::class.java)
+        intent.putExtra(DATA_ID, data._id)
         startActivity(intent)
     }
 

@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.data
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.description
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local.Loca
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromMarketRecord
 import javax.inject.Inject
 
-class MarketDataViewModel @Inject constructor(var repository: LocalMarketDataStorage, var mapManager: MapManager) :
+class MarketDescriptionViewModel @Inject constructor(var repository: LocalMarketDataStorage, var mapManager: MapManager) :
     ViewModel() {
 
     private val recordId = MutableLiveData<Int>()

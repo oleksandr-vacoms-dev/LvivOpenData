@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.description
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.data.FitnessDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.description.FitnessDescriptionViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_fitness_data.*
@@ -19,11 +19,11 @@ import kotlinx.android.synthetic.main.map_button.*
 import java.lang.String.format
 import javax.inject.Inject
 
-class FitnessDataActivity : AppCompatActivity() {
+class FitnessDescriptionActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: FitnessDataViewModel
+    private lateinit var viewModel: FitnessDescriptionViewModel
 
     private var record: FitnessRecord? = null
 
@@ -44,7 +44,7 @@ class FitnessDataActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(FitnessDataViewModel::class.java)
+            .get(FitnessDescriptionViewModel::class.java)
 
         viewModel.setRecordId(intent.extras?.get(DATA_ID) as Int)
     }

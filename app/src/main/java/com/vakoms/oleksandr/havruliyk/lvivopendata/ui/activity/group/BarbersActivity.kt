@@ -9,11 +9,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.ATMDataActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.ATMAdapter
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.group.ATMViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.description.BarberDescriptionActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.BarberAdapter
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.group.BarbersViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.hideKeyboard
@@ -25,15 +25,15 @@ import kotlinx.android.synthetic.main.map_button.*
 import kotlinx.android.synthetic.main.search_layout.*
 import javax.inject.Inject
 
-class ATMActivity : AppCompatActivity() {
+class BarbersActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: ATMViewModel
+    private lateinit var viewModel: BarbersViewModel
 
-    private var records = listOf<ATMRecord>()
+    private var records = listOf<BarberRecord>()
 
-    private lateinit var pagedListAdapter: ATMAdapter
+    private lateinit var pagedListAdapter: BarberAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -51,11 +51,11 @@ class ATMActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(ATMViewModel::class.java)
+            .get(BarbersViewModel::class.java)
     }
 
     private fun initAdapter() {
-        pagedListAdapter = ATMAdapter(
+        pagedListAdapter = BarberAdapter(
             retryCallback = { viewModel.retry() },
             onItemClickListener = { record -> startDataActivityWith(record) })
 
@@ -69,7 +69,7 @@ class ATMActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        label_view.text = resources.getString(R.string.atm_label)
+        label_view.text = resources.getString(R.string.barber_label)
 
         back_button.setOnClickListener { finish() }
         map_button.setOnClickListener { showOnMap() }
@@ -162,8 +162,8 @@ class ATMActivity : AppCompatActivity() {
         }
     }
 
-    private fun startDataActivityWith(data: ATMRecord) {
-        val intent = Intent(this, ATMDataActivity::class.java)
+    private fun startDataActivityWith(data: BarberRecord) {
+        val intent = Intent(this, BarberDescriptionActivity::class.java)
         intent.putExtra(DATA_ID, data._id)
         startActivity(intent)
     }

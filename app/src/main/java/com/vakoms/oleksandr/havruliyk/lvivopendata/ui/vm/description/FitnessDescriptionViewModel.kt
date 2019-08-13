@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.data
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.description
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local.Loc
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromFitnessRecord
 import javax.inject.Inject
 
-class FitnessDataViewModel @Inject constructor(var repository: LocalFitnessDataStorage, var mapManager: MapManager) :
+class FitnessDescriptionViewModel @Inject constructor(var repository: LocalFitnessDataStorage, var mapManager: MapManager) :
     ViewModel() {
 
     private val recordId = MutableLiveData<Int>()

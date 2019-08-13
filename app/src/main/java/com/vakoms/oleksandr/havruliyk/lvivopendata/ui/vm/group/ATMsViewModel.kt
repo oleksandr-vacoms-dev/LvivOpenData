@@ -7,28 +7,28 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.MapManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.MarketRepository
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.ATMRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromMarketRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromATMRecord
 import javax.inject.Inject
 
-class MarketViewModel @Inject constructor(
-    private var repository: MarketRepository,
+class ATMsViewModel @Inject constructor(
+    private var repository: ATMRepository,
     private var mapManager: MapManager
 ) : ViewModel() {
 
-    private lateinit var listing: Listing<MarketRecord>
+    private lateinit var listing: Listing<ATMRecord>
 
     var networkState: LiveData<NetworkState> = MutableLiveData()
     var refreshState: LiveData<NetworkState> = MutableLiveData()
-    var pagedList: LiveData<PagedList<MarketRecord>> = MutableLiveData()
+    var pagedList: LiveData<PagedList<ATMRecord>> = MutableLiveData()
 
     private val searchString = MutableLiveData<String>()
     var searchNetworkState: LiveData<NetworkState> = MutableLiveData()
     var searchRefreshState: LiveData<NetworkState> = MutableLiveData()
 
-    var searchPagedList: LiveData<PagedList<MarketRecord>> = Transformations.switchMap(searchString) { name ->
+    var searchPagedList: LiveData<PagedList<ATMRecord>> = Transformations.switchMap(searchString) { name ->
         listing = repository.getListingByName(name)
         searchNetworkState = listing.networkState
         searchRefreshState = listing.refreshState
@@ -47,8 +47,8 @@ class MarketViewModel @Inject constructor(
         searchString.value = search
     }
 
-    fun addRecordsToMap(record: List<MarketRecord>) {
-        mapManager.addRecords(getAddressRecordFromMarketRecord(record))
+    fun addRecordsToMap(record: List<ATMRecord>) {
+        mapManager.addRecords(getAddressRecordFromATMRecord(record))
     }
 
     fun getAllData() {

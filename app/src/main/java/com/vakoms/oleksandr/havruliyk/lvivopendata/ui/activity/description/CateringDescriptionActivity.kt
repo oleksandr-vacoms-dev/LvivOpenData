@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.description
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.data.CateringDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.description.CateringDescriptionViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
 import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_catering_data.*
@@ -19,11 +19,11 @@ import kotlinx.android.synthetic.main.map_button.*
 import java.lang.String.format
 import javax.inject.Inject
 
-class CateringDataActivity : AppCompatActivity() {
+class CateringDescriptionActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: CateringDataViewModel
+    private lateinit var viewModel: CateringDescriptionViewModel
 
     private var record: CateringRecord? = null
 
@@ -44,7 +44,7 @@ class CateringDataActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(CateringDataViewModel::class.java)
+            .get(CateringDescriptionViewModel::class.java)
 
         viewModel.setRecordId(intent.extras?.get(DATA_ID) as Int)
     }

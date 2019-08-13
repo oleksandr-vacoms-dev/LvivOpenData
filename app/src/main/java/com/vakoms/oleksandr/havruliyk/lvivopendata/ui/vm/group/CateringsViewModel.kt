@@ -7,29 +7,29 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.MapManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.FitnessRepository
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.CateringRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromFitnessRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromCateringRecord
 import javax.inject.Inject
 
-class FitnessViewModel @Inject constructor(
-    private var repository: FitnessRepository,
+class CateringsViewModel @Inject constructor(
+    private var repository: CateringRepository,
     private var mapManager: MapManager
 ) : ViewModel() {
 
-    private lateinit var listing: Listing<FitnessRecord>
+    private lateinit var listing: Listing<CateringRecord>
 
     var networkState: LiveData<NetworkState> = MutableLiveData()
     var refreshState: LiveData<NetworkState> = MutableLiveData()
-    var pagedList: LiveData<PagedList<FitnessRecord>> = MutableLiveData()
+    var pagedList: LiveData<PagedList<CateringRecord>> = MutableLiveData()
 
     private val searchString = MutableLiveData<String>()
     var searchNetworkState: LiveData<NetworkState> = MutableLiveData()
     var searchRefreshState: LiveData<NetworkState> = MutableLiveData()
 
-    var searchPagedList: LiveData<PagedList<FitnessRecord>> = Transformations.switchMap(searchString) { name ->
-//        listing = repository.getByName(name)
+    var searchPagedList: LiveData<PagedList<CateringRecord>> = Transformations.switchMap(searchString) { name ->
+        listing = repository.getListingByName(name)
         searchNetworkState = listing.networkState
         searchRefreshState = listing.refreshState
         listing.pagedList
@@ -47,12 +47,12 @@ class FitnessViewModel @Inject constructor(
         searchString.value = search
     }
 
-    fun addRecordsToMap(record: List<FitnessRecord>) {
-        mapManager.addRecords(getAddressRecordFromFitnessRecord(record))
+    fun addRecordsToMap(record: List<CateringRecord>) {
+        mapManager.addRecords(getAddressRecordFromCateringRecord(record))
     }
 
     fun getAllData() {
-//        listing = repository.getAll()
+        listing = repository.getListing()
         networkState = listing.networkState
         refreshState = listing.refreshState
         pagedList = listing.pagedList

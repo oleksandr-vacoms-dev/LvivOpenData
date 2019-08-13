@@ -1,16 +1,15 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.remote
 
 import androidx.lifecycle.LiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.local.LocalCateringDataStorage
 import javax.inject.Inject
 
-class CateringRepository @Inject constructor(
-    var localDataStorage: LocalCateringDataStorage,
-    var openDataApi: OpenDataApi
+class RemoteCateringDataStorage @Inject constructor(
+    private val openDataApi: OpenDataApi
 ) : DataStorage<CateringRecord> {
 
     override fun getListing(): Listing<CateringRecord> {

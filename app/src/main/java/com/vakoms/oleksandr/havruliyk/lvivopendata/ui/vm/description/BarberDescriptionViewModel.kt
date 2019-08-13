@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.data
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.description
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.local.Loca
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromBarberRecord
 import javax.inject.Inject
 
-class BarberDataViewModel @Inject constructor(var repository: LocalBarberDataStorage, var mapManager: MapManager) :
+class BarberDescriptionViewModel @Inject constructor(var repository: LocalBarberDataStorage, var mapManager: MapManager) :
     ViewModel() {
 
     private val recordId = MutableLiveData<Int>()

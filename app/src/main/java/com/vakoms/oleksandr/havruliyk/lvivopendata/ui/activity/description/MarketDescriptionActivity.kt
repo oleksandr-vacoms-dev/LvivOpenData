@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.description
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,31 +7,30 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.data.BarberDataViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.description.MarketDescriptionViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
 import dagger.android.AndroidInjection
-import kotlinx.android.synthetic.main.activity_barber_data.*
+import kotlinx.android.synthetic.main.activity_market_data.*
 import kotlinx.android.synthetic.main.back_button.*
-import kotlinx.android.synthetic.main.item_list.*
-import kotlinx.android.synthetic.main.item_list.address_view
+import kotlinx.android.synthetic.main.label_layout.*
 import kotlinx.android.synthetic.main.map_button.*
 import java.lang.String.format
 import javax.inject.Inject
 
-class BarberDataActivity : AppCompatActivity() {
+class MarketDescriptionActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: BarberDataViewModel
+    private lateinit var viewModel: MarketDescriptionViewModel
 
-    private var record: BarberRecord? = null
+    private var record: MarketRecord? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_barber_data)
+        setContentView(R.layout.activity_market_data)
 
         initView()
         initViewModel()
@@ -45,13 +44,13 @@ class BarberDataActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(BarberDataViewModel::class.java)
+            .get(MarketDescriptionViewModel::class.java)
 
         viewModel.setRecordId(intent.extras?.get(DATA_ID) as Int)
     }
 
     private fun initObserver() {
-        viewModel.record.observe(this, Observer<BarberRecord> { record ->
+        viewModel.record.observe(this, Observer<MarketRecord> { record ->
             upDataView(record)
         })
     }
@@ -63,14 +62,16 @@ class BarberDataActivity : AppCompatActivity() {
         }
     }
 
-    private fun upDataView(record: BarberRecord) {
+    private fun upDataView(record: MarketRecord) {
         this.record = record
         with(record) {
             label_view.text = name
             district_view.text = district
             address_view.text = address()
-            enterpreneur_name_view.text = enterpreneur_name_1
-            cellphone_view.text = cellphone_number_1
+            enterpreneur_name_view.text = enterpreneurName1
+            specialization_view.text = specialization
+            cellphone_view.text = cellphoneNumber1
+            square_view.text = storeTotalSquare
             monday_view.text = monday()
             tuesday_view.text = tuesday()
             wednesday_view.text = wednesday()
@@ -81,12 +82,12 @@ class BarberDataActivity : AppCompatActivity() {
         }
     }
 
-    fun BarberRecord.address() = format(resources.getString(R.string.street_building), street, building)
-    fun BarberRecord.monday() = format(resources.getString(R.string.monday_work_time), hours_of_work_monday)
-    fun BarberRecord.tuesday() = format(resources.getString(R.string.tuesday_work_time), hours_of_work_tuesday)
-    fun BarberRecord.wednesday() = format(resources.getString(R.string.wednesday_work_time), hours_of_work_wednesday)
-    fun BarberRecord.thursday() = format(resources.getString(R.string.thursday_work_time), hours_of_work_thursday)
-    fun BarberRecord.friday() = format(resources.getString(R.string.friday_work_time), hours_of_work_friday)
-    fun BarberRecord.saturday() = format(resources.getString(R.string.saturday_work_time), hours_of_work_saturday)
-    fun BarberRecord.sunday() = format(resources.getString(R.string.sunday_work_time), hours_of_work_sunday)
+    fun MarketRecord.address() = format(resources.getString(R.string.street_building), street, building)
+    fun MarketRecord.monday() = format(resources.getString(R.string.monday_work_time), hoursOfWorkMonday)
+    fun MarketRecord.tuesday() = format(resources.getString(R.string.tuesday_work_time), hoursOfWorkTuesday)
+    fun MarketRecord.wednesday() = format(resources.getString(R.string.wednesday_work_time), hoursOfWorkWednesday)
+    fun MarketRecord.thursday() = format(resources.getString(R.string.thursday_work_time), hoursOfWorkThursday)
+    fun MarketRecord.friday() = format(resources.getString(R.string.friday_work_time), hoursOfWorkFriday)
+    fun MarketRecord.saturday() = format(resources.getString(R.string.saturday_work_time), hoursOfWorkSaturday)
+    fun MarketRecord.sunday() = format(resources.getString(R.string.sunday_work_time), hoursOfWorkSunday)
 }

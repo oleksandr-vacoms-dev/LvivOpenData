@@ -7,29 +7,29 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.manager.MapManager
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.BarberRepository
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.MarketRepository
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromBarberRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromMarketRecord
 import javax.inject.Inject
 
-class BarberViewModel @Inject constructor(
-    private var repository: BarberRepository,
+class MarketsViewModel @Inject constructor(
+    private var repository: MarketRepository,
     private var mapManager: MapManager
 ) : ViewModel() {
 
-    private lateinit var listing: Listing<BarberRecord>
+    private lateinit var listing: Listing<MarketRecord>
 
     var networkState: LiveData<NetworkState> = MutableLiveData()
     var refreshState: LiveData<NetworkState> = MutableLiveData()
-    var pagedList: LiveData<PagedList<BarberRecord>> = MutableLiveData()
+    var pagedList: LiveData<PagedList<MarketRecord>> = MutableLiveData()
 
     private val searchString = MutableLiveData<String>()
     var searchNetworkState: LiveData<NetworkState> = MutableLiveData()
     var searchRefreshState: LiveData<NetworkState> = MutableLiveData()
 
-    var searchPagedList: LiveData<PagedList<BarberRecord>> = Transformations.switchMap(searchString) { name ->
-//        listing = repository.getByName(name)
+    var searchPagedList: LiveData<PagedList<MarketRecord>> = Transformations.switchMap(searchString) { name ->
+        listing = repository.getListingByName(name)
         searchNetworkState = listing.networkState
         searchRefreshState = listing.refreshState
         listing.pagedList
@@ -47,12 +47,12 @@ class BarberViewModel @Inject constructor(
         searchString.value = search
     }
 
-    fun addRecordsToMap(record: List<BarberRecord>) {
-        mapManager.addRecords(getAddressRecordFromBarberRecord(record))
+    fun addRecordsToMap(record: List<MarketRecord>) {
+        mapManager.addRecords(getAddressRecordFromMarketRecord(record))
     }
 
     fun getAllData() {
-//        listing = repository.getAll()
+        listing = repository.getListing()
         networkState = listing.networkState
         refreshState = listing.refreshState
         pagedList = listing.pagedList

@@ -22,16 +22,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activity.group.ATMActivity"/>
-        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.ATMDataActivity"/>
-        <activity android:name=".ui.activity.group.BarberActivity"/>
-        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.BarberDataActivity"/>
-        <activity android:name=".ui.activity.group.CateringActivity"/>
-        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.CateringDataActivity"/>
-        <activity android:name=".ui.activity.group.FitnessActivity"/>
-        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.FitnessDataActivity"/>
-        <activity android:name=".ui.activity.group.MarketActivity"/>
-        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.MarketDataActivity"/>
+        <activity android:name=".ui.activity.group.ATMsActivity"/>
+        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.description.ATMDescriptionActivity"/>
+        <activity android:name=".ui.activity.group.BarbersActivity"/>
+        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.description.BarberDescriptionActivity"/>
+        <activity android:name=".ui.activity.group.CateringsActivity"/>
+        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.description.CateringDescriptionActivity"/>
+        <activity android:name=".ui.activity.group.FitnessesActivity"/>
+        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.description.FitnessDescriptionActivity"/>
+        <activity android:name=".ui.activity.group.MarketsActivity"/>
+        <activity android:name="com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.description.MarketDescriptionActivity"/>
         <activity android:name=".ui.activity.MapActivity"/>
 
         <meta-data

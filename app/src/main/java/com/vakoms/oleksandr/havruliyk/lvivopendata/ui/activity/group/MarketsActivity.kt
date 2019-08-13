@@ -11,9 +11,9 @@ import androidx.lifecycle.ViewModelProviders
 import com.vakoms.oleksandr.havruliyk.lvivopendata.R
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.MapActivity
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.data.MarketDataActivity
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.activity.description.MarketDescriptionActivity
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.adapter.MarketAdapter
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.group.MarketViewModel
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.group.MarketsViewModel
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.DATA_ID
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.hideKeyboard
@@ -25,11 +25,11 @@ import kotlinx.android.synthetic.main.map_button.*
 import kotlinx.android.synthetic.main.search_layout.*
 import javax.inject.Inject
 
-class MarketActivity : AppCompatActivity() {
+class MarketsActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-    private lateinit var viewModel: MarketViewModel
+    private lateinit var viewModel: MarketsViewModel
 
     private var records = listOf<MarketRecord>()
 
@@ -51,7 +51,7 @@ class MarketActivity : AppCompatActivity() {
 
     private fun initViewModel() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)
-            .get(MarketViewModel::class.java)
+            .get(MarketsViewModel::class.java)
     }
 
     private fun initAdapter() {
@@ -163,7 +163,7 @@ class MarketActivity : AppCompatActivity() {
     }
 
     private fun startDataActivityWith(data: MarketRecord) {
-        val intent = Intent(this, MarketDataActivity::class.java)
+        val intent = Intent(this, MarketDescriptionActivity::class.java)
         intent.putExtra(DATA_ID, data.id)
         startActivity(intent)
     }

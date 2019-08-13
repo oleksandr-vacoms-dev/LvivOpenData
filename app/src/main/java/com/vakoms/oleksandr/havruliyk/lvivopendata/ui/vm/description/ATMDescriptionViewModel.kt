@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.data
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.description
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.local.LocalAT
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromATMRecord
 import javax.inject.Inject
 
-class ATMDataViewModel @Inject constructor(var repository: LocalATMDataStorage, var mapManager: MapManager) :
+class ATMDescriptionViewModel @Inject constructor(var repository: LocalATMDataStorage, var mapManager: MapManager) :
     ViewModel() {
 
     private val recordId = MutableLiveData<Int>()

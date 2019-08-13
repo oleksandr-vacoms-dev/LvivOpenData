@@ -1,4 +1,4 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.data
+package com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.description
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.local.Lo
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.getAddressRecordFromCateringRecord
 import javax.inject.Inject
 
-class CateringDataViewModel @Inject constructor(var repository: LocalCateringDataStorage, var mapManager: MapManager) :
+class CateringDescriptionViewModel @Inject constructor(var repository: LocalCateringDataStorage, var mapManager: MapManager) :
     ViewModel() {
 
     private val recordId = MutableLiveData<Int>()
