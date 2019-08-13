@@ -16,12 +16,18 @@ interface BarberDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(data: List<BarberRecord>)
 
+    @Query("SELECT * FROM barber WHERE _id>:offset AND _id<=:lastId ORDER BY _id")
+    fun get(offset: Int, lastId: Int): LiveData<List<BarberRecord>>
+
+    @Query("SELECT * FROM barber WHERE name LIKE :name ORDER BY _id")
+    fun getByName(name: String): LiveData<List<BarberRecord>>
+
     @Query("SELECT * FROM barber WHERE _id=:id")
     fun getById(id: Int): LiveData<BarberRecord>
 
     @Query("SELECT * FROM barber WHERE name LIKE :name ORDER BY _id")
-    fun getByName(name: String): DataSource.Factory<Int, BarberRecord>
+    fun getDataSourceFactoryByName(name: String): DataSource.Factory<Int, BarberRecord>
 
     @Query("SELECT * FROM barber ORDER BY _id")
-    fun getAll(): DataSource.Factory<Int, BarberRecord>
+    fun getDataSourceFactory(): DataSource.Factory<Int, BarberRecord>
 }

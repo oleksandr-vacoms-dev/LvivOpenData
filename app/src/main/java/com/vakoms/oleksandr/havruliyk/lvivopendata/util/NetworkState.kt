@@ -3,7 +3,7 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.util
 enum class Status {
     RUNNING,
     SUCCESS,
-    FAILED
+    FAILED,
 }
 
 @Suppress("DataClassPrivateConstructor")

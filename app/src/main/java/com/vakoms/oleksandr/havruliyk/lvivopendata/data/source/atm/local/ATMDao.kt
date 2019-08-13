@@ -16,12 +16,18 @@ interface ATMDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(data: List<ATMRecord>)
 
+    @Query("SELECT * FROM atm WHERE _id>:offset AND _id<=:lastId ORDER BY _id")
+    fun get(offset: Int, lastId: Int): LiveData<List<ATMRecord>>
+
+    @Query("SELECT * FROM atm WHERE bankLabel LIKE :name ORDER BY _id")
+    fun getByName(name: String): LiveData<List<ATMRecord>>
+
     @Query("SELECT * FROM atm WHERE _id=:id")
     fun getById(id: Int): LiveData<ATMRecord>
 
     @Query("SELECT * FROM atm WHERE bankLabel LIKE :name ORDER BY _id")
-    fun getByName(name: String): DataSource.Factory<Int, ATMRecord>
+    fun getDataSourceFactoryByName(name: String): DataSource.Factory<Int, ATMRecord>
 
     @Query("SELECT * FROM atm ORDER BY _id")
-    fun getAll(): DataSource.Factory<Int, ATMRecord>
+    fun getDataSourceFactory(): DataSource.Factory<Int, ATMRecord>
 }

@@ -17,12 +17,18 @@ interface MarketDao {
     @Insert(onConflict = REPLACE)
     fun insert(data: List<MarketRecord>)
 
+    @Query("SELECT * FROM market WHERE id>:offset AND id<=:lastId ORDER BY id")
+    fun get(offset: Int, lastId: Int): LiveData<List<MarketRecord>>
+
+    @Query("SELECT * FROM market WHERE name LIKE :name ORDER BY id")
+    fun getByName(name: String): LiveData<List<MarketRecord>>
+
     @Query("SELECT * FROM market WHERE id=:id")
     fun getById(id: Int): LiveData<MarketRecord>
 
     @Query("SELECT * FROM market WHERE name LIKE :name ORDER BY id")
-    fun getByName(name: String): DataSource.Factory<Int, MarketRecord>
+    fun getDataSourceFactoryByName(name: String): DataSource.Factory<Int, MarketRecord>
 
     @Query("SELECT * FROM market ORDER BY id")
-    fun getAll(): DataSource.Factory<Int, MarketRecord>
+    fun getDataSourceFactory(): DataSource.Factory<Int, MarketRecord>
 }

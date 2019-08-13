@@ -3,7 +3,7 @@ package com.vakoms.oleksandr.havruliyk.lvivopendata.di.module
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.MapViewModel
-import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.data.*
+import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.description.*
 import com.vakoms.oleksandr.havruliyk.lvivopendata.di.factory.DaggerAwareViewModelFactory
 import com.vakoms.oleksandr.havruliyk.lvivopendata.di.factory.ViewModelKey
 import com.vakoms.oleksandr.havruliyk.lvivopendata.ui.vm.group.*
@@ -17,53 +17,53 @@ abstract class ViewModelsModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MarketViewModel::class)
-    abstract fun bindMarketViewModel(userViewModel: MarketViewModel): ViewModel
+    @ViewModelKey(MarketsViewModel::class)
+    abstract fun bindMarketViewModel(userViewModel: MarketsViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(MarketDataViewModel::class)
-    abstract fun bindMarketDataViewModel(userViewModel: MarketDataViewModel): ViewModel
+    @ViewModelKey(MarketDescriptionViewModel::class)
+    abstract fun bindMarketDataViewModel(userViewModel: MarketDescriptionViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(FitnessViewModel::class)
-    abstract fun bindFitnessViewModel(userViewModel: FitnessViewModel): ViewModel
+    @ViewModelKey(FitnessesViewModel::class)
+    abstract fun bindFitnessViewModel(userViewModel: FitnessesViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(FitnessDataViewModel::class)
-    abstract fun bindFitnessDataViewModel(userViewModel: FitnessDataViewModel): ViewModel
+    @ViewModelKey(FitnessDescriptionViewModel::class)
+    abstract fun bindFitnessDataViewModel(userViewModel: FitnessDescriptionViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(CateringViewModel::class)
-    abstract fun bindCateringViewModel(userViewModel: CateringViewModel): ViewModel
+    @ViewModelKey(CateringsViewModel::class)
+    abstract fun bindCateringViewModel(userViewModel: CateringsViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(CateringDataViewModel::class)
-    abstract fun bindCateringDataViewModel(userViewModel: CateringDataViewModel): ViewModel
+    @ViewModelKey(CateringDescriptionViewModel::class)
+    abstract fun bindCateringDataViewModel(userViewModel: CateringDescriptionViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(BarberViewModel::class)
-    abstract fun bindBarberViewModel(userViewModel: BarberViewModel): ViewModel
+    @ViewModelKey(BarbersViewModel::class)
+    abstract fun bindBarberViewModel(userViewModel: BarbersViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(BarberDataViewModel::class)
-    abstract fun bindBarberDataViewModel(userViewModel: BarberDataViewModel): ViewModel
+    @ViewModelKey(BarberDescriptionViewModel::class)
+    abstract fun bindBarberDataViewModel(userViewModel: BarberDescriptionViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(ATMViewModel::class)
-    abstract fun bindATMViewModel(userViewModel: ATMViewModel): ViewModel
+    @ViewModelKey(ATMsViewModel::class)
+    abstract fun bindATMViewModel(userViewModel: ATMsViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(ATMDataViewModel::class)
-    abstract fun bindATMDataViewModel(userViewModel: ATMDataViewModel): ViewModel
+    @ViewModelKey(ATMDescriptionViewModel::class)
+    abstract fun bindATMDataViewModel(userViewModel: ATMDescriptionViewModel): ViewModel
 
     @Binds
     @IntoMap

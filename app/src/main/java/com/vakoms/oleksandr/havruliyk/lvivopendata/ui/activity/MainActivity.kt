@@ -17,10 +17,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView() {
-        atm.setOnClickListener { startActivity(Intent(this, ATMActivity::class.java)) }
-        fitness.setOnClickListener { startActivity(Intent(this, FitnessActivity::class.java)) }
-        market.setOnClickListener { startActivity(Intent(this, MarketActivity::class.java)) }
-        catering.setOnClickListener { startActivity(Intent(this, CateringActivity::class.java)) }
-        barber.setOnClickListener { startActivity(Intent(this, BarberActivity::class.java)) }
+        atm.setOnClickListener { startActivity(Intent(this, ATMsActivity::class.java)) }
+        fitness.setOnClickListener { startActivity(Intent(this, FitnessesActivity::class.java)) }
+        market.setOnClickListener { startActivity(Intent(this, MarketsActivity::class.java)) }
+        catering.setOnClickListener { startActivity(Intent(this, CateringsActivity::class.java)) }
+        barber.setOnClickListener { startActivity(Intent(this, BarbersActivity::class.java)) }
     }
 }

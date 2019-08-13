@@ -1,83 +1,89 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market
 
-import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.Repository
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.callback.MarketBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.callback.MarketByNameBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.callback.MarketRefreshCallback
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local.LocalMarketDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote.RemoteMarketDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.paging.PagingCallback
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.FIRST_ITEM
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlMarkets
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlMarketsSearchByName
-import java.util.concurrent.Executor
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.PAGE_SIZE
+import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
 class MarketRepository @Inject constructor(
-    var localDataStorage: LocalMarketDataStorage,
-    var openDataApi: OpenDataApi,
-    var ioExecutor: Executor
-) : Repository<MarketRecord>() {
+    private val localDataStorage: LocalMarketDataStorage,
+    private val remoteDataSource: RemoteMarketDataStorage
+) : DataStorage<MarketRecord> {
 
-    @MainThread
-    override fun getData(): Listing<MarketRecord> {
-        val boundaryCallback = MarketBoundaryCallback(
-            webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
-            ioExecutor = ioExecutor
-        )
+    override fun getListing(): Listing<MarketRecord> {
+        val callback = object : PagingCallback<MarketRecord>(
+            onZeroItems = {
+                remoteDataSource.get(FIRST_ITEM, PAGE_SIZE)
+            },
+            onItemAtEnd = { itemAtEnd ->
+                remoteDataSource.get(itemAtEnd.id, PAGE_SIZE)
+            },
+            onNewItemsLoaded = { items ->
+                save(items)
+            }
+        ) {}
 
-        val livePagedList =
-            localDataStorage.getAll(boundaryCallback)
-
-        return getListing(boundaryCallback, livePagedList) { refresh() }
+        return callback.getListing(localDataStorage.getListing().factory)
     }
 
-    @MainThread
-    override fun getDataByName(name: String): Listing<MarketRecord> {
-        val boundaryCallback = MarketByNameBoundaryCallback(
-            webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
-            ioExecutor = ioExecutor,
-            name = name
-        )
+    override fun getListingByName(name: String): Listing<MarketRecord> {
+        val callback = object : PagingCallback<MarketRecord>(
+            onZeroItems = {
+                remoteDataSource.getByName(name, FIRST_ITEM, PAGE_SIZE)
+            },
+            onItemAtEnd = { itemAtEnd ->
+                remoteDataSource.getByName(name, itemAtEnd.id, PAGE_SIZE)
+            },
+            onNewItemsLoaded = { items ->
+                save(items)
+            }
+        ) {}
 
-        val livePagedList =
-            localDataStorage.getByName(boundaryCallback, name)
-
-        return getListing(boundaryCallback, livePagedList) { refresh(name) }
+        return callback.getListing(localDataStorage.getListingByName(name).factory)
     }
 
-    override fun saveAllData(newData: List<MarketRecord>) {
-        localDataStorage.saveAll(newData)
+    override fun get(offset: Int, amount: Int): LiveData<List<MarketRecord>> {
+        remoteDataSource.get(offset, amount).observeForever { data ->
+            if (data != null) {
+                save(data)
+            }
+        }
+
+        return localDataStorage.get(offset, amount)
     }
 
-    @MainThread
-    private fun refresh(): LiveData<NetworkState> {
-        val networkState = MutableLiveData<NetworkState>()
+    override fun getByName(name: String, offset: Int, amount: Int): LiveData<List<MarketRecord>> {
+        remoteDataSource.getByName(name, offset, amount).observeForever { data ->
+            if (data != null) {
+                save(data)
+            }
+        }
 
-        openDataApi.getMarkets(sqlMarkets(FIRST_ITEM)).enqueue(
-            MarketRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
-            })
-
-        return networkState
+        return localDataStorage.getByName(name, offset, amount)
     }
 
-    @MainThread
-    private fun refresh(name: String): LiveData<NetworkState> {
-        val networkState = MutableLiveData<NetworkState>()
+    override fun getById(id: Int): LiveData<MarketRecord> {
+        remoteDataSource.getById(id).observeForever { data ->
+            if (data != null) {
+                save(listOf(data))
+            }
+        }
 
-        openDataApi.getMarkets(sqlMarketsSearchByName(name, FIRST_ITEM)).enqueue(
-            MarketRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
-            })
+        return localDataStorage.getById(id)
+    }
 
-        return networkState
+    override fun save(data: List<MarketRecord>) {
+        doAsync { localDataStorage.save(data) }
+    }
+
+    override fun deleteAll() {
+        doAsync { localDataStorage.deleteAll() }
     }
 }

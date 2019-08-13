@@ -1,83 +1,89 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness
 
-import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.Repository
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local.LocalFitnessDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.remote.FitnessBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.remote.FitnessByNameBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.remote.FitnessRefreshCallback
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.remote.RemoteFitnessDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.paging.PagingCallback
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.FIRST_ITEM
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlFitness
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlFitnessSearchByName
-import java.util.concurrent.Executor
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.PAGE_SIZE
+import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
 class FitnessRepository @Inject constructor(
-    var localDataStorage: LocalFitnessDataStorage,
-    var openDataApi: OpenDataApi,
-    var ioExecutor: Executor
-) : Repository<FitnessRecord>() {
+    private val localDataStorage: LocalFitnessDataStorage,
+    private val remoteDataSource: RemoteFitnessDataStorage
+) : DataStorage<FitnessRecord> {
 
-    @MainThread
-    override fun getData(): Listing<FitnessRecord> {
-        val boundaryCallback = FitnessBoundaryCallback(
-            webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
-            ioExecutor = ioExecutor
-        )
+    override fun getListing(): Listing<FitnessRecord> {
+        val callback = object : PagingCallback<FitnessRecord>(
+            onZeroItems = {
+                remoteDataSource.get(FIRST_ITEM, PAGE_SIZE)
+            },
+            onItemAtEnd = { itemAtEnd ->
+                remoteDataSource.get(itemAtEnd.id, PAGE_SIZE)
+            },
+            onNewItemsLoaded = { items ->
+                save(items)
+            }
+        ) {}
 
-        val livePagedList =
-            localDataStorage.getAll(boundaryCallback)
-
-        return getListing(boundaryCallback, livePagedList) { refresh() }
+        return callback.getListing(localDataStorage.getListing().factory)
     }
 
-    @MainThread
-    override fun getDataByName(name: String): Listing<FitnessRecord> {
-        val boundaryCallback = FitnessByNameBoundaryCallback(
-            webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
-            ioExecutor = ioExecutor,
-            name = name
-        )
+    override fun getListingByName(name: String): Listing<FitnessRecord> {
+        val callback = object : PagingCallback<FitnessRecord>(
+            onZeroItems = {
+                remoteDataSource.getByName(name, FIRST_ITEM, PAGE_SIZE)
+            },
+            onItemAtEnd = { itemAtEnd ->
+                remoteDataSource.getByName(name, itemAtEnd.id, PAGE_SIZE)
+            },
+            onNewItemsLoaded = { items ->
+                save(items)
+            }
+        ) {}
 
-        val livePagedList =
-            localDataStorage.getByName(boundaryCallback, name)
-
-        return getListing(boundaryCallback, livePagedList) { refresh(name) }
+        return callback.getListing(localDataStorage.getListingByName(name).factory)
     }
 
-    override fun saveAllData(newData: List<FitnessRecord>) {
-        localDataStorage.saveAll(newData)
+    override fun get(offset: Int, amount: Int): LiveData<List<FitnessRecord>> {
+        remoteDataSource.get(offset, amount).observeForever { data ->
+            if (data != null) {
+                save(data)
+            }
+        }
+
+        return localDataStorage.get(offset, amount)
     }
 
-    @MainThread
-    private fun refresh(): LiveData<NetworkState> {
-        val networkState = MutableLiveData<NetworkState>()
+    override fun getByName(name: String, offset: Int, amount: Int): LiveData<List<FitnessRecord>> {
+        remoteDataSource.getByName(name, offset, amount).observeForever { data ->
+            if (data != null) {
+                save(data)
+            }
+        }
 
-        openDataApi.getFitness(sqlFitness(FIRST_ITEM)).enqueue(
-            FitnessRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
-            })
-
-        return networkState
+        return localDataStorage.getByName(name, offset, amount)
     }
 
-    @MainThread
-    private fun refresh(name: String): LiveData<NetworkState> {
-        val networkState = MutableLiveData<NetworkState>()
+    override fun getById(id: Int): LiveData<FitnessRecord> {
+        remoteDataSource.getById(id).observeForever { data ->
+            if (data != null) {
+                save(listOf(data))
+            }
+        }
 
-        openDataApi.getFitness(sqlFitnessSearchByName(name, FIRST_ITEM)).enqueue(
-            FitnessRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
-            })
+        return localDataStorage.getById(id)
+    }
 
-        return networkState
+    override fun save(data: List<FitnessRecord>) {
+        doAsync { localDataStorage.save(data) }
+    }
+
+    override fun deleteAll() {
+        doAsync { localDataStorage.deleteAll() }
     }
 }

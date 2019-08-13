@@ -1,83 +1,89 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering
 
-import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.Repository
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.local.LocalCateringDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.remote.CateringBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.remote.CateringByNameBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.remote.CateringRefreshCallback
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.remote.RemoteCateringDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.paging.PagingCallback
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.FIRST_ITEM
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlCatering
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlCateringSearchByName
-import java.util.concurrent.Executor
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.PAGE_SIZE
+import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
 class CateringRepository @Inject constructor(
     var localDataStorage: LocalCateringDataStorage,
-    var openDataApi: OpenDataApi,
-    var ioExecutor: Executor
-) : Repository<CateringRecord>() {
+    private val remoteDataSource: RemoteCateringDataStorage
+) : DataStorage<CateringRecord> {
 
-    @MainThread
-    override fun getData(): Listing<CateringRecord> {
-        val boundaryCallback = CateringBoundaryCallback(
-            webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
-            ioExecutor = ioExecutor
-        )
+    override fun getListing(): Listing<CateringRecord> {
+        val callback = object : PagingCallback<CateringRecord>(
+            onZeroItems = {
+                remoteDataSource.get(FIRST_ITEM, PAGE_SIZE)
+            },
+            onItemAtEnd = { itemAtEnd ->
+                remoteDataSource.get(itemAtEnd._id, PAGE_SIZE)
+            },
+            onNewItemsLoaded = { items ->
+                save(items)
+            }
+        ) {}
 
-        val livePagedList =
-            localDataStorage.getAll(boundaryCallback)
-
-        return getListing(boundaryCallback, livePagedList) { refresh() }
+        return callback.getListing(localDataStorage.getListing().factory)
     }
 
-    @MainThread
-    override fun getDataByName(name: String): Listing<CateringRecord> {
-        val boundaryCallback = CateringByNameBoundaryCallback(
-            webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
-            ioExecutor = ioExecutor,
-            name = name
-        )
+    override fun getListingByName(name: String): Listing<CateringRecord> {
+        val callback = object : PagingCallback<CateringRecord>(
+            onZeroItems = {
+                remoteDataSource.getByName(name, FIRST_ITEM, PAGE_SIZE)
+            },
+            onItemAtEnd = { itemAtEnd ->
+                remoteDataSource.getByName(name, itemAtEnd._id, PAGE_SIZE)
+            },
+            onNewItemsLoaded = { items ->
+                save(items)
+            }
+        ) {}
 
-        val livePagedList =
-            localDataStorage.getByName(boundaryCallback, name)
-
-        return getListing(boundaryCallback, livePagedList) { refreshByName(name) }
+        return callback.getListing(localDataStorage.getListingByName(name).factory)
     }
 
-    override fun saveAllData(newData: List<CateringRecord>) {
-        localDataStorage.saveAll(newData)
+    override fun get(offset: Int, amount: Int): LiveData<List<CateringRecord>> {
+        remoteDataSource.get(offset, amount).observeForever { data ->
+            if (data != null) {
+                save(data)
+            }
+        }
+
+        return localDataStorage.get(offset, amount)
     }
 
-    @MainThread
-    private fun refresh(): LiveData<NetworkState> {
-        val networkState = MutableLiveData<NetworkState>()
+    override fun getByName(name: String, offset: Int, amount: Int): LiveData<List<CateringRecord>> {
+        remoteDataSource.getByName(name, offset, amount).observeForever { data ->
+            if (data != null) {
+                save(data)
+            }
+        }
 
-        openDataApi.getCatering(sqlCatering(FIRST_ITEM)).enqueue(
-            CateringRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
-            })
-
-        return networkState
+        return localDataStorage.getByName(name, offset, amount)
     }
 
-    @MainThread
-    private fun refreshByName(name: String): LiveData<NetworkState> {
-        val networkState = MutableLiveData<NetworkState>()
+    override fun getById(id: Int): LiveData<CateringRecord> {
+        remoteDataSource.getById(id).observeForever { data ->
+            if (data != null) {
+                save(listOf(data))
+            }
+        }
 
-        openDataApi.getCatering(sqlCateringSearchByName(name, FIRST_ITEM)).enqueue(
-            CateringRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
-            })
+        return localDataStorage.getById(id)
+    }
 
-        return networkState
+    override fun save(data: List<CateringRecord>) {
+        doAsync { localDataStorage.save(data) }
+    }
+
+    override fun deleteAll() {
+        doAsync { localDataStorage.deleteAll() }
     }
 }

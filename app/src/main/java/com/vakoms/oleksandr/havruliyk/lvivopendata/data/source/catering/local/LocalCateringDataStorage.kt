@@ -1,24 +1,31 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.local
 
-import androidx.paging.toLiveData
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.LocalDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.pagedListConfig
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import javax.inject.Inject
 
-class LocalCateringDataStorage @Inject constructor(database: CateringRoomDatabase) :
-    LocalDataStorage<CateringRecord> {
+class LocalCateringDataStorage @Inject constructor(
+    database: CateringRoomDatabase
+) : DataStorage<CateringRecord> {
 
     private var cateringDao = database.cateringDao()
 
-    override fun getAll(callback: DataBoundaryCallback<CateringRecord>) =
-        cateringDao.getAll().toLiveData(
-            config = pagedListConfig(),
-            boundaryCallback = callback
-        )
+    override fun getListing() = Listing(
+        factory = cateringDao.getDataSourceFactory()
+    )
 
-    override fun saveAll(data: List<CateringRecord>) {
+    override fun getListingByName(name: String) = Listing(
+        factory = cateringDao.getDataSourceFactoryByName("%$name%")
+    )
+
+    override fun get(offset: Int, amount: Int) =
+        cateringDao.get(offset, amount)
+
+    override fun getByName(name: String, offset: Int, amount: Int) =
+        cateringDao.getByName("%$name%")
+
+    override fun save(data: List<CateringRecord>) {
         cateringDao.insert(data)
     }
 
@@ -27,10 +34,4 @@ class LocalCateringDataStorage @Inject constructor(database: CateringRoomDatabas
     }
 
     override fun getById(id: Int) = cateringDao.getById(id)
-
-    override fun getByName(callback: DataBoundaryCallback<CateringRecord>, name: String) =
-        cateringDao.getByName("%$name%").toLiveData(
-            config = pagedListConfig(),
-            boundaryCallback = callback
-        )
 }

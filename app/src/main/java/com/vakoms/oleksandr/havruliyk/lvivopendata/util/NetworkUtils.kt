@@ -1,6 +1,6 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.util
 
-import android.view.View
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 
 const val BASE_URL = "https://opendata.city-adm.lviv.ua/api/3/action/"
@@ -19,69 +19,90 @@ const val SEARCH_SQL = "${SEARCH}_$SQL"
 const val FIRST_ITEM = 0
 const val PAGE_SIZE = 100
 
-fun sqlMarkets(offset: Int): String =
+fun sqlMarkets(offset: Int, amount: Int): String =
     "SELECT * from\"$MARKET_ID\"" +
             "WHERE _id>$offset " +
-            "AND _id<=${offset + PAGE_SIZE} " +
+            "AND _id<=${offset + amount} " +
             "ORDER BY _id"
 
-fun sqlMarketsSearchByName(name: String, offset: Int): String =
+fun sqlMarketsByName(name: String, offset: Int): String =
     "SELECT * from \"$MARKET_ID\"" +
             "WHERE (name LIKE '%$name%' " +
             "OR name LIKE '%$name') " +
             "AND _id > $offset " +
             "ORDER BY _id "
 
-fun sqlFitness(offset: Int): String =
+fun sqlMarketById(id: Int): String =
+    "SELECT * from \"$MARKET_ID\"" +
+            "WHERE _id = $id "
+
+fun sqlFitnesses(offset: Int, amount: Int): String =
     "SELECT * from\"$FITNESS_ID\"" +
             "WHERE _id>$offset " +
-            "AND _id<=${offset + PAGE_SIZE} " +
+            "AND _id<=${offset + amount} " +
             "ORDER BY _id"
 
-fun sqlFitnessSearchByName(name: String, offset: Int): String =
+fun sqlFitnessesByName(name: String, offset: Int): String =
     "SELECT * from \"$FITNESS_ID\"" +
             "WHERE (name LIKE '%$name%' " +
             "OR name LIKE '%$name') " +
-            "AND _id > $offset ORDER BY _id "
+            "AND _id > $offset " +
+            "ORDER BY _id "
 
-fun sqlCatering(offset: Int): String =
+fun sqlFitnessById(id: Int): String =
+    "SELECT * from \"$FITNESS_ID\"" +
+            "WHERE _id = $id "
+
+fun sqlCaterings(offset: Int, amount: Int): String =
     "SELECT * from\"$CATERING_ID\"" +
             "WHERE _id>$offset " +
-            "AND _id<=${offset + PAGE_SIZE} " +
+            "AND _id<=${offset + amount} " +
             "ORDER BY _id"
 
-fun sqlCateringSearchByName(name: String, offset: Int): String =
+fun sqlCateringsByName(name: String, offset: Int): String =
     "SELECT * from \"$CATERING_ID\"" +
             "WHERE (name LIKE '%$name%' " +
             "OR name LIKE '%$name') " +
             "AND _id > $offset " +
             "ORDER BY _id "
 
-fun sqlBarber(offset: Int): String =
+fun sqlCateringById(id: Int): String =
+    "SELECT * from \"$CATERING_ID\"" +
+            "WHERE _id = $id "
+
+fun sqlBarbers(offset: Int, amount: Int): String =
     "SELECT * from\"$BARBER_ID\"" +
             "WHERE _id>$offset " +
-            "AND _id<=${offset + PAGE_SIZE} " +
+            "AND _id<=${offset + amount} " +
             "ORDER BY _id"
 
-fun sqlBarberSearchByName(name: String, offset: Int): String =
+fun sqlBarbersByName(name: String, offset: Int): String =
     "SELECT * from \"$BARBER_ID\"" +
-            "WHERE (name LIKE '%$name%'" +
-            "OR name LIKE '%$name')" +
+            "WHERE (name LIKE '%$name%' " +
+            "OR name LIKE '%$name') " +
             "AND _id > $offset " +
             "ORDER BY _id "
 
-fun sqlATM(offset: Int): String =
+fun sqlBarberById(id: Int): String =
+    "SELECT * from \"${BARBER_ID}_ID\"" +
+            "WHERE _id = $id "
+
+fun sqlATMs(offset: Int, amount: Int): String =
     "SELECT * from\"$ATM_ID\"" +
             "WHERE _id>$offset " +
-            "AND _id<=${offset + PAGE_SIZE}" +
+            "AND _id<=${offset + amount} " +
             "ORDER BY _id"
 
-fun sqlATMSearchByName(name: String, offset: Int): String =
+fun sqlATMsByName(name: String, offset: Int): String =
     "SELECT * from \"$ATM_ID\"" +
             "WHERE (Банкомат LIKE '%$name%' " +
             "OR Банкомат LIKE '%$name') " +
-            "AND _id > $offset" +
+            "AND _id > $offset " +
             "ORDER BY _id "
+
+fun sqlATMById(id: Int): String =
+    "SELECT * from \"$ATM_ID\"" +
+            "WHERE _id = $id "
 
 fun coordinatesSql(streetName: String, houseNumber: String) =
     "SELECT * from \"$COORDINATES_ID\"" +
@@ -96,10 +117,8 @@ fun pagedListConfig(): PagedList.Config {
         .build()
 }
 
-fun toVisibility(constraint: Boolean): Int {
-    return if (constraint) {
-        View.VISIBLE
-    } else {
-        View.GONE
-    }
+fun loadedNetwork(): MutableLiveData<NetworkState> {
+    val mutable = MutableLiveData<NetworkState>()
+    mutable.postValue(NetworkState.LOADED)
+    return mutable
 }

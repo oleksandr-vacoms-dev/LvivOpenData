@@ -1,24 +1,31 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.local
 
-import androidx.paging.toLiveData
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.LocalDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.pagedListConfig
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import javax.inject.Inject
 
-class LocalBarberDataStorage @Inject constructor(database: BarberRoomDatabase) :
-    LocalDataStorage<BarberRecord> {
+class LocalBarberDataStorage @Inject constructor(
+    database: BarberRoomDatabase
+) : DataStorage<BarberRecord> {
 
     private var barberDao = database.barberDao()
 
-    override fun getAll(callback: DataBoundaryCallback<BarberRecord>) =
-        barberDao.getAll().toLiveData(
-            config = pagedListConfig(),
-            boundaryCallback = callback
-        )
+    override fun getListing() = Listing(
+        factory = barberDao.getDataSourceFactory()
+    )
 
-    override fun saveAll(data: List<BarberRecord>) {
+    override fun getListingByName(name: String) = Listing(
+        factory = barberDao.getDataSourceFactoryByName("%$name%")
+    )
+
+    override fun get(offset: Int, amount: Int) =
+        barberDao.get(offset, amount)
+
+    override fun getByName(name: String, offset: Int, amount: Int) =
+        barberDao.getByName("%$name%")
+
+    override fun save(data: List<BarberRecord>) {
         barberDao.insert(data)
     }
 
@@ -27,10 +34,4 @@ class LocalBarberDataStorage @Inject constructor(database: BarberRoomDatabase) :
     }
 
     override fun getById(id: Int) = barberDao.getById(id)
-
-    override fun getByName(callback: DataBoundaryCallback<BarberRecord>, name: String) =
-        barberDao.getByName("%$name%").toLiveData(
-            config = pagedListConfig(),
-            boundaryCallback = callback
-        )
 }

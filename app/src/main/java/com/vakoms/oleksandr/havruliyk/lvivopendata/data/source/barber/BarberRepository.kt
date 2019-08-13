@@ -1,83 +1,89 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber
 
-import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.Repository
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.local.LocalBarberDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.remote.BarberBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.remote.BarberByNameBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.remote.BarberRefreshCallback
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.remote.RemoteBarberDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.paging.PagingCallback
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.FIRST_ITEM
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlBarber
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlBarberSearchByName
-import java.util.concurrent.Executor
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.PAGE_SIZE
+import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
 class BarberRepository @Inject constructor(
-    var localDataStorage: LocalBarberDataStorage,
-    var openDataApi: OpenDataApi,
-    var ioExecutor: Executor
-) : Repository<BarberRecord>() {
+    private val localDataStorage: LocalBarberDataStorage,
+    private val remoteDataSource: RemoteBarberDataStorage
+) : DataStorage<BarberRecord> {
 
-    @MainThread
-    override fun getData(): Listing<BarberRecord> {
-        val boundaryCallback = BarberBoundaryCallback(
-            webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
-            ioExecutor = ioExecutor
-        )
+    override fun getListing(): Listing<BarberRecord> {
+        val callback = object : PagingCallback<BarberRecord>(
+            onZeroItems = {
+                remoteDataSource.get(FIRST_ITEM, PAGE_SIZE)
+            },
+            onItemAtEnd = { itemAtEnd ->
+                remoteDataSource.get(itemAtEnd._id, PAGE_SIZE)
+            },
+            onNewItemsLoaded = { items ->
+                save(items)
+            }
+        ) {}
 
-        val livePagedList =
-            localDataStorage.getAll(boundaryCallback)
-
-        return getListing(boundaryCallback, livePagedList) { refresh() }
+        return callback.getListing(localDataStorage.getListing().factory)
     }
 
-    @MainThread
-    override fun getDataByName(name: String): Listing<BarberRecord> {
-        val boundaryCallback = BarberByNameBoundaryCallback(
-            webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
-            ioExecutor = ioExecutor,
-            name = name
-        )
+    override fun getListingByName(name: String): Listing<BarberRecord> {
+        val callback = object : PagingCallback<BarberRecord>(
+            onZeroItems = {
+                remoteDataSource.getByName(name, FIRST_ITEM, PAGE_SIZE)
+            },
+            onItemAtEnd = { itemAtEnd ->
+                remoteDataSource.getByName(name, itemAtEnd._id, PAGE_SIZE)
+            },
+            onNewItemsLoaded = { items ->
+                save(items)
+            }
+        ) {}
 
-        val livePagedList =
-            localDataStorage.getByName(boundaryCallback, name)
-
-        return getListing(boundaryCallback, livePagedList) { refresh(name) }
+        return callback.getListing(localDataStorage.getListingByName(name).factory)
     }
 
-    override fun saveAllData(newData: List<BarberRecord>) {
-        localDataStorage.saveAll(newData)
+    override fun get(offset: Int, amount: Int): LiveData<List<BarberRecord>> {
+        remoteDataSource.get(offset, amount).observeForever { data ->
+            if (data != null) {
+                save(data)
+            }
+        }
+
+        return localDataStorage.get(offset, amount)
     }
 
-    @MainThread
-    private fun refresh(): LiveData<NetworkState> {
-        val networkState = MutableLiveData<NetworkState>()
+    override fun getByName(name: String, offset: Int, amount: Int): LiveData<List<BarberRecord>> {
+        remoteDataSource.getByName(name, offset, amount).observeForever { data ->
+            if (data != null) {
+                save(data)
+            }
+        }
 
-        openDataApi.getBarber(sqlBarber(FIRST_ITEM)).enqueue(
-            BarberRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
-            })
-
-        return networkState
+        return localDataStorage.getByName(name, offset, amount)
     }
 
-    @MainThread
-    private fun refresh(name: String): LiveData<NetworkState> {
-        val networkState = MutableLiveData<NetworkState>()
+    override fun getById(id: Int): LiveData<BarberRecord> {
+        remoteDataSource.getById(id).observeForever { data ->
+            if (data != null) {
+                save(listOf(data))
+            }
+        }
 
-        openDataApi.getBarber(sqlBarberSearchByName(name, FIRST_ITEM)).enqueue(
-            BarberRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
-            })
+        return localDataStorage.getById(id)
+    }
 
-        return networkState
+    override fun save(data: List<BarberRecord>) {
+        doAsync { localDataStorage.save(data) }
+    }
+
+    override fun deleteAll() {
+        doAsync { localDataStorage.deleteAll() }
     }
 }

@@ -13,6 +13,7 @@ import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecor
 const val DEFAULT_ZOOM = 14.0f
 const val DEFAULT_LATITUDE = 0.0
 const val DEFAULT_LONGITUDE = 0.0
+const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
 
 fun getDefaultLatLnt() = LatLng(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
 

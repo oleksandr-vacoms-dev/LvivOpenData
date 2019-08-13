@@ -1,83 +1,89 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm
 
-import androidx.annotation.MainThread
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.Repository
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.local.LocalATMDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.remote.ATMBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.remote.ATMByNameBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.remote.ATMRefreshCallback
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.remote.RemoteATMDataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.paging.PagingCallback
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.FIRST_ITEM
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlATM
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.sqlATMSearchByName
-import java.util.concurrent.Executor
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.PAGE_SIZE
+import org.jetbrains.anko.doAsync
 import javax.inject.Inject
 
 class ATMRepository @Inject constructor(
     var localDataStorage: LocalATMDataStorage,
-    var openDataApi: OpenDataApi,
-    var ioExecutor: Executor
-) : Repository<ATMRecord>() {
+    private val remoteDataSource: RemoteATMDataStorage
+) : DataStorage<ATMRecord> {
 
-    @MainThread
-    override fun getData(): Listing<ATMRecord> {
-        val boundaryCallback = ATMBoundaryCallback(
-            webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
-            ioExecutor = ioExecutor
-        )
+    override fun getListing(): Listing<ATMRecord> {
+        val callback = object : PagingCallback<ATMRecord>(
+            onZeroItems = {
+                remoteDataSource.get(FIRST_ITEM, PAGE_SIZE)
+            },
+            onItemAtEnd = { itemAtEnd ->
+                remoteDataSource.get(itemAtEnd._id, PAGE_SIZE)
+            },
+            onNewItemsLoaded = { items ->
+                save(items)
+            }
+        ) {}
 
-        val livePagedList =
-            localDataStorage.getAll(boundaryCallback)
-
-        return getListing(boundaryCallback, livePagedList) { refresh() }
+        return callback.getListing(localDataStorage.getListing().factory)
     }
 
-    @MainThread
-    override fun getDataByName(name: String): Listing<ATMRecord> {
-        val boundaryCallback = ATMByNameBoundaryCallback(
-            webservice = openDataApi,
-            handleResponse = { data -> saveAllData(data) },
-            ioExecutor = ioExecutor,
-            name = name
-        )
+    override fun getListingByName(name: String): Listing<ATMRecord> {
+        val callback = object : PagingCallback<ATMRecord>(
+            onZeroItems = {
+                remoteDataSource.getByName(name, FIRST_ITEM, PAGE_SIZE)
+            },
+            onItemAtEnd = { itemAtEnd ->
+                remoteDataSource.getByName(name, itemAtEnd._id, PAGE_SIZE)
+            },
+            onNewItemsLoaded = { items ->
+                save(items)
+            }
+        ) {}
 
-        val livePagedList =
-            localDataStorage.getByName(boundaryCallback, name)
-
-        return getListing(boundaryCallback, livePagedList) { refresh(name) }
+        return callback.getListing(localDataStorage.getListingByName(name).factory)
     }
 
-    override fun saveAllData(newData: List<ATMRecord>) {
-        localDataStorage.saveAll(newData)
+    override fun get(offset: Int, amount: Int): LiveData<List<ATMRecord>> {
+        remoteDataSource.get(offset, amount).observeForever { data ->
+            if (data != null) {
+                save(data)
+            }
+        }
+
+        return localDataStorage.get(offset, amount)
     }
 
-    @MainThread
-    private fun refresh(): LiveData<NetworkState> {
-        val networkState = MutableLiveData<NetworkState>()
+    override fun getByName(name: String, offset: Int, amount: Int): LiveData<List<ATMRecord>> {
+        remoteDataSource.getByName(name, offset, amount).observeForever { data ->
+            if (data != null) {
+                save(data)
+            }
+        }
 
-        openDataApi.getATM(sqlATM(FIRST_ITEM)).enqueue(
-            ATMRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
-            })
-
-        return networkState
+        return localDataStorage.getByName(name, offset, amount)
     }
 
-    @MainThread
-    private fun refresh(name: String): LiveData<NetworkState> {
-        val networkState = MutableLiveData<NetworkState>()
+    override fun getById(id: Int): LiveData<ATMRecord> {
+        remoteDataSource.getById(id).observeForever { data ->
+            if (data != null) {
+                save(listOf(data))
+            }
+        }
 
-        openDataApi.getATM(sqlATMSearchByName(name, FIRST_ITEM)).enqueue(
-            ATMRefreshCallback(networkState, ioExecutor) { response ->
-                saveAllData(response.body().result.records)
-            })
+        return localDataStorage.getById(id)
+    }
 
-        return networkState
+    override fun save(data: List<ATMRecord>) {
+        doAsync { localDataStorage.save(data) }
+    }
+
+    override fun deleteAll() {
+        doAsync { localDataStorage.deleteAll() }
     }
 }

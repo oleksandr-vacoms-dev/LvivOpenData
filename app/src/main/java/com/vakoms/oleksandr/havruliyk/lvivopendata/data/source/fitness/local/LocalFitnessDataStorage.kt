@@ -1,24 +1,31 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local
 
-import androidx.paging.toLiveData
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.LocalDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.pagedListConfig
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import javax.inject.Inject
 
-class LocalFitnessDataStorage @Inject constructor(database: FitnessRoomDatabase) :
-    LocalDataStorage<FitnessRecord> {
+class LocalFitnessDataStorage @Inject constructor(
+    database: FitnessRoomDatabase
+) : DataStorage<FitnessRecord> {
 
     private var fitnessDao = database.fitnessDao()
 
-    override fun getAll(callback: DataBoundaryCallback<FitnessRecord>) =
-        fitnessDao.getAll().toLiveData(
-            config = pagedListConfig(),
-            boundaryCallback = callback
-        )
+    override fun getListing() = Listing(
+        factory = fitnessDao.getDataSourceFactory()
+    )
 
-    override fun saveAll(data: List<FitnessRecord>) {
+    override fun getListingByName(name: String) = Listing(
+        factory = fitnessDao.getDataSourceFactoryByName("%$name%")
+    )
+
+    override fun get(offset: Int, amount: Int) =
+        fitnessDao.get(offset, amount)
+
+    override fun getByName(name: String, offset: Int, amount: Int) =
+        fitnessDao.getByName("%$name%")
+
+    override fun save(data: List<FitnessRecord>) {
         fitnessDao.insert(data)
     }
 
@@ -27,10 +34,4 @@ class LocalFitnessDataStorage @Inject constructor(database: FitnessRoomDatabase)
     }
 
     override fun getById(id: Int) = fitnessDao.getById(id)
-
-    override fun getByName(callback: DataBoundaryCallback<FitnessRecord>, name: String) =
-        fitnessDao.getByName("%$name%").toLiveData(
-            config = pagedListConfig(),
-            boundaryCallback = callback
-        )
 }

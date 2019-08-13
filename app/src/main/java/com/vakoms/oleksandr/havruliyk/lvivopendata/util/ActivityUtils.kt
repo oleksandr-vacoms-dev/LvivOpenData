@@ -14,3 +14,11 @@ fun hideKeyboard(activity: Activity) {
     }
     imm.hideSoftInputFromWindow(view.windowToken, 0)
 }
+
+fun toVisibility(constraint: Boolean): Int {
+    return if (constraint) {
+        View.VISIBLE
+    } else {
+        View.GONE
+    }
+}
