@@ -1,36 +1,31 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.local
 
-import androidx.lifecycle.MutableLiveData
-import androidx.paging.toLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.market.MarketRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.LocalDataStorage
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState.Companion.LOADED
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState.Companion.LOCAL
-import com.vakoms.oleksandr.havruliyk.lvivopendata.util.pagedListConfig
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
 import javax.inject.Inject
 
-class LocalMarketDataStorage @Inject constructor(var database: MarketRoomDatabase) :
-    LocalDataStorage<MarketRecord> {
+class LocalMarketDataStorage @Inject constructor(
+    database: MarketRoomDatabase
+) : DataStorage<MarketRecord> {
 
     private var marketDao = database.marketDao()
-    private val refreshState = MutableLiveData<NetworkState>()
-    private val networkState = MutableLiveData<NetworkState>()
 
-    init {
-        refreshState.value = LOADED
-        networkState.value = LOADED
-    }
+    override fun getListing() = Listing(
+        factory = marketDao.getDataSourceFactory()
+    )
 
-    override fun getAll(callback: DataBoundaryCallback<MarketRecord>) =
-        marketDao.getAll().toLiveData(
-            config = pagedListConfig(),
-            boundaryCallback = callback
-        )
+    override fun getListingByName(name: String) = Listing(
+        factory = marketDao.getDataSourceFactoryByName("%$name%")
+    )
 
-     fun saveAll(data: List<MarketRecord>) {
+    override fun get(offset: Int, amount: Int) =
+        marketDao.get(offset, amount)
+
+    override fun getByName(name: String, offset: Int, amount: Int) =
+        marketDao.getByName("%$name%")
+
+    override fun save(data: List<MarketRecord>) {
         marketDao.insert(data)
     }
 
@@ -39,30 +34,4 @@ class LocalMarketDataStorage @Inject constructor(var database: MarketRoomDatabas
     }
 
     override fun getById(id: Int) = marketDao.getById(id)
-
-    override fun getByName(callback: DataBoundaryCallback<MarketRecord>, name: String) =
-        marketDao.getByName("%$name%").toLiveData(
-            config = pagedListConfig(),
-            boundaryCallback = callback
-        )
-
-     fun getByName(name: String) = Listing(
-        pagedList = marketDao.getByName("%$name%").toLiveData(
-            config = pagedListConfig()
-        ),
-        refreshState = refreshState,
-        networkState = networkState,
-        refresh = {},
-        retry = {}
-    )
-
-     fun getAll(): Listing<MarketRecord> = Listing(
-        pagedList = marketDao.getAll().toLiveData(
-            config = pagedListConfig()
-        ),
-        refreshState = refreshState,
-        networkState = networkState,
-        refresh = {},
-        retry = {}
-    )
 }

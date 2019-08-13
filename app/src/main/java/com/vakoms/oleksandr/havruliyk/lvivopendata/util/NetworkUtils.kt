@@ -1,6 +1,7 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.util
 
 import android.view.View
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 
 const val BASE_URL = "https://opendata.city-adm.lviv.ua/api/3/action/"
@@ -19,18 +20,22 @@ const val SEARCH_SQL = "${SEARCH}_$SQL"
 const val FIRST_ITEM = 0
 const val PAGE_SIZE = 100
 
-fun sqlMarkets(offset: Int): String =
+fun sqlMarkets(offset: Int, amount: Int): String =
     "SELECT * from\"$MARKET_ID\"" +
             "WHERE _id>$offset " +
-            "AND _id<=${offset + PAGE_SIZE} " +
+            "AND _id<=${offset + amount} " +
             "ORDER BY _id"
 
-fun sqlMarketsSearchByName(name: String, offset: Int): String =
+fun sqlMarketsByName(name: String, offset: Int, amount: Int): String =
     "SELECT * from \"$MARKET_ID\"" +
             "WHERE (name LIKE '%$name%' " +
             "OR name LIKE '%$name') " +
             "AND _id > $offset " +
             "ORDER BY _id "
+
+fun sqlMarketsById(id: Int): String =
+    "SELECT * from \"$MARKET_ID\"" +
+            "WHERE _id = $id "
 
 fun sqlFitness(offset: Int): String =
     "SELECT * from\"$FITNESS_ID\"" +
@@ -96,10 +101,8 @@ fun pagedListConfig(): PagedList.Config {
         .build()
 }
 
-fun toVisibility(constraint: Boolean): Int {
-    return if (constraint) {
-        View.VISIBLE
-    } else {
-        View.GONE
-    }
+fun loadedNetwork(): MutableLiveData<NetworkState> {
+    val mutable = MutableLiveData<NetworkState>()
+    mutable.postValue(NetworkState.LOADED)
+    return mutable
 }

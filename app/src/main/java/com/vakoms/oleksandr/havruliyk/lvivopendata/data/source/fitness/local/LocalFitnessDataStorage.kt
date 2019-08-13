@@ -1,18 +1,16 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.fitness.local
 
+import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.fitness.FitnessRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.LocalDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.pagedListConfig
 import javax.inject.Inject
 
-class LocalFitnessDataStorage @Inject constructor(database: FitnessRoomDatabase) :
-    LocalDataStorage<FitnessRecord> {
+class LocalFitnessDataStorage @Inject constructor(database: FitnessRoomDatabase) {
 
     private var fitnessDao = database.fitnessDao()
 
-    override fun getAll(callback: DataBoundaryCallback<FitnessRecord>) =
+     fun getAll(callback: PagedList.BoundaryCallback<FitnessRecord>) =
         fitnessDao.getAll().toLiveData(
             config = pagedListConfig(),
             boundaryCallback = callback
@@ -22,13 +20,13 @@ class LocalFitnessDataStorage @Inject constructor(database: FitnessRoomDatabase)
         fitnessDao.insert(data)
     }
 
-    override fun deleteAll() {
+     fun deleteAll() {
         fitnessDao.deleteAll()
     }
 
-    override fun getById(id: Int) = fitnessDao.getById(id)
+     fun getById(id: Int) = fitnessDao.getById(id)
 
-    override fun getByName(callback: DataBoundaryCallback<FitnessRecord>, name: String) =
+     fun getByName(callback: PagedList.BoundaryCallback<FitnessRecord>, name: String) =
         fitnessDao.getByName("%$name%").toLiveData(
             config = pagedListConfig(),
             boundaryCallback = callback

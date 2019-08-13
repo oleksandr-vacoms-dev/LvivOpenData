@@ -1,34 +1,32 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.catering.local
 
+import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.catering.CateringRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.LocalDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.pagedListConfig
 import javax.inject.Inject
 
-class LocalCateringDataStorage @Inject constructor(database: CateringRoomDatabase) :
-    LocalDataStorage<CateringRecord> {
+class LocalCateringDataStorage @Inject constructor(database: CateringRoomDatabase) {
 
     private var cateringDao = database.cateringDao()
 
-    override fun getAll(callback: DataBoundaryCallback<CateringRecord>) =
+    fun getAll(callback: PagedList.BoundaryCallback<CateringRecord>) =
         cateringDao.getAll().toLiveData(
             config = pagedListConfig(),
             boundaryCallback = callback
         )
 
-     fun saveAll(data: List<CateringRecord>) {
+    fun saveAll(data: List<CateringRecord>) {
         cateringDao.insert(data)
     }
 
-    override fun deleteAll() {
+    fun deleteAll() {
         cateringDao.deleteAll()
     }
 
-    override fun getById(id: Int) = cateringDao.getById(id)
+    fun getById(id: Int) = cateringDao.getById(id)
 
-    override fun getByName(callback: DataBoundaryCallback<CateringRecord>, name: String) =
+    fun getByName(callback: PagedList.BoundaryCallback<CateringRecord>, name: String) =
         cateringDao.getByName("%$name%").toLiveData(
             config = pagedListConfig(),
             boundaryCallback = callback

@@ -1,34 +1,32 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.atm.local
 
+import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.atm.ATMRecord
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataBoundaryCallback
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.LocalDataStorage
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.pagedListConfig
 import javax.inject.Inject
 
-class LocalATMDataStorage @Inject constructor(database: ATMRoomDatabase) :
-    LocalDataStorage<ATMRecord> {
+class LocalATMDataStorage @Inject constructor(database: ATMRoomDatabase) {
 
     private var atmDao = database.atmDao()
 
-    override fun getAll(callback: DataBoundaryCallback<ATMRecord>) =
+    fun getAll(callback: PagedList.BoundaryCallback<ATMRecord>) =
         atmDao.getAll().toLiveData(
             config = pagedListConfig(),
             boundaryCallback = callback
         )
 
-     fun saveAll(data: List<ATMRecord>) {
+    fun saveAll(data: List<ATMRecord>) {
         atmDao.insert(data)
     }
 
-    override fun deleteAll() {
+    fun deleteAll() {
         atmDao.deleteAll()
     }
 
-    override fun getById(id: Int) = atmDao.getById(id)
+    fun getById(id: Int) = atmDao.getById(id)
 
-    override fun getByName(callback: DataBoundaryCallback<ATMRecord>, name: String) =
+    fun getByName(callback: PagedList.BoundaryCallback<ATMRecord>, name: String) =
         atmDao.getByName("%$name%").toLiveData(
             config = pagedListConfig(),
             boundaryCallback = callback

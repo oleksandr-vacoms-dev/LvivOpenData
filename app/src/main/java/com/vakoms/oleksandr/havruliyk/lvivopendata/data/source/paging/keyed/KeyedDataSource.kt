@@ -1,15 +1,14 @@
-package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.market.remote
+package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.paging.keyed
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.ApiRequestHelper
 import com.vakoms.oleksandr.havruliyk.lvivopendata.util.NetworkState
+import org.jetbrains.anko.doAsync
 import retrofit2.Call
 import java.util.concurrent.Executor
 
-
 abstract class KeyedDataSource<T, K>(
-    private var retryExecutor: Executor,
     private val request: (page: Int) -> Call<K>,
     private val onResponse: (response: K?) -> List<T>
 ) :
@@ -95,7 +94,7 @@ abstract class KeyedDataSource<T, K>(
         val prevRetry = retry
         retry = null
         prevRetry?.let { retry ->
-            retryExecutor.execute { retry() }
+            doAsync { retry() }
         }
     }
 

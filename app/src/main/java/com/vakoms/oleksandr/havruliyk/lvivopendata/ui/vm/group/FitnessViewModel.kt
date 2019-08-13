@@ -29,7 +29,7 @@ class FitnessViewModel @Inject constructor(
     var searchRefreshState: LiveData<NetworkState> = MutableLiveData()
 
     var searchPagedList: LiveData<PagedList<FitnessRecord>> = Transformations.switchMap(searchString) { name ->
-        listing = repository.getByName(name)
+//        listing = repository.getByName(name)
         searchNetworkState = listing.networkState
         searchRefreshState = listing.refreshState
         listing.pagedList
@@ -52,7 +52,7 @@ class FitnessViewModel @Inject constructor(
     }
 
     fun getAllData() {
-        listing = repository.getAll()
+//        listing = repository.getAll()
         networkState = listing.networkState
         refreshState = listing.refreshState
         pagedList = listing.pagedList

@@ -29,7 +29,7 @@ class MarketViewModel @Inject constructor(
     var searchRefreshState: LiveData<NetworkState> = MutableLiveData()
 
     var searchPagedList: LiveData<PagedList<MarketRecord>> = Transformations.switchMap(searchString) { name ->
-        listing = repository.getByName(name)
+        listing = repository.getListingByName(name)
         searchNetworkState = listing.networkState
         searchRefreshState = listing.refreshState
         listing.pagedList
@@ -52,7 +52,7 @@ class MarketViewModel @Inject constructor(
     }
 
     fun getAllData() {
-        listing = repository.getAll()
+        listing = repository.getListing()
         networkState = listing.networkState
         refreshState = listing.refreshState
         pagedList = listing.pagedList

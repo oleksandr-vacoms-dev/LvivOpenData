@@ -29,7 +29,7 @@ class ATMViewModel @Inject constructor(
     var searchRefreshState: LiveData<NetworkState> = MutableLiveData()
 
     var searchPagedList: LiveData<PagedList<ATMRecord>> = Transformations.switchMap(searchString) { name ->
-        listing = repository.getByName(name)
+//        listing = repository.getByName(name)
         searchNetworkState = listing.networkState
         searchRefreshState = listing.refreshState
         listing.pagedList
@@ -52,9 +52,9 @@ class ATMViewModel @Inject constructor(
     }
 
     fun getAllData() {
-        listing = repository.getAll()
-        networkState = listing.networkState
-        refreshState = listing.refreshState
-        pagedList = listing.pagedList
+//        listing = repository.getAll()
+//        networkState = listing.networkState
+//        refreshState = listing.refreshState
+//        pagedList = listing.pagedList
     }
 }
