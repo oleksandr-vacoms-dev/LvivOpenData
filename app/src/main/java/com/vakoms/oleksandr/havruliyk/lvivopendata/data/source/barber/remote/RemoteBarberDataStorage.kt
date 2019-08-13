@@ -1,41 +1,91 @@
 package com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.barber.remote
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.api.OpenDataApi
-import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.Listing
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberRecord
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.model.barber.BarberResponse
 import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.DataStorage
+import com.vakoms.oleksandr.havruliyk.lvivopendata.data.source.paging.keyed.KeyedDataSourceFactory
+import com.vakoms.oleksandr.havruliyk.lvivopendata.util.*
 import javax.inject.Inject
 
-class RemoteFitnessDataStorage @Inject constructor(
+class RemoteBarberDataStorage @Inject constructor(
     private val openDataApi: OpenDataApi
 ) : DataStorage<BarberRecord> {
 
-    override fun getListing(): Listing<BarberRecord> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getListing() =
+        object : KeyedDataSourceFactory<BarberRecord, BarberResponse>(
+            request = { page ->
+                openDataApi.getBarber(sqlBarbers(page, PAGE_SIZE))
+            },
+            onResponse = { response ->
+                response?.result?.records!!
+            }
+        ) {}.getListing()
 
-    override fun getListingByName(name: String): Listing<BarberRecord> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun getListingByName(name: String) =
+        object : KeyedDataSourceFactory<BarberRecord, BarberResponse>(
+            request = { page ->
+                openDataApi.getBarber(sqlBarbers(page, PAGE_SIZE))
+            },
+            onResponse = { response ->
+                response?.result?.records!!
+            }
+        ) {}.getListing()
 
     override fun get(offset: Int, amount: Int): LiveData<List<BarberRecord>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val data = MutableLiveData<List<BarberRecord>>()
+
+        ApiRequestHelper.asyncRequest(
+            request = openDataApi.getBarber(sqlBarbers(offset, amount)),
+            onSuccess = { response ->
+                data.value = response?.result?.records!!
+            },
+            onError = {
+                data.value = null
+            }
+        )
+        return data
     }
 
     override fun getByName(name: String, offset: Int, amount: Int): LiveData<List<BarberRecord>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val data = MutableLiveData<List<BarberRecord>>()
+
+        ApiRequestHelper.asyncRequest(
+            request = openDataApi.getBarber(sqlBarbersByName(name, offset, amount)),
+            onSuccess = { response ->
+                data.value = response?.result?.records!!
+            },
+            onError = {
+                data.value = null
+            }
+        )
+        return data
     }
 
     override fun getById(id: Int): LiveData<BarberRecord> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val data = MutableLiveData<BarberRecord>()
+
+        ApiRequestHelper.asyncRequest(
+            request = openDataApi.getBarber(sqlBarberById(id)),
+            onSuccess = { response ->
+                with(response?.result?.records!!) {
+                    if (this.isNotEmpty()) {
+                        data.value = this[0]
+                    }
+                }
+            },
+            onError = {
+                data.value = null
+            }
+        )
+        return data
     }
 
     override fun save(data: List<BarberRecord>) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun deleteAll() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
