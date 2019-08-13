@@ -16,12 +16,18 @@ interface FitnessDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(data: List<FitnessRecord>)
 
+    @Query("SELECT * FROM fitness WHERE id>:offset AND id<=:lastId ORDER BY id")
+    fun get(offset: Int, lastId: Int): LiveData<List<FitnessRecord>>
+
+    @Query("SELECT * FROM fitness WHERE name LIKE :name ORDER BY id")
+    fun getByName(name: String): LiveData<List<FitnessRecord>>
+
     @Query("SELECT * FROM fitness WHERE id=:id")
     fun getById(id: Int): LiveData<FitnessRecord>
 
     @Query("SELECT * FROM fitness WHERE name LIKE :name ORDER BY id")
-    fun getByName(name: String): DataSource.Factory<Int, FitnessRecord>
+    fun getDataSourceFactoryByName(name: String): DataSource.Factory<Int, FitnessRecord>
 
     @Query("SELECT * FROM fitness ORDER BY id")
-    fun getAll(): DataSource.Factory<Int, FitnessRecord>
+    fun getDataSourceFactory(): DataSource.Factory<Int, FitnessRecord>
 }
